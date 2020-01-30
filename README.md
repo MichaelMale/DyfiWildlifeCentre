@@ -14,7 +14,7 @@ This repository contains all files pertaining to my assigned project for CS39440
 
 ## Journal
 
-I am keeping a journal of what I have been doing on the project. This is good practice so I can keep note of my thoughts and actions and keep a good structure to the project.
+I am keeping a journal of what I have been doing on the project. This is good practice so I can keep note of my thoughts and actions and keep a good structure to the project. The link to this journal is [here](https://www.michaelmale.com/cs39440.html).
 
 ## Licensing
 
