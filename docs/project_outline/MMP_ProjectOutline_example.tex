@@ -22,18 +22,18 @@
 
 \begin{document}
 
-\name{Your Name}
-\userid{xyz}
-\projecttitle{Your project title: Which can be longer when it is displayed on the front page of the document}
-\projecttitlememoir{Your project title (shorter form, if necessary)} %same as the project title or abridged version for page header
+\name{Michael Male}
+\userid{mim39}
+\projecttitle{Development of a map-based web application to be used by visitors and staff at the Dyfi Wildlife Centre}
+\projecttitlememoir{Dyfi Wildlife Centre Web App} %same as the project title or abridged version for page header
 \reporttitle{Project Outline}
 \version{1.0}
 \docstatus{Draft} % change to Release when you are ready to submit your document
 \modulecode{CS39440}
-\degreeschemecode{G400}
+\degreeschemecode{G40F}
 \degreeschemename{Computer Science}
-\supervisor{Supervisor Name} % e.g. Neil Taylor
-\supervisorid{abc} % e.g. nst
+\supervisor{Edel Sherratt} % e.g. Neil Taylor
+\supervisorid{eds} % e.g. nst
 
 %optional - comment out next line to use current date for the document
 %\documentdate{8th February 2019}
@@ -45,7 +45,15 @@
 %==============================================================================
 \section{Project description}
 %==============================================================================
+This project will result in the development of a web-based application that helps visitors and staff learn more about the Dyfi Wildlife Centre, providing an interactive experience to those who visit. It is intended to be run through a browser on a Windows PC, along with an 86-inch touchscreen monitor. Information should be easily pinpointed and available to visitors, along with a portal for staff to add and edit information as well as input other types of data, such as local business information and taking note of measurements of the centre's ospreys.
 
+The Dyfi Wildlife Centre is a new centre run by the Montgomeryshire Wildlife Trust, situated on the Cors Dyfi Nature Reserve west of Machynlleth, in the county of Powys, Wales. The centre have approached the University asking for the development of software to showcase noteworthy locations around the centre, link to wildlife webcams, and provide information for visitors that can be easily edited by the centre's volunteers, who have varying levels of computer literacy. The centre is being built partly to refurbish the Dyfi Osprey Project, which closed in August 2019 to make way for the centre to be built, with its first opening hours planned for later in 2020\cite{DyfiWildlifeCentre}.
+
+The web application will be developed using a design language that emphasises elegance and ease-of-use; one example of many being Google's Material Design\cite{MaterialDesign}, which will give it a similar look and feel to a typical Android application. Various frameworks are available for the use of Material Design on the web; a decision will have to be made on whether to use a lightweight framework such as MDC Web\cite{MDCWeb} or perhaps utilising the implementation of Material Design in Angular\cite{Kotaru2020}. Angular is a fully-fledged framework for web application development and would work well with a back-end such as Node.js. A database is essential for the application; a correctly normalised MySQL database would work, although a further decision as to whether a document-oriented database such as MongoDB would be more efficient will require further research.
+
+The application will make use of a map API as its primary component. The map API should allow for markers to be placed on notable locations preferably through both an addressing system and a latitude-longitude system. Consideration will have to be placed on the pricing schemes of APIs - it is unlikely that the centre will have enough funding for a commercial API so a FOSS alternative such as OpenStreetMap\cite{OSM} could be used, although there is not a free alternative for satellite imagery. It is worth noting that the pricing of the Google Maps Platform includes \$200 USD free monthly usage, which is likely to suffice for the purposes of the software\cite{GoogleMapsPlatform}.
+
+Another major consideration of the project will be ensuring that there is an acceptable level of customer-developer communication. The wildlife centre are hoping that the application can be of production quality and only require minimal changes after the project submission. Constant interaction with the customer and a project that is flexible and responsive to change is essential to assist in reaching the aforementioned goal. Following an agile process would be useful for this, with research into how best to adopt the Agile Manifesto when one is working by themselves. An adapted form of Agile for one-person development, named \textit{Agile Solo}, has been developed\cite{nystrom_2011} and could prove useful as long as it is adapted for a three-month project.
 
 %==============================================================================
 \section{Proposed tasks}
@@ -56,21 +64,21 @@
 \section{Project deliverables}
 %==============================================================================
 
-%
-% Start to comment out / remove the following lines. They are only provided for instruction for this example template.  You don't need the following section title, because it will be added as part of the bibliography section.
-%
-%==============================================================================
-\section*{Your Bibliography - REMOVE this title and text for final version}
-%==============================================================================
-%
-You need to include an annotated bibliography. This should list all relevant web pages, books, journals etc. that you have consulted in researching your project. Each reference should include an annotation.
+% %
+% % Start to comment out / remove the following lines. They are only provided for instruction for this example template.  You don't need the following section title, because it will be added as part of the bibliography section.
+% %
+% %==============================================================================
+% \section*{Your Bibliography - REMOVE this title and text for final version}
+% %==============================================================================
+% %
+% You need to include an annotated bibliography. This should list all relevant web pages, books, journals etc. that you have consulted in researching your project. Each reference should include an annotation.
 
-The purpose of the section is to understand what sources you are looking at.  A correctly formatted list of items and annotations is sufficient. You might go further and make use of bibliographic tools, e.g. BibTeX in a LaTeX document, could be used to provide citations, for example \cite{NumericalRecipes} \cite{MarksPaper} \cite[99-101]{FailBlog} \cite{kittenpic_ref}.  The bibliographic tools are not a requirement, but you are welcome to use them.
+% The purpose of the section is to understand what sources you are looking at.  A correctly formatted list of items and annotations is sufficient. You might go further and make use of bibliographic tools, e.g. BibTeX in a LaTeX document, could be used to provide citations, for example \cite{NumericalRecipes} \cite{MarksPaper} \cite[99-101]{FailBlog} \cite{kittenpic_ref}.  The bibliographic tools are not a requirement, but you are welcome to use them.
 
-You can remove the above {\em Your Bibliography} section heading because it will be added in by the renewcommand which is part of the bibliography. The correct annotated bibliography information is provided below.
-%
-% End of comment out / remove the lines. They are only provided for instruction for this example template.
-%
+% You can remove the above {\em Your Bibliography} section heading because it will be added in by the renewcommand which is part of the bibliography. The correct annotated bibliography information is provided below.
+% %
+% % End of comment out / remove the lines. They are only provided for instruction for this example template.
+% %
 
 
 \nocite{*} % include everything from the bibliography, irrespective of whether it has been referenced.
@@ -83,7 +91,7 @@ You can remove the above {\em Your Bibliography} section heading because it will
 % example of including an annotated bibliography. The current style is an author date one. If you want to change, comment out the line and uncomment the subsequent line. You should also modify the packages included at the top (see the notes earlier in the file) and then trash your aux files and re-run.
 %\bibliographystyle{authordate2annot}
 \bibliographystyle{IEEEannotU}
-\renewcommand{\refname}{Annotated Bibliography}  % if you put text into the final {} on this line, you will get an extra title, e.g. References. This isn't necessary for the outline project specification.
+\renewcommand{\refname}{Bibliography}  % if you put text into the final {} on this line, you will get an extra title, e.g. References. This isn't necessary for the outline project specification.
 \bibliography{mmp} % References file
 
 \end{document}
