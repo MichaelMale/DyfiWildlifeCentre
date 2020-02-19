@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Dyfi Wildlife Centre</title>
+    <!-- Change to minified CSS in production -->
+    <link rel="stylesheet" type="text/css" href="../static/semantic/dist/semantic.css" th:href="@{/semantic/dist/semantic.css}" />
+
+
+</head>
+<body>
+
+<div class="ui container">
+    <div class="ui text menu">
+        <div class="header item">Dyfi Wildlife Centre</div>
+        <a href="/" class="active item">
+            Home
+        </a>
+        <a href="/about" class="item">
+            About
+        </a>
+        <a href="/admin" class="item">
+            Admin panel
+        </a>
+    </div>
+</div>
+<!-- Google Map container. Use Spring to get more variables etc. rather than hard-coding everything. -->
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
+            const aberystwythUniversity = {lat: 52.41806, lng: -4.06576};
+            let map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: dyfiWildlifeCentre,
+                mapTypeId: 'satellite',
+                disableDefaultUI: true
+            });
+
+            const marker = new google.maps.Marker({
+                position: dyfiWildlifeCentre,
+                map: map,
+                title: 'Dyfi Wildlife Centre'
+            });
+
+            const marker2 = new google.maps.Marker({
+                position: aberystwythUniversity,
+                map: map,
+                title: 'Aberystwyth University'
+            })
+        }
+    </script>
+
+
+
+<script src="../static/vendor/jquery-3.4.1.js" th:href="@{/vendor/jquery.min.js}"></script>
+
+<script src="../static/semantic/dist/semantic.min.js" th:href="@{/semantic/dist/semantic.min.js}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&language=en&region=GB&callback=initMap"
+        async defer></script>
+
+</body>
+
+</html>
