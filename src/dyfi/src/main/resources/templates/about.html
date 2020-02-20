@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dyfi Wildlife Centre - About</title>
+    <template th:replace="fragments/header :: header"></template>
+</head>
+<body>
+
+<div class="fluid raised segment" th:include="fragments/top_menu :: topMenu"></div>
+
+<div class="fluid container">
+    <div class="ui card">
+        <div class="content">
+            <div class="header">About</div>
+            <div class="description">
+                <p>This web application is designed to help staff and visitors at the Dyfi Wildlife
+                    Centre learn more about the environment that they are in, and the work that the centre are
+                    doing.</p>
+
+                <p>The application was created by Michael Male
+                    (<a href="https://www.michaelmale.com" target="_blank">www.michaelmale.com</a>), in cooperation with
+                    <a href="https://www.aber.ac.uk/compsci" target="_blank">Aberystwyth University</a> and the <a
+                            href="https://www.montwt.co.uk" target="_blank">Montgomeryshire Wildlife Trust</a>.</p>
+            </div>
+
+            <br/>
+
+            <div class="header">Disclaimer</div>
+            <div class="description">
+                <p>Source code is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0"
+                                                        target="_blank">Apache License 2.0</a>.</p>
+                <p>"Maps JavaScript API" was created by Google LLC, with offices at Gordon House, Barrow Street,
+                    Dublin 4, Ireland. It is used under the Google Maps Platform License Agreement.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- JQuery script -->
+<script src="../static/vendor/jquery-3.4.1.js" th:href="@{/vendor/jquery.min.js}"></script>
+<!-- Script for Semantic UI -->
+<script src="../static/semantic/dist/semantic.min.js" th:href="@{/semantic/dist/semantic.min.js}"></script>
+
+</body>
+
+</html>
