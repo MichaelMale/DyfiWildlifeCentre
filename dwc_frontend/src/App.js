@@ -6,9 +6,7 @@ import GoogleMaps from "./components/GoogleMap";
 const App = () => (
     <Fragment>
         <Menu />
-        <Container fluid>
             <GoogleMaps/>
-        </Container>
     </Fragment>
 );
 

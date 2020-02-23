@@ -25,7 +25,10 @@ function GoogleMaps(props) {
     const googleMap = useRef(null);
     const marker = useRef(null);
 
-    // helper functions
+    /**
+     * Creates an instance of a Google map
+     * @returns {Map<any, any>} Said instance
+     */
     const createGoogleMap = () =>
         new window.google.maps.Map(googleMapRef.current, {
             zoom: 17,
@@ -37,13 +40,19 @@ function GoogleMaps(props) {
             mapTypeId: 'hybrid'
         });
 
+    /**
+     * Creates a marker
+     * @returns {window.google.maps.Marker} marker to be passed to the map
+     */
     const createMarker = () =>
         new window.google.maps.Marker({
             position: {lat: centreMarker.lat, lng: centreMarker.lng},
             map: googleMap.current
         });
 
-    // useEffect Hook
+    /**
+     *
+     */
     useEffect(() => {
         const googleMapScript = document.createElement('script');
         googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API_KEY}&libraries=places`
