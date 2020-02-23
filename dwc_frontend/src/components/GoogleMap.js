@@ -8,14 +8,15 @@ import React, {useEffect, useRef} from 'react';
 
 // Variables
 const GOOGLE_MAP_API_KEY = 'AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg';
-const myLocation = { // CN Tower Landmark
-    lat: 43.642567,
-    lng: -79.387054
+const centreMarker = { // The centre marker is the Dyfi Wildlife Centre, where the map
+    // focuses.
+    lat: 52.568774,
+    lng: -3.918031
 };
-// styles
+// styles, height and width should be the same size as the container holding it
 const mapStyles = {
     width: '100%',
-    height: '1000px',
+    height: '100vh',
 };
 
 function GoogleMaps(props) {
@@ -27,16 +28,18 @@ function GoogleMaps(props) {
     // helper functions
     const createGoogleMap = () =>
         new window.google.maps.Map(googleMapRef.current, {
-            zoom: 14,
+            zoom: 17,
             center: {
-                lat: myLocation.lat,
-                lng: myLocation.lng
-            }
+                lat: centreMarker.lat,
+                lng: centreMarker.lng
+            },
+            disableDefaultUI: true,
+            mapTypeId: 'hybrid'
         });
 
     const createMarker = () =>
         new window.google.maps.Marker({
-            position: {lat: myLocation.lat, lng: myLocation.lng},
+            position: {lat: centreMarker.lat, lng: centreMarker.lng},
             map: googleMap.current
         });
 
