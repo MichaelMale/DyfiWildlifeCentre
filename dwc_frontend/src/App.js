@@ -2,13 +2,15 @@ import React, { Fragment } from 'react';
 import { Container } from 'semantic-ui-react';
 
 import Menu from './components/Menu';
-import Login from './components/Login';
+// eslint-disable-next-line no-unused-vars
+import AboutCard from './components/AboutCard';
+import GoogleMaps from "./components/GoogleMap";
 
 const App = () => (
     <Fragment>
         <Menu />
-        <Container>
-            <Login />
+        <Container fluid id="cont">
+         <GoogleMaps id="map_canvas"/>
         </Container>
     </Fragment>
 );
