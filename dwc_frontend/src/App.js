@@ -1,13 +1,15 @@
-import React, { Fragment } from 'react';
-import { Container } from 'semantic-ui-react';
+import React from "react";
 import Menu from './components/Menu';
 import GoogleMaps from "./components/GoogleMap";
 
-const App = () => (
-    <Fragment>
-        <Menu />
-            <GoogleMaps/>
-    </Fragment>
-);
+export default class App extends React.Component {
+    render() {
+        return (
+            <React.Fragment>
+                <Menu/>
+                <GoogleMaps/>
+            </React.Fragment>
+        )
 
-export default App;
+    }
+}
