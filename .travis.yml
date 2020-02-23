@@ -2,3 +2,6 @@ language: node_js
 node_js:
   - "stable"
 before_install: cd dwc_frontend
+branches:
+ only:
+ - develop
