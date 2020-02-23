@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'text';
+@type: 'element';
+@element: 'text';
 
 @import (multiple) '../../theme.config';
 
@@ -48,6 +48,7 @@ each(@colors, {
 span.ui.medium.text {
   font-size: @medium;
 }
+
 & when not (@variationTextSizes = false) {
   each(@variationTextSizes, {
     @s: @@value;

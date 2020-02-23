@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'nag';
+@type: 'module';
+@element: 'nag';
 
 @import (multiple) '../../theme.config';
 
@@ -75,7 +75,6 @@ a.ui.nag {
 }
 
 
-
 /*******************************
              States
 *******************************/
@@ -133,6 +132,7 @@ a.ui.nag {
   background-color: @invertedBackground;
   color: @darkTextColor;
 }
+
 .ui.inverted.nags .nag .close,
 .ui.inverted.nags .nag .title,
 .ui.inverted.nag .close,
@@ -148,9 +148,11 @@ a.ui.nag {
 .ui.nags .nag {
   border-radius: @groupedBorderRadius !important;
 }
+
 .ui.nags .nag:last-child {
   border-radius: @topBorderRadius;
 }
+
 .ui.bottom.nags .nag:last-child {
   border-radius: @bottomBorderRadius;
 }

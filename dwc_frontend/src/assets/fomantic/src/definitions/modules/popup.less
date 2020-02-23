@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'popup';
+@type: 'module';
+@element: 'popup';
 
 @import (multiple) '../../theme.config';
 
@@ -46,6 +46,7 @@
   border-radius: @borderRadius;
   box-shadow: @boxShadow;
 }
+
 .ui.popup > .header {
   padding: 0;
 
@@ -54,6 +55,7 @@
   line-height: @headerLineHeight;
   font-weight: @headerFontWeight;
 }
+
 .ui.popup > .header + .content {
   padding-top: @headerDistance;
 }
@@ -81,11 +83,13 @@
   ---------------*/
 
   /* Content */
+
   [data-tooltip] {
     position: relative;
   }
 
   /* Arrow */
+
   [data-tooltip]:before {
     pointer-events: none;
     position: absolute;
@@ -102,6 +106,7 @@
   }
 
   /* Popup */
+
   [data-tooltip]:after {
     pointer-events: none;
     content: attr(data-tooltip);
@@ -128,6 +133,7 @@
   }
 
   /* Default Position (Top Center) */
+
   [data-tooltip]:not([data-position]):before {
     top: auto;
     right: auto;
@@ -137,6 +143,7 @@
     margin-left: @tooltipArrowHorizontalOffset;
     margin-bottom: -@tooltipArrowVerticalOffset;
   }
+
   [data-tooltip]:not([data-position]):after {
     left: 50%;
     transform: translateX(-50%);
@@ -145,102 +152,120 @@
   }
 
   /* Animation */
+
   [data-tooltip]:before,
   [data-tooltip]:after {
     pointer-events: none;
     visibility: hidden;
     opacity: 0;
-    transition:
-            transform @tooltipDuration @tooltipEasing,
-            opacity @tooltipDuration @tooltipEasing
-    ;
+    transition: transform @tooltipDuration @tooltipEasing,
+    opacity @tooltipDuration @tooltipEasing;
   }
+
   [data-tooltip]:before {
     transform: rotate(45deg) scale(0) !important;
     transform-origin: center top;
   }
+
   [data-tooltip]:after {
     transform-origin: center bottom;
   }
+
   [data-tooltip]:hover:before,
   [data-tooltip]:hover:after {
     visibility: visible;
     pointer-events: auto;
     opacity: 1;
   }
+
   [data-tooltip]:hover:before {
     transform: rotate(45deg) scale(1) !important;
   }
 
   /* Animation Position */
+
   [data-tooltip]:after,
   [data-tooltip][data-position="top center"]:after,
   [data-tooltip][data-position="bottom center"]:after {
     transform: translateX(-50%) scale(0) !important;
   }
+
   [data-tooltip]:hover:after,
   [data-tooltip][data-position="bottom center"]:hover:after {
     transform: translateX(-50%) scale(1) !important;
   }
+
   [data-tooltip][data-position="left center"]:after,
   [data-tooltip][data-position="right center"]:after {
     transform: translateY(-50%) scale(0) !important;
   }
+
   [data-tooltip][data-position="left center"]:hover:after,
   [data-tooltip][data-position="right center"]:hover:after {
     transform: translateY(-50%) scale(1) !important;
   }
+
   [data-tooltip][data-position="top left"]:after,
   [data-tooltip][data-position="top right"]:after,
   [data-tooltip][data-position="bottom left"]:after,
   [data-tooltip][data-position="bottom right"]:after {
     transform: scale(0) !important;
   }
+
   [data-tooltip][data-position="top left"]:hover:after,
   [data-tooltip][data-position="top right"]:hover:after,
   [data-tooltip][data-position="bottom left"]:hover:after,
   [data-tooltip][data-position="bottom right"]:hover:after {
     transform: scale(1) !important;
   }
+
   & when (@variationPopupFixed) {
     [data-tooltip][data-variation~="fixed"]:after {
       white-space: normal;
       width: @maxWidth;
     }
+
     [data-tooltip][data-variation*="wide fixed"]:after {
       width: @wideWidth;
     }
+
     [data-tooltip][data-variation*="very wide fixed"]:after {
       width: @veryWideWidth;
     }
+
     @media only screen and (max-width: @largestMobileScreen) {
       [data-tooltip][data-variation~="fixed"]:after {
         width: @maxWidth;
       }
     }
   }
+
   & when (@variationPopupInverted) {
     /*--------------
         Inverted
     ---------------*/
 
     /* Arrow */
+
     [data-tooltip][data-inverted]:before {
       box-shadow: none !important;
     }
 
     /* Arrow Position */
+
     [data-tooltip][data-inverted]:before {
       background: @invertedArrowBottomBackground;
     }
 
     /* Popup  */
+
     [data-tooltip][data-inverted]:after {
       background: @tooltipInvertedBackground;
       color: @tooltipInvertedColor;
       border: @tooltipInvertedBorder;
       box-shadow: @tooltipInvertedBoxShadow;
     }
+
     [data-tooltip][data-inverted]:after .header {
       background: @tooltipInvertedHeaderBackground;
       color: @tooltipInvertedHeaderColor;
@@ -251,12 +276,15 @@
     /*--------------
         Position
     ---------------*/
+
     & when (@variationPopupTop) {
       [data-position~="top"][data-tooltip]:before {
         background: @arrowBottomBackground;
       }
+
       & when (@variationPopupCenter) {
         /* Top Center */
+
         [data-position="top center"][data-tooltip]:after {
           top: auto;
           right: auto;
@@ -265,6 +293,7 @@
           transform: translateX(-50%);
           margin-bottom: @tooltipDistanceAway;
         }
+
         [data-position="top center"][data-tooltip]:before {
           top: auto;
           right: auto;
@@ -275,8 +304,10 @@
           margin-bottom: -@tooltipArrowVerticalOffset;
         }
       }
+
       & when (@variationPopupLeft) {
         /* Top Left */
+
         [data-position="top left"][data-tooltip]:after {
           top: auto;
           right: auto;
@@ -284,6 +315,7 @@
           bottom: 100%;
           margin-bottom: @tooltipDistanceAway;
         }
+
         [data-position="top left"][data-tooltip]:before {
           top: auto;
           right: auto;
@@ -293,8 +325,10 @@
           margin-bottom: -@tooltipArrowVerticalOffset;
         }
       }
+
       & when (@variationPopupRight) {
         /* Top Right */
+
         [data-position="top right"][data-tooltip]:after {
           top: auto;
           left: auto;
@@ -302,6 +336,7 @@
           bottom: 100%;
           margin-bottom: @tooltipDistanceAway;
         }
+
         [data-position="top right"][data-tooltip]:before {
           top: auto;
           left: auto;
@@ -318,8 +353,10 @@
         background: @arrowTopBackground;
         box-shadow: @bottomArrowBoxShadow;
       }
+
       & when (@variationPopupCenter) {
         /* Bottom Center */
+
         [data-position="bottom center"][data-tooltip]:after {
           bottom: auto;
           right: auto;
@@ -328,6 +365,7 @@
           transform: translateX(-50%);
           margin-top: @tooltipDistanceAway;
         }
+
         [data-position="bottom center"][data-tooltip]:before {
           bottom: auto;
           right: auto;
@@ -337,13 +375,16 @@
           margin-top: -@tooltipArrowVerticalOffset;
         }
       }
+
       & when (@variationPopupLeft) {
         /* Bottom Left */
+
         [data-position="bottom left"][data-tooltip]:after {
           left: 0;
           top: 100%;
           margin-top: @tooltipDistanceAway;
         }
+
         [data-position="bottom left"][data-tooltip]:before {
           bottom: auto;
           right: auto;
@@ -353,13 +394,16 @@
           margin-top: -@tooltipArrowVerticalOffset;
         }
       }
+
       & when (@variationPopupRight) {
         /* Bottom Right */
+
         [data-position="bottom right"][data-tooltip]:after {
           right: 0;
           top: 100%;
           margin-top: @tooltipDistanceAway;
         }
+
         [data-position="bottom right"][data-tooltip]:before {
           bottom: auto;
           left: auto;
@@ -370,15 +414,18 @@
         }
       }
     }
+
     & when (@variationPopupCenter) {
       & when (@variationPopupLeft) {
         /* Left Center */
+
         [data-position="left center"][data-tooltip]:after {
           right: 100%;
           top: 50%;
           margin-right: @tooltipDistanceAway;
           transform: translateY(-50%);
         }
+
         [data-position="left center"][data-tooltip]:before {
           right: 100%;
           top: 50%;
@@ -388,14 +435,17 @@
           box-shadow: @leftArrowBoxShadow;
         }
       }
+
       & when (@variationPopupRight) {
         /* Right Center */
+
         [data-position="right center"][data-tooltip]:after {
           left: 100%;
           top: 50%;
           margin-left: @tooltipDistanceAway;
           transform: translateY(-50%);
         }
+
         [data-position="right center"][data-tooltip]:before {
           left: 100%;
           top: 50%;
@@ -409,12 +459,14 @@
 
     & when (@variationPopupInverted) {
       /* Inverted Arrow Color */
+
       & when (@variationPopupBottom) {
         [data-inverted][data-position~="bottom"][data-tooltip]:before {
           background: @invertedArrowTopBackground;
           box-shadow: @bottomArrowBoxShadow;
         }
       }
+
       & when (@variationPopupCenter) {
         & when (@variationPopupLeft) {
           [data-inverted][data-position="left center"][data-tooltip]:before {
@@ -422,6 +474,7 @@
             box-shadow: @leftArrowBoxShadow;
           }
         }
+
         & when (@variationPopupRight) {
           [data-inverted][data-position="right center"][data-tooltip]:before {
             background: @invertedArrowCenterBackground;
@@ -429,6 +482,7 @@
           }
         }
       }
+
       & when (@variationPopupTop) {
         [data-inverted][data-position~="top"][data-tooltip]:before {
           background: @invertedArrowBottomBackground;
@@ -440,23 +494,28 @@
       [data-position~="bottom"][data-tooltip]:before {
         transform-origin: center bottom;
       }
+
       [data-position~="bottom"][data-tooltip]:after {
         transform-origin: center top;
       }
     }
+
     & when (@variationPopupCenter) {
       & when (@variationPopupLeft) {
         [data-position="left center"][data-tooltip]:before {
           transform-origin: top center;
         }
+
         [data-position="left center"][data-tooltip]:after {
           transform-origin: right center;
         }
       }
+
       & when (@variationPopupRight) {
         [data-position="right center"][data-tooltip]:before {
           transform-origin: right center;
         }
+
         [data-position="right center"][data-tooltip]:after {
           transform-origin: left center;
         }
@@ -468,6 +527,7 @@
     /*--------------
         Basic
     ---------------*/
+
     [data-tooltip][data-variation~="basic"]:before {
       display: none;
     }
@@ -484,19 +544,23 @@
 
 & when (@variationPopupTop) {
   /* Extending from Top */
+
   .ui.top.popup {
     margin: 0 0 @popupDistanceAway;
   }
+
   & when (@variationPopupLeft) {
     .ui.top.left.popup {
       transform-origin: left bottom;
     }
   }
+
   & when (@variationPopupCenter) {
     .ui.top.center.popup {
       transform-origin: center bottom;
     }
   }
+
   & when (@variationPopupRight) {
     .ui.top.right.popup {
       transform-origin: right bottom;
@@ -506,12 +570,14 @@
 
 & when (@variationPopupCenter) {
   /* Extending from Vertical Center */
+
   & when (@variationPopupLeft) {
     .ui.left.center.popup {
       margin: 0 @popupDistanceAway 0 0;
       transform-origin: right 50%;
     }
   }
+
   & when (@variationPopupRight) {
     .ui.right.center.popup {
       margin: 0 0 0 @popupDistanceAway;
@@ -522,19 +588,23 @@
 
 & when (@variationPopupBottom) {
   /* Extending from Bottom */
+
   .ui.bottom.popup {
     margin: @popupDistanceAway 0 0;
   }
+
   & when (@variationPopupLeft) {
     .ui.bottom.left.popup {
       transform-origin: left top;
     }
   }
+
   & when (@variationPopupCenter) {
     .ui.bottom.center.popup {
       transform-origin: center top;
     }
   }
+
   & when (@variationPopupRight) {
     .ui.bottom.right.popup {
       transform-origin: right top;
@@ -546,6 +616,7 @@
   ---------------*/
 
   /*--- Below ---*/
+
   .ui.bottom.center.popup:before {
     margin-left: @arrowOffset;
     top: @arrowOffset;
@@ -558,7 +629,9 @@
   .ui.bottom.left.popup {
     margin-left: @boxArrowOffset;
   }
+
   /*rtl:rename*/
+
   .ui.bottom.left.popup:before {
     top: @arrowOffset;
     left: @arrowDistanceFromEdge;
@@ -571,7 +644,9 @@
   .ui.bottom.right.popup {
     margin-right: @boxArrowOffset;
   }
+
   /*rtl:rename*/
+
   .ui.bottom.right.popup:before {
     top: @arrowOffset;
     right: @arrowDistanceFromEdge;
@@ -584,6 +659,7 @@
 
 & when (@variationPopupTop) {
   /*--- Above ---*/
+
   & when (@variationPopupCenter) {
     .ui.top.center.popup:before {
       top: auto;
@@ -593,11 +669,14 @@
       margin-left: @arrowOffset;
     }
   }
+
   & when (@variationPopupLeft) {
     .ui.top.left.popup {
       margin-left: @boxArrowOffset;
     }
+
     /*rtl:rename*/
+
     .ui.top.left.popup:before {
       bottom: @arrowOffset;
       left: @arrowDistanceFromEdge;
@@ -606,11 +685,14 @@
       margin-left: 0;
     }
   }
+
   & when (@variationPopupRight) {
     .ui.top.right.popup {
       margin-right: @boxArrowOffset;
     }
+
     /*rtl:rename*/
+
     .ui.top.right.popup:before {
       bottom: @arrowOffset;
       right: @arrowDistanceFromEdge;
@@ -624,6 +706,7 @@
 & when (@variationPopupCenter) {
   /*--- Left Center ---*/
   /*rtl:rename*/
+
   & when (@variationPopupLeft) {
     .ui.left.center.popup:before {
       top: 50%;
@@ -634,9 +717,11 @@
       box-shadow: @leftArrowBoxShadow;
     }
   }
+
   & when (@variationPopupRight) {
     /*--- Right Center  ---*/
     /*rtl:rename*/
+
     .ui.right.center.popup:before {
       top: 50%;
       left: @arrowOffset;
@@ -646,6 +731,7 @@
       box-shadow: @rightArrowBoxShadow;
     }
   }
+
   & when (@variationPopupLeft) or (@variationPopupRight) {
     .ui.right.center.popup:before,
     .ui.left.center.popup:before {
@@ -656,6 +742,7 @@
 
 & when (@variationPopupBottom) {
   /* Arrow Color By Location */
+
   .ui.bottom.popup:before {
     background: @arrowTopBackground;
   }
@@ -670,16 +757,19 @@
 & when (@variationPopupInverted) {
   & when (@variationPopupBottom) {
     /* Inverted Arrow Color */
+
     .ui.inverted.bottom.popup:before {
       background: @invertedArrowTopBackground;
     }
   }
+
   & when (@variationPopupCenter) {
     .ui.inverted.right.center.popup:before,
     .ui.inverted.left.center.popup:before {
       background: @invertedArrowCenterBackground;
     }
   }
+
   & when (@variationPopupTop) {
     .ui.inverted.top.popup:before {
       background: @invertedArrowBottomBackground;
@@ -751,6 +841,7 @@
       width: @wideWidth;
     }
   }
+
   .ui[class*="very wide"].popup {
     max-width: @veryWideWidth;
     &.fixed when (@variationPopupFixed) {
@@ -763,7 +854,7 @@
     .ui[class*="very wide"].popup {
       max-width: @maxWidth;
       &.fixed when (@variationPopupFixed) {
-        width:@maxWidth;
+        width: @maxWidth;
       }
     }
   }
@@ -786,16 +877,19 @@
   ---------------*/
 
   /* Inverted colors  */
+
   .ui.inverted.popup {
     background: @invertedBackground;
     color: @invertedColor;
     border: @invertedBorder;
     box-shadow: @invertedBoxShadow;
   }
+
   .ui.inverted.popup .header {
     background-color: @invertedHeaderBackground;
     color: @invertedHeaderColor;
   }
+
   .ui.inverted.popup:before {
     background-color: @invertedArrowColor;
     box-shadow: none !important;
@@ -820,6 +914,7 @@
 .ui.popup {
   font-size: @medium;
 }
+
 & when not (@variationPopupSizes = false) {
   each(@variationPopupSizes, {
     @s: @@value;

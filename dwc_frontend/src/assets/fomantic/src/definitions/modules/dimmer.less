@@ -12,8 +12,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'dimmer';
+@type: 'module';
+@element: 'dimmer';
 
 @import (multiple) '../../theme.config';
 
@@ -82,6 +82,7 @@
     background: @thumbInvertedHoverBackground;
   }
 }
+
 .addScrollbars();
 
 /*******************************
@@ -104,6 +105,7 @@
 
 & when (@variationDimmerDisabled) {
   /* Disabled */
+
   .ui.disabled.dimmer {
     width: 0 !important;
     height: 0 !important;
@@ -121,6 +123,7 @@
   ---------------*/
 
   /* Animating / Active / Visible */
+
   .dimmed.dimmable > .ui.animating.legacy.dimmer,
   .dimmed.dimmable > .ui.visible.legacy.dimmer,
   .ui.active.legacy.dimmer {
@@ -136,6 +139,7 @@
   .ui[class*="top aligned"].dimmer {
     justify-content: flex-start;
   }
+
   .ui[class*="bottom aligned"].dimmer {
     justify-content: flex-end;
   }
@@ -172,18 +176,22 @@ body.dimmable > .dimmer {
     filter: @blurredStartFilter;
     transition: @blurredTransition;
   }
+
   .blurring.dimmed.dimmable > :not(.dimmer):not(.popup) {
     filter: @blurredEndFilter;
   }
 
   /* Dimmer Color */
+
   .blurring.dimmable > .dimmer {
     background-color: @blurredBackgroundColor;
   }
+
   .blurring.dimmable > .inverted.dimmer {
     background-color: @blurredInvertedBackgroundColor;
   }
 }
+
 & when (@variationDimmerAligned) {
   /*--------------
       Aligned
@@ -192,6 +200,7 @@ body.dimmable > .dimmer {
   .ui.dimmer > .top.aligned.content > * {
     vertical-align: top;
   }
+
   .ui.dimmer > .bottom.aligned.content > * {
     vertical-align: bottom;
   }
@@ -205,9 +214,11 @@ body.dimmable > .dimmer {
   .medium.medium.medium.medium.medium.dimmer {
     background-color: @mediumBackgroundColor;
   }
+
   .light.light.light.light.light.dimmer {
     background-color: @lightBackgroundColor;
   }
+
   .very.light.light.light.light.dimmer {
     background-color: @veryLightBackgroundColor;
   }
@@ -221,6 +232,7 @@ body.dimmable > .dimmer {
   .ui.inverted.dimmer {
     background-color: @invertedBackgroundColor;
   }
+
   .ui.inverted.dimmer > .content,
   .ui.inverted.dimmer > .content > * {
     color: @invertedTextColor;
@@ -234,9 +246,11 @@ body.dimmable > .dimmer {
     .medium.medium.medium.medium.medium.inverted.dimmer {
       background-color: @mediumInvertedBackgroundColor;
     }
+
     .light.light.light.light.light.inverted.dimmer {
       background-color: @lightInvertedBackgroundColor;
     }
+
     .very.light.light.light.light.inverted.dimmer {
       background-color: @veryLightInvertedBackgroundColor;
     }
@@ -249,6 +263,7 @@ body.dimmable > .dimmer {
   ---------------*/
 
   /* Displays without javascript */
+
   .ui.simple.dimmer {
     display: block;
     overflow: hidden;
@@ -258,6 +273,7 @@ body.dimmable > .dimmer {
     z-index: -100;
     background-color: @simpleStartBackgroundColor;
   }
+
   .dimmed.dimmable > .ui.simple.dimmer {
     overflow: visible;
     opacity: 1;
@@ -270,6 +286,7 @@ body.dimmable > .dimmer {
   .ui.simple.inverted.dimmer {
     background-color: @simpleInvertedStartBackgroundColor;
   }
+
   .dimmed.dimmable > .ui.simple.inverted.dimmer {
     background-color: @simpleInvertedEndBackgroundColor;
   }
@@ -285,43 +302,52 @@ body.dimmable > .dimmer {
   .ui[class*="bottom dimmer"] {
     height: auto;
   }
+
   .ui[class*="bottom dimmer"] {
     top: auto !important;
     bottom: 0;
   }
+
   .ui[class*="center dimmer"] {
-    top:50% !important;
+    top: 50% !important;
     transform: translateY(-50%);
     -webkit-transform: translateY(calc(-50% - .5px));
   }
 
   .ui.segment > .ui.ui[class*="top dimmer"] {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
+
   .ui.segment > .ui.ui[class*="center dimmer"] {
-      border-radius: 0;
+    border-radius: 0;
   }
+
   .ui.segment > .ui.ui[class*="bottom dimmer"] {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
   .ui[class*="center dimmer"].transition[class*="fade up"].in {
     animation-name: fadeInUpCenter;
   }
+
   .ui[class*="center dimmer"].transition[class*="fade down"].in {
     animation-name: fadeInDownCenter;
   }
+
   .ui[class*="center dimmer"].transition[class*="fade up"].out {
     animation-name: fadeOutUpCenter;
   }
+
   .ui[class*="center dimmer"].transition[class*="fade down"].out {
     animation-name: fadeOutDownCenter;
   }
+
   .ui[class*="center dimmer"].bounce.transition {
     animation-name: bounceCenter;
   }
+
   @keyframes fadeInUpCenter {
     0% {
       opacity: 0;

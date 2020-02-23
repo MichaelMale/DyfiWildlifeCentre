@@ -12,8 +12,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'reveal';
+@type: 'element';
+@element: 'reveal';
 
 @import (multiple) '../../theme.config';
 
@@ -21,7 +21,7 @@
             Reveal
 *******************************/
 
-.ui.reveal  {
+.ui.reveal {
   display: inherit;
   position: relative !important;
   font-size: 0;
@@ -34,6 +34,7 @@
   z-index: @topZIndex !important;
   transition: @transition;
 }
+
 .ui.reveal > .hidden.content {
   position: relative !important;
   z-index: @bottomZIndex !important;
@@ -74,16 +75,19 @@
   .ui.slide.reveal > .visible.content {
     position: relative !important;
   }
+
   .ui.slide.reveal > .hidden.content {
     position: absolute !important;
     left: 0 !important;
     width: 100% !important;
     transform: translateX(100%) !important;
   }
+
   .ui.slide.active.reveal > .visible.content,
   .ui.slide.reveal:hover > .visible.content {
     transform: translateX(-100%) !important;
   }
+
   .ui.slide.active.reveal > .hidden.content,
   .ui.slide.reveal:hover > .hidden.content {
     transform: translateX(0%) !important;
@@ -92,13 +96,16 @@
   .ui.slide.right.reveal > .visible.content {
     transform: translateX(0%) !important;
   }
+
   .ui.slide.right.reveal > .hidden.content {
     transform: translateX(-100%) !important;
   }
+
   .ui.slide.right.active.reveal > .visible.content,
   .ui.slide.right.reveal:hover > .visible.content {
     transform: translateX(100%) !important;
   }
+
   .ui.slide.right.active.reveal > .hidden.content,
   .ui.slide.right.reveal:hover > .hidden.content {
     transform: translateX(0%) !important;
@@ -107,10 +114,12 @@
   .ui.slide.up.reveal > .hidden.content {
     transform: translateY(100%) !important;
   }
+
   .ui.slide.up.active.reveal > .visible.content,
   .ui.slide.up.reveal:hover > .visible.content {
     transform: translateY(-100%) !important;
   }
+
   .ui.slide.up.active.reveal > .hidden.content,
   .ui.slide.up.reveal:hover > .hidden.content {
     transform: translateY(0%) !important;
@@ -119,10 +128,12 @@
   .ui.slide.down.reveal > .hidden.content {
     transform: translateY(-100%) !important;
   }
+
   .ui.slide.down.active.reveal > .visible.content,
   .ui.slide.down.reveal:hover > .visible.content {
     transform: translateY(100%) !important;
   }
+
   .ui.slide.down.active.reveal > .hidden.content,
   .ui.slide.down.reveal:hover > .hidden.content {
     transform: translateY(0%) !important;
@@ -137,6 +148,7 @@
   .ui.fade.reveal > .visible.content {
     opacity: 1;
   }
+
   .ui.fade.active.reveal > .visible.content,
   .ui.fade.reveal:hover > .visible.content {
     opacity: 0;
@@ -166,23 +178,28 @@
   .ui.move.reveal > .visible.content {
     position: relative !important;
   }
+
   .ui.move.reveal > .hidden.content {
     position: absolute !important;
     left: 0 !important;
     width: 100% !important;
   }
+
   .ui.move.active.reveal > .visible.content,
   .ui.move.reveal:hover > .visible.content {
     transform: translateX(-100%) !important;
   }
+
   .ui.move.right.active.reveal > .visible.content,
   .ui.move.right.reveal:hover > .visible.content {
     transform: translateX(100%) !important;
   }
+
   .ui.move.up.active.reveal > .visible.content,
   .ui.move.up.reveal:hover > .visible.content {
     transform: translateY(-100%) !important;
   }
+
   .ui.move.down.active.reveal > .visible.content,
   .ui.move.down.reveal:hover > .visible.content {
     transform: translateY(100%) !important;
@@ -204,6 +221,7 @@
   .ui.rotate.right.reveal > .visible.content {
     transform-origin: bottom right;
   }
+
   .ui.rotate.active.reveal > .visible.content,
   .ui.rotate.reveal:hover > .visible.content,
   .ui.rotate.right.active.reveal > .visible.content,
@@ -214,6 +232,7 @@
   .ui.rotate.left.reveal > .visible.content {
     transform-origin: bottom left;
   }
+
   .ui.rotate.left.active.reveal > .visible.content,
   .ui.rotate.left.reveal:hover > .visible.content {
     transform: rotate(-@rotateDegrees);
@@ -235,6 +254,7 @@
     bottom: auto !important;
     transform: none !important;
   }
+
   .ui.disabled.reveal:hover > .hidden.hidden.content {
     display: none !important;
   }
@@ -277,6 +297,7 @@
 .ui.reveal > .content {
   font-size: @medium;
 }
+
 & when not (@variationRevealSizes = false) {
   each(@variationRevealSizes, {
     @s: @@value;

@@ -12,8 +12,8 @@
             Theme
 *******************************/
 
-@type    : 'collection';
-@element : 'message';
+@type: 'collection';
+@element: 'message';
 
 @import (multiple) '../../theme.config';
 
@@ -37,6 +37,7 @@
 .ui.message:first-child {
   margin-top: 0;
 }
+
 .ui.message:last-child {
   margin-bottom: 0;
 }
@@ -64,12 +65,15 @@
   opacity: @messageTextOpacity;
   margin: @messageParagraphMargin 0;
 }
+
 .ui.message p:first-child {
   margin-top: 0;
 }
+
 .ui.message p:last-child {
   margin-bottom: 0;
 }
+
 .ui.message .header + p {
   margin-top: @headerParagraphDistance;
 }
@@ -82,18 +86,22 @@
   list-style-position: @listStylePosition;
   margin: @listMargin 0 0;
 }
+
 .ui.message .list:not(.ui):first-child {
   margin-top: 0;
 }
+
 .ui.message .list:not(.ui):last-child {
   margin-bottom: 0;
 }
+
 .ui.message .list:not(.ui) li {
   position: relative;
   list-style-type: none;
   margin: 0 0 @listItemMargin @listItemIndent;
   padding: 0;
 }
+
 .ui.message .list:not(.ui) li:before {
   position: absolute;
   content: '•';
@@ -101,6 +109,7 @@
   height: 100%;
   vertical-align: baseline;
 }
+
 .ui.message .list:not(.ui) li:last-child {
   margin-bottom: 0;
 }
@@ -121,6 +130,7 @@
   opacity: @closeOpacity;
   transition: @closeTransition;
 }
+
 .ui.message > .close.icon:hover {
   opacity: 1;
 }
@@ -129,6 +139,7 @@
 .ui.message > :first-child {
   margin-top: 0;
 }
+
 .ui.message > :last-child {
   margin-bottom: 0;
 }
@@ -178,6 +189,7 @@
   .ui.compact.message {
     display: inline-block;
   }
+
   .ui.compact.icon.message {
     display: inline-flex;
     width: auto;
@@ -196,18 +208,22 @@
     margin-left: @attachedXOffset;
     margin-right: @attachedXOffset;
   }
+
   .ui.attached + .ui.attached.message:not(.top):not(.bottom) {
     margin-top: @attachedYOffset;
     border-radius: 0;
   }
+
   .ui.bottom.attached.message {
     margin-top: @attachedYOffset;
     border-radius: 0 0 @borderRadius @borderRadius;
     box-shadow: @attachedBottomBoxShadow;
   }
+
   .ui.bottom.attached.message:not(:last-child) {
     margin-bottom: @verticalMargin;
   }
+
   & when (@variationMessageIcon) {
     .ui.attached.icon.message {
       width: auto;
@@ -225,6 +241,7 @@
     width: 100%;
     align-items: center;
   }
+
   .ui.icon.message > .icon:not(.close) {
     display: block;
     flex: 0 0 auto;
@@ -234,6 +251,7 @@
     font-size: @iconSize;
     opacity: @iconOpacity;
   }
+
   .ui.icon.message > .content {
     display: block;
     flex: 1 1 auto;
@@ -244,6 +262,7 @@
   .ui.icon.message .icon:not(.close) + .content {
     padding-left: @iconContentDistance;
   }
+
   .ui.icon.message .circular.icon {
     width: 1em;
   }
@@ -271,46 +290,46 @@
 
   @consequences: {
     @positive: {
-      background     : @positiveBackgroundColor;
-      header         : @positiveHeaderColor;
-      boxShadow      : @positiveBoxShadow;
-      boxFloatShadow : @positiveBoxFloatingShadow;
-      text           : @positiveTextColor;
+      background: @positiveBackgroundColor;
+      header: @positiveHeaderColor;
+      boxShadow: @positiveBoxShadow;
+      boxFloatShadow: @positiveBoxFloatingShadow;
+      text: @positiveTextColor;
     };
     @negative: {
-      background     : @negativeBackgroundColor;
-      header         : @negativeHeaderColor;
-      boxShadow      : @negativeBoxShadow;
-      boxFloatShadow : @negativeBoxFloatingShadow;
-      text           : @negativeTextColor;
+      background: @negativeBackgroundColor;
+      header: @negativeHeaderColor;
+      boxShadow: @negativeBoxShadow;
+      boxFloatShadow: @negativeBoxFloatingShadow;
+      text: @negativeTextColor;
     };
     @info: {
-      background     : @infoBackgroundColor;
-      header         : @infoHeaderColor;
-      boxShadow      : @infoBoxShadow;
-      boxFloatShadow : @infoBoxFloatingShadow;
-      text           : @infoTextColor;
+      background: @infoBackgroundColor;
+      header: @infoHeaderColor;
+      boxShadow: @infoBoxShadow;
+      boxFloatShadow: @infoBoxFloatingShadow;
+      text: @infoTextColor;
     };
     @warning: {
-      background     : @warningBackgroundColor;
-      header         : @warningHeaderColor;
-      boxShadow      : @warningBoxShadow;
-      boxFloatShadow : @warningBoxFloatingShadow;
-      text           : @warningTextColor;
+      background: @warningBackgroundColor;
+      header: @warningHeaderColor;
+      boxShadow: @warningBoxShadow;
+      boxFloatShadow: @warningBoxFloatingShadow;
+      text: @warningTextColor;
     };
     @error: {
-      background     : @errorBackgroundColor;
-      header         : @errorHeaderColor;
-      boxShadow      : @errorBoxShadow;
-      boxFloatShadow : @errorBoxFloatingShadow;
-      text           : @errorTextColor;
+      background: @errorBackgroundColor;
+      header: @errorHeaderColor;
+      boxShadow: @errorBoxShadow;
+      boxFloatShadow: @errorBoxFloatingShadow;
+      text: @errorTextColor;
     };
     @success: {
-      background     : @successBackgroundColor;
-      header         : @successHeaderColor;
-      boxShadow      : @successBoxShadow;
-      boxFloatShadow : @successBoxFloatingShadow;
-      text           : @successTextColor;
+      background: @successBackgroundColor;
+      header: @successHeaderColor;
+      boxShadow: @successBoxShadow;
+      boxFloatShadow: @successBoxFloatingShadow;
+      text: @successTextColor;
     };
   }
 
@@ -358,6 +377,7 @@ each(@colors, {
       background-color: @bg;
       color: @t;
     }
+
     & when (@isVeryDark) {
       background-color: @black;
       color: @invertedTextColor;
@@ -382,6 +402,7 @@ each(@colors, {
     & when not (@isVeryDark) {
       color: @hd;
     }
+
     & when (@isVeryDark) {
       color: @invertedTextColor;
     }
@@ -402,6 +423,7 @@ each(@colors, {
 .ui.message {
   font-size: @relativeMedium;
 }
+
 & when not (@variationMessageSizes = false) {
   each(@variationMessageSizes, {
     @s: @{value}MessageSize;

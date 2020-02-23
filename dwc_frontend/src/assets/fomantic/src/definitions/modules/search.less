@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'search';
+@type: 'module';
+@element: 'search';
 
 @import (multiple) '../../theme.config';
 
@@ -30,7 +30,7 @@
   margin: 0;
   outline: none;
   -webkit-appearance: none;
-  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 
   text-shadow: none;
   font-style: normal;
@@ -85,9 +85,11 @@
   border: @resultsBorder;
   z-index: @resultsZIndex;
 }
+
 .ui.search > .results > :first-child {
   border-radius: @resultsBorderRadius @resultsBorderRadius 0 0;
 }
+
 .ui.search > .results > :last-child {
   border-radius: 0 0 @resultsBorderRadius @resultsBorderRadius;
 }
@@ -106,6 +108,7 @@
   line-height: @resultLineHeight;
   border-bottom: @resultDivider;
 }
+
 .ui.search > .results .result:last-child {
   border-bottom: @resultLastDivider !important;
 }
@@ -119,6 +122,7 @@
   height: @resultImageHeight;
   border-radius: @resultImageBorderRadius;
 }
+
 .ui.search > .results .result .image img {
   display: block;
   width: auto;
@@ -140,11 +144,13 @@
   font-size: @resultTitleFontSize;
   color: @resultTitleColor;
 }
+
 .ui.search > .results .result .description {
   margin-top: @resultDescriptionDistance;
   font-size: @resultDescriptionFontSize;
   color: @resultDescriptionColor;
 }
+
 .ui.search > .results .result .price {
   float: @resultPriceFloat;
   color: @resultPriceColor;
@@ -157,12 +163,14 @@
 .ui.search > .results > .message {
   padding: @messageVerticalPadding @messageHorizontalPadding;
 }
+
 .ui.search > .results > .message .header {
   font-family: @headerFont;
   font-size: @messageHeaderFontSize;
   font-weight: @messageHeaderFontWeight;
   color: @messageHeaderColor;
 }
+
 .ui.search > .results > .message .description {
   margin-top: @messageDescriptionDistance;
   font-size: @messageDescriptionFontSize;
@@ -213,6 +221,7 @@
     border-radius: @circularRadius;
     border: @loaderLineWidth solid @loaderFillColor;
   }
+
   .ui.loading.search .input > i.icon:after {
     position: absolute;
     content: '';
@@ -240,6 +249,7 @@
 .ui.category.search > .results .category .result:hover {
   background: @resultHoverBackground;
 }
+
 .ui.search .action:hover:not(div) {
   background: @actionHoverBackground;
 }
@@ -251,6 +261,7 @@
   .ui.category.search > .results .category.active {
     background: @categoryActiveBackground;
   }
+
   .ui.category.search > .results .category.active > .name {
     color: @categoryNameActiveColor;
   }
@@ -263,9 +274,11 @@
   background: @resultActiveBackground;
   box-shadow: @resultActiveBoxShadow;
 }
+
 .ui.search > .results .result.active .title {
   color: @resultActiveTitleColor;
 }
+
 .ui.search > .results .result.active .description {
   color: @resultActiveDescriptionColor;
 }
@@ -276,6 +289,7 @@
   ----------------------*/
 
   /* Disabled */
+
   .ui.disabled.search {
     cursor: default;
     pointer-events: none;
@@ -298,6 +312,7 @@
   }
 
   /* Remove input */
+
   .ui.search.selection > .icon.input > .remove.icon {
     pointer-events: none;
     position: absolute;
@@ -308,14 +323,17 @@
     right: @selectionCloseRight;
     transition: @selectionCloseTransition;
   }
+
   .ui.search.selection > .icon.input > .active.remove.icon {
     cursor: pointer;
     opacity: @selectionCloseIconOpacity;
     pointer-events: auto;
   }
+
   .ui.search.selection > .icon.input:not([class*="left icon"]) > .icon ~ .remove.icon {
     right: @selectionCloseIconInputRight;
   }
+
   .ui.search.selection > .icon.input > .remove.icon:hover {
     opacity: @selectionCloseIconHoverOpacity;
     color: @selectionCloseIconHoverColor;
@@ -337,6 +355,7 @@
   }
 
   /* Category */
+
   .ui.category.search > .results .category {
     display: table-row;
     background: @categoryBackground;
@@ -345,19 +364,23 @@
   }
 
   /* Last Category */
+
   .ui.category.search > .results .category:last-child {
     border-bottom: none;
   }
 
   /* First / Last */
+
   .ui.category.search > .results .category:first-child .name + .result {
     border-radius: 0 @resultsBorderRadius 0 0;
   }
+
   .ui.category.search > .results .category:last-child .result:last-child {
     border-radius: 0 0 @resultsBorderRadius 0;
   }
 
   /* Category Result Name */
+
   .ui.category.search > .results .category > .name {
     display: table-cell;
     text-overflow: ellipsis;
@@ -373,12 +396,14 @@
   }
 
   /* Category Result */
+
   .ui.category.search > .results .category .results {
     display: table-cell;
     background: @categoryResultBackground;
     border-left: @categoryResultLeftBorder;
     border-bottom: @categoryDivider;
   }
+
   .ui.category.search > .results .category .result {
     border-bottom: @categoryResultDivider;
     transition: @categoryResultTransition;
@@ -399,6 +424,7 @@
     right: auto;
     left: 0;
   }
+
   .ui[class*="right aligned"].search > .results {
     right: 0;
     left: auto;
@@ -423,10 +449,11 @@
 .ui.search {
   font-size: @relativeMedium;
 }
+
 & when not (@variationFeedSizes = false) {
   each(@variationFeedSizes, {
     @s: @{value}SearchSize;
-    .ui.@{value}.search  {
+    .ui.@{value}.search {
       font-size: @@s;
     }
   })

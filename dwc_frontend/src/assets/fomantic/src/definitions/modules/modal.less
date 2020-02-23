@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'modal';
+@type: 'module';
+@element: 'modal';
 
 @import (multiple) '../../theme.config';
 
@@ -76,6 +76,7 @@
   height: @closeHitbox;
   padding: @closePadding;
 }
+
 .ui.modal > .close:hover {
   opacity: 1;
 }
@@ -95,6 +96,7 @@
   color: @headerColor;
   border-bottom: @headerBorder;
 }
+
 .ui.modal > .header:not(.ui) {
   font-size: @headerFontSize;
   line-height: @headerLineHeight;
@@ -113,6 +115,7 @@
   padding: @contentPadding;
   background: @contentBackground;
 }
+
 .ui.modal > .image.content {
   display: flex;
   flex-direction: row;
@@ -126,12 +129,15 @@
   align-self: @imageVerticalAlign;
   max-width: 100%;
 }
+
 .ui.modal > [class*="top aligned"] {
   align-self: start;
 }
+
 .ui.modal > [class*="middle aligned"] {
   align-self: center;
 }
+
 .ui.modal > [class*="stretched"] {
   align-self: stretch;
 }
@@ -171,11 +177,13 @@
   border-top: @actionBorder;
   text-align: @actionAlign;
 }
+
 .ui.modal .actions > .button {
   margin-left: @buttonDistance;
 }
+
 .ui.basic.modal > .actions {
-  border-top:none;
+  border-top: none;
 }
 
 /*-------------------
@@ -183,31 +191,35 @@
 --------------------*/
 
 /* Modal Width */
-@media only screen and (max-width : @largestMobileScreen) {
+@media only screen and (max-width: @largestMobileScreen) {
   .ui.modal:not(.fullscreen) {
     width: @mobileWidth;
     margin: @mobileMargin;
   }
 }
-@media only screen and (min-width : @tabletBreakpoint) {
+
+@media only screen and (min-width: @tabletBreakpoint) {
   .ui.modal:not(.fullscreen) {
     width: @tabletWidth;
     margin: @tabletMargin;
   }
 }
-@media only screen and (min-width : @computerBreakpoint) {
+
+@media only screen and (min-width: @computerBreakpoint) {
   .ui.modal:not(.fullscreen) {
     width: @computerWidth;
     margin: @computerMargin;
   }
 }
-@media only screen and (min-width : @largeMonitorBreakpoint) {
+
+@media only screen and (min-width: @largeMonitorBreakpoint) {
   .ui.modal:not(.fullscreen) {
     width: @largeMonitorWidth;
     margin: @largeMonitorMargin;
   }
 }
-@media only screen and (min-width : @widescreenMonitorBreakpoint) {
+
+@media only screen and (min-width: @widescreenMonitorBreakpoint) {
   .ui.modal:not(.fullscreen) {
     width: @widescreenMonitorWidth;
     margin: @widescreenMonitorMargin;
@@ -215,10 +227,11 @@
 }
 
 /* Tablet and Mobile */
-@media only screen and (max-width : @largestTabletScreen) {
+@media only screen and (max-width: @largestTabletScreen) {
   .ui.modal > .header {
     padding-right: @closeHitbox;
   }
+
   .ui.modal > .close {
     top: @innerCloseTop;
     right: @innerCloseRight;
@@ -227,22 +240,26 @@
 }
 
 /* Mobile */
-@media only screen and (max-width : @largestMobileScreen) {
+@media only screen and (max-width: @largestMobileScreen) {
 
   .ui.modal > .header {
     padding: @mobileHeaderPadding !important;
     padding-right: @closeHitbox !important;
   }
+
   .ui.overlay.fullscreen.modal > .content.content.content {
     min-height: @overlayFullscreenScrollingContentMaxHeightMobile;
   }
+
   .ui.overlay.fullscreen.modal > .scrolling.content.content.content {
     max-height: @overlayFullscreenScrollingContentMaxHeightMobile;
   }
+
   .ui.modal > .content {
     display: block;
     padding: @mobileContentPadding !important;
   }
+
   .ui.modal > .close {
     top: @mobileCloseTop !important;
     right: @mobileCloseRight !important;
@@ -252,6 +269,7 @@
   .ui.modal .image.content {
     flex-direction: column;
   }
+
   .ui.modal .content > .image {
     display: block;
     max-width: 100%;
@@ -259,6 +277,7 @@
     text-align: center;
     padding: @mobileImagePadding !important;
   }
+
   .ui.modal > .content > .image > i.icon {
     font-size: @mobileImageIconSize;
     text-align: center;
@@ -277,6 +296,7 @@
   .ui.modal > .actions {
     padding: @mobileActionPadding !important;
   }
+
   .ui.modal .actions > .buttons,
   .ui.modal .actions > .button {
     margin-bottom: @mobileButtonDistance;
@@ -302,22 +322,27 @@
     box-shadow: none !important;
     color: @basicModalColor;
   }
+
   .ui.basic.modal > .header,
   .ui.basic.modal > .content,
   .ui.basic.modal > .actions {
     background-color: transparent;
   }
+
   .ui.basic.modal > .header {
     color: @basicModalHeaderColor;
   }
+
   .ui.basic.modal > .close {
     top: @basicModalCloseTop;
     right: @basicModalCloseRight;
     color: @basicInnerCloseColor;
   }
+
   .ui.inverted.dimmer > .basic.modal {
     color: @basicInvertedModalColor;
   }
+
   .ui.inverted.dimmer > .ui.basic.modal > .header {
     color: @basicInvertedModalHeaderColor;
   }
@@ -325,20 +350,24 @@
 
 & when (@variationModalLegacy) {
   /* Resort to margin positioning if legacy */
+
   .ui.legacy.legacy.modal,
   .ui.legacy.legacy.page.dimmer > .ui.modal {
     left: 50% !important;
   }
+
   .ui.legacy.legacy.modal:not(.aligned),
   .ui.legacy.legacy.page.dimmer > .ui.modal:not(.aligned) {
     top: 50%;
   }
+
   .ui.legacy.legacy.page.dimmer > .ui.scrolling.modal:not(.aligned),
   .ui.page.dimmer > .ui.scrolling.legacy.legacy.modal:not(.aligned),
   .ui.top.aligned.legacy.legacy.page.dimmer > .ui.modal:not(.aligned),
   .ui.top.aligned.dimmer > .ui.legacy.legacy.modal:not(.aligned) {
     top: auto;
   }
+
   & when (@variationModalOverlay) {
     .ui.legacy.overlay.fullscreen.modal {
       margin-top: -@scrollingMargin !important;
@@ -372,14 +401,16 @@
   .modals.dimmer .ui.top.aligned.modal {
     top: @topAlignedMargin;
   }
+
   .modals.dimmer .ui.bottom.aligned.modal {
     bottom: @bottomAlignedMargin;
   }
 
-  @media only screen and (max-width : @largestMobileScreen) {
+  @media only screen and (max-width: @largestMobileScreen) {
     .modals.dimmer .ui.top.aligned.modal {
       top: @mobileTopAlignedMargin;
     }
+
     .modals.dimmer .ui.bottom.aligned.modal {
       bottom: @mobileBottomAlignedMargin;
     }
@@ -392,34 +423,44 @@
   ---------------*/
 
   /* Scrolling Dimmer */
+
   .scrolling.dimmable.dimmed {
     overflow: hidden;
   }
+
   .scrolling.dimmable > .dimmer {
     justify-content: flex-start;
     position: fixed;
   }
+
   .scrolling.dimmable.dimmed > .dimmer {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
+
   .modals.dimmer .ui.scrolling.modal:not(.fullscreen) {
     margin: @scrollingMargin auto;
   }
-/* Fix for Firefox, Edge, IE11 */
-.modals.dimmer .ui.scrolling.modal:not([class*="overlay fullscreen"])::after {
-  content:'\00A0';
-  position: absolute;
-  height: @scrollingMargin;
-}
+
+  /* Fix for Firefox, Edge, IE11 */
+
+  .modals.dimmer .ui.scrolling.modal:not([class*="overlay fullscreen"])::after {
+    content: '\00A0';
+    position: absolute;
+    height: @scrollingMargin;
+  }
+
   /* Undetached Scrolling */
+
   .scrolling.undetached.dimmable.dimmed {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
+
   .scrolling.undetached.dimmable.dimmed > .dimmer {
     overflow: hidden;
   }
+
   .scrolling.undetached.dimmable .ui.scrolling.modal:not(.fullscreen) {
     position: absolute;
     left: 50%;
@@ -427,6 +468,7 @@
   }
 
   /* Scrolling Content */
+
   .ui.modal > .scrolling.content {
     max-height: @scrollingContentMaxHeight;
     overflow: auto;
@@ -437,6 +479,7 @@
   .ui.overlay.fullscreen.modal > .content {
     min-height: @overlayFullscreenScrollingContentMaxHeight;
   }
+
   .ui.overlay.fullscreen.modal > .scrolling.content {
     max-height: @overlayFullscreenScrollingContentMaxHeight;
   }
@@ -452,31 +495,36 @@
     left: @fullScreenOffset;
     margin: @fullScreenMargin;
   }
+
   & when (@variationModalOverlay) {
     .ui.overlay.fullscreen.modal {
       width: 100%;
       left: 0;
       margin: 0 auto;
       top: 0;
-      border-radius:0;
+      border-radius: 0;
     }
   }
+
   .ui.modal > .close.inside + .header,
   .ui.fullscreen.modal > .header {
     padding-right: @closeHitbox;
   }
+
   .ui.modal > .close.inside,
   .ui.fullscreen.modal > .close {
     top: @innerCloseTop;
     right: @innerCloseRight;
     color: @innerCloseColor;
   }
+
   & when (@variationModalBasic) {
     .ui.basic.fullscreen.modal > .close {
       color: @basicInnerCloseColor;
     }
   }
 }
+
 /*--------------
       Size
 ---------------*/
@@ -484,6 +532,7 @@
 .ui.modal {
   font-size: @medium;
 }
+
 & when not (@variationModalSizes = false) {
   each(@variationModalSizes, {
     @hs: @{value}HeaderSize;
@@ -500,31 +549,31 @@
     .ui.@{value}.modal > .header:not(.ui) {
       font-size: @@hs;
     }
-    @media only screen and (max-width : @largestMobileScreen) {
+    @media only screen and (max-width: @largestMobileScreen) {
       .ui.@{value}.modal {
         width: @@mw;
         margin: @@mm;
       }
     }
-    @media only screen and (min-width : @tabletBreakpoint) {
+    @media only screen and (min-width: @tabletBreakpoint) {
       .ui.@{value}.modal {
         width: @@tw;
         margin: @@tm;
       }
     }
-    @media only screen and (min-width : @computerBreakpoint) {
+    @media only screen and (min-width: @computerBreakpoint) {
       .ui.@{value}.modal {
         width: @@cw;
         margin: @@cm;
       }
     }
-    @media only screen and (min-width : @largeMonitorBreakpoint) {
+    @media only screen and (min-width: @largeMonitorBreakpoint) {
       .ui.@{value}.modal {
         width: @@lw;
         margin: @@lm;
       }
     }
-    @media only screen and (min-width : @widescreenMonitorBreakpoint) {
+    @media only screen and (min-width: @widescreenMonitorBreakpoint) {
       .ui.@{value}.modal {
         width: @@ww;
         margin: @@wm;
@@ -564,6 +613,7 @@
       color: @invertedCloseColor;
     }
   }
+
   & when (@variationModalFullscreen) or (@variationModalCloseInside) {
     .ui.inverted.modal > .close.inside,
     .ui.inverted.fullscreen.modal > .close {
@@ -571,8 +621,6 @@
     }
   }
 }
-
-
 
 
 .loadUIOverrides();

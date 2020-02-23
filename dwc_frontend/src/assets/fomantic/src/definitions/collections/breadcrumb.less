@@ -12,8 +12,8 @@
             Theme
 *******************************/
 
-@type    : 'collection';
-@element : 'breadcrumb';
+@type: 'collection';
+@element: 'breadcrumb';
 
 @import (multiple) '../../theme.config';
 
@@ -28,9 +28,11 @@
   margin: @verticalMargin 0;
   vertical-align: @verticalAlign;
 }
+
 .ui.breadcrumb:first-child {
   margin-top: 0;
 }
+
 .ui.breadcrumb:last-child {
   margin-bottom: 0;
 }
@@ -54,6 +56,7 @@
 .ui.breadcrumb a {
   color: @linkColor;
 }
+
 .ui.breadcrumb a:hover {
   color: @linkHoverColor;
 }
@@ -69,6 +72,7 @@
 .ui.breadcrumb a.section {
   cursor: pointer;
 }
+
 .ui.breadcrumb .section {
   display: inline-block;
   margin: @sectionMargin;
@@ -83,12 +87,15 @@
 
 & when (@variationBreadcrumbInverted) {
   /* Inverted */
+
   .ui.inverted.breadcrumb {
     color: @invertedColor;
   }
+
   .ui.inverted.breadcrumb > .active.section {
     color: @invertedActiveColor;
   }
+
   .ui.inverted.breadcrumb > .divider {
     color: @invertedDividerColor;
   }
@@ -110,6 +117,7 @@
 .ui.breadcrumb {
   font-size: @medium;
 }
+
 & when not (@variationBreadcrumbSizes = false) {
   each(@variationBreadcrumbSizes, {
     @s: @@value;

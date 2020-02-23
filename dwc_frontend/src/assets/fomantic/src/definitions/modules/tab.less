@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'tab';
+@type: 'module';
+@element: 'tab';
 
 @import (multiple) '../../theme.config';
 
@@ -50,6 +50,7 @@
     display: block;
     min-height: @loadingMinHeight;
   }
+
   .ui.tab.loading * {
     position: @loadingContentPosition !important;
     left: @loadingContentOffset !important;
@@ -69,6 +70,7 @@
     border-radius: @circularRadius;
     border: @loaderLineWidth solid @loaderFillColor;
   }
+
   .ui.tab.loading:after,
   .ui.tab.loading.segment:after {
     position: absolute;

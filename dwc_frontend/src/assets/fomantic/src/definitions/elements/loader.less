@@ -11,8 +11,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'loader';
+@type: 'element';
+@element: 'loader';
 
 @import (multiple) '../../theme.config';
 
@@ -100,6 +100,7 @@
 .ui.dimmer > .ui.loader {
   color: @invertedLoaderTextColor;
 }
+
 .ui.dimmer > .ui.loader:not(.elastic):before {
   border-color: @invertedLoaderFillColor;
 }
@@ -108,6 +109,7 @@
 .ui.inverted.dimmer > .ui.loader {
   color: @loaderTextColor;
 }
+
 .ui.inverted.dimmer > .ui.loader:not(.elastic):before {
   border-color: @loaderFillColor;
 }
@@ -144,6 +146,7 @@
 .ui.loader.visible {
   display: block;
 }
+
 .ui.loader.disabled,
 .ui.loader.hidden {
   display: none;
@@ -163,18 +166,21 @@
   height: @medium;
   font-size: @mediumFontSize;
 }
+
 .ui.loader:before,
 .ui.loader:after {
   width: @medium;
   height: @medium;
   margin: @mediumOffset;
 }
+
 & when (@variationLoaderText) {
   .ui.text.loader {
     min-width: @medium;
     padding-top: (@medium + @textDistance);
   }
 }
+
 & when not (@variationLoaderSizes = false) {
   each(@variationLoaderSizes, {
     @o: @{value}Offset;
@@ -243,13 +249,16 @@ each(@colors, {
 .ui.loader.loader.loader:after {
   border-color: currentColor;
 }
+
 .ui.elastic.loading.loading.loading.loading.button:not(.inverted):not(.basic):before {
   color: @invertedLoaderLineColor;
 }
+
 .ui.elastic.basic.loading.button:before,
 .ui.elastic.basic.loading.button:after {
   color: @loaderLineColor;
 }
+
 .ui.double.loading.loading.loading.loading.button:after {
   border-bottom-color: currentColor;
 }
@@ -274,6 +283,7 @@ each(@colors, {
   }
 
   /* Centered Inline */
+
   .ui.centered.inline.loader.active,
   .ui.centered.inline.loader.visible {
     display: block;
@@ -286,20 +296,23 @@ each(@colors, {
 .ui.loading.loading.loading.loading.loading.loading .input > i.icon:after,
 .ui.loading.loading.loading.loading.loading.loading > i.icon:after,
 .ui.loader.loader.loader.loader.loader:after {
-  border-left-color:transparent;
-  border-right-color:transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
 }
+
 .ui.loading.loading.loading.loading.loading.loading.loading:not(.double):after,
 .ui.loading.loading.loading.loading.loading.loading.loading:not(.double) .input > i.icon:after,
 .ui.loading.loading.loading.loading.loading.loading.loading:not(.double) > i.icon:after,
 .ui.loader.loader.loader.loader.loader.loader:not(.double):after {
   border-bottom-color: transparent;
 }
+
 .ui.loading.loading.loading.loading.loading.loading.segment:after,
 .ui.loading.loading.loading.loading.loading.loading.form:after {
-  border-left-color:@loaderFillColor;
-  border-right-color:@loaderFillColor;
+  border-left-color: @loaderFillColor;
+  border-right-color: @loaderFillColor;
 }
+
 .ui.loading.loading.loading.loading.loading.loading.segment:not(.double):after,
 .ui.loading.loading.loading.loading.loading.loading.form:not(.double):after {
   border-bottom-color: @loaderFillColor;
@@ -313,9 +326,11 @@ each(@colors, {
   .ui.dimmer > .ui.elastic.loader {
     color: @invertedLoaderLineColor;
   }
+
   .ui.inverted.dimmer > .ui.elastic.loader {
     color: @loaderLineColor;
   }
+
   .ui.elastic.loading.loading:not(.form):not(.segment):after,
   .ui.elastic.loading.loading .input > i.icon:after,
   .ui.elastic.loading.loading > i.icon:after,
@@ -323,6 +338,7 @@ each(@colors, {
     animation: loader 1s infinite cubic-bezier(.27, 1.05, .92, .61);
     animation-delay: 0.3s;
   }
+
   .ui.elastic.loading.loading.loading:not(.form):not(.segment):before,
   .ui.elastic.loading.loading.loading .input > i.icon:before,
   .ui.elastic.loading.loading.loading > i.icon:before,
@@ -331,11 +347,13 @@ each(@colors, {
     -moz-animation: currentcolor-elastic-loader 1s infinite cubic-bezier(.27, 1.05, .92, .61);
     border-right-color: transparent;
   }
+
   & when (@variationLoaderInline) {
     .ui.elastic.inline.loader:empty {
       animation: loader 8s infinite linear;
     }
   }
+
   & when (@variationLoaderSpeeds) {
     .ui.slow.elastic.loading.loading:not(.form):not(.segment):after,
     .ui.slow.elastic.loading.loading .input > i.icon:after,
@@ -344,12 +362,14 @@ each(@colors, {
       animation-duration: 1.5s;
       animation-delay: 0.45s;
     }
+
     .ui.slow.elastic.loading.loading.loading:not(.form):not(.segment):before,
     .ui.slow.elastic.loading.loading.loading .input > i.icon:before,
     .ui.slow.elastic.loading.loading.loading > i.icon:before,
     .ui.slow.elastic.loader.loader:before {
       animation-duration: 1.5s;
     }
+
     .ui.fast.elastic.loading.loading:not(.form):not(.segment):after,
     .ui.fast.elastic.loading.loading .input > i.icon:after,
     .ui.fast.elastic.loading.loading > i.icon:after,
@@ -357,6 +377,7 @@ each(@colors, {
       animation-duration: 0.66s;
       animation-delay: 0.20s;
     }
+
     .ui.fast.elastic.loading.loading.loading:not(.form):not(.segment):before,
     .ui.fast.elastic.loading.loading.loading .input > i.icon:before,
     .ui.fast.elastic.loading.loading.loading > i.icon:before,
@@ -364,6 +385,7 @@ each(@colors, {
       animation-duration: 0.66s;
     }
   }
+
   @keyframes elastic-loader {
     0%, 1% {
       border-left-color: transparent;
@@ -372,13 +394,13 @@ each(@colors, {
     1.1%, 50% {
       border-left-color: inherit;
     }
-    10%, 35.1%{
+    10%, 35.1% {
       border-bottom-color: transparent;
     }
-    10.1%, 35%{
+    10.1%, 35% {
       border-bottom-color: inherit;
     }
-    50.1%{
+    50.1% {
       border-left-color: transparent;
     }
     100% {
@@ -396,13 +418,13 @@ each(@colors, {
     1.1%, 50% {
       border-left-color: currentColor;
     }
-    10%, 35.1%{
+    10%, 35.1% {
       border-bottom-color: transparent;
     }
-    10.1%, 35%{
+    10.1%, 35% {
       border-bottom-color: currentColor;
     }
-    50.1%{
+    50.1% {
       border-left-color: transparent;
     }
     100% {

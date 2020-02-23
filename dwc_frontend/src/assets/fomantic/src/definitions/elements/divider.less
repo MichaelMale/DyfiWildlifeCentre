@@ -12,8 +12,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'divider';
+@type: 'element';
+@element: 'divider';
 
 @import (multiple) '../../theme.config';
 
@@ -84,6 +84,7 @@
   .ui.horizontal.divider:before {
     background-position: right @horizontalDividerMargin top 50%;
   }
+
   .ui.horizontal.divider:after {
     background-position: left @horizontalDividerMargin top 50%;
   }
@@ -127,13 +128,14 @@
   .ui.vertical.divider:before {
     top: -100%;
   }
+
   .ui.vertical.divider:after {
     top: auto;
     bottom: 0;
   }
 
   /* Inside grid */
-  @media only screen and (max-width : @largestMobileScreen) {
+  @media only screen and (max-width: @largestMobileScreen) {
 
     .ui.stackable.grid .ui.vertical.divider,
     .ui.grid .stackable.row .ui.vertical.divider {
@@ -169,6 +171,7 @@
     .ui.grid .stackable.row .ui.vertical.divider:before {
       background-position: right @horizontalDividerMargin top 50%;
     }
+
     .ui.stackable.grid .ui.vertical.divider:after,
     .ui.grid .stackable.row .ui.vertical.divider:after {
       background-position: left @horizontalDividerMargin top 50%;
@@ -193,18 +196,22 @@
   /*--------------
        Header
   ---------------*/
+
   .ui.horizontal.divider[class*="left aligned"] {
     &:before {
       display: none;
     }
+
     &:after {
       width: 100%;
     }
   }
+
   .ui.horizontal.divider[class*="right aligned"] {
     &:before {
       width: 100%;
     }
+
     &:after {
       display: none;
     }
@@ -239,6 +246,7 @@
   .ui.horizontal.inverted.divider {
     color: @invertedTextColor;
   }
+
   .ui.divider.inverted,
   .ui.divider.inverted:after,
   .ui.divider.inverted:before {
@@ -286,6 +294,7 @@
 .ui.divider {
   font-size: @medium;
 }
+
 & when not (@variationDividerSizes = false) {
   each(@variationDividerSizes, {
     @s: @@value;

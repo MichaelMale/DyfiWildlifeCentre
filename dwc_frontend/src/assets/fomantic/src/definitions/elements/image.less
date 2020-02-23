@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'image';
+@type: 'element';
+@element: 'image';
 
 @import (multiple) '../../theme.config';
 
@@ -51,11 +51,13 @@ img.ui.image {
 .ui.ui.hidden.image {
   display: none;
 }
+
 .ui.hidden.transition.images,
 .ui.hidden.transition.image {
   display: block;
   visibility: hidden;
 }
+
 .ui.images > .hidden.transition {
   display: inline-block;
   visibility: hidden;
@@ -98,6 +100,7 @@ img.ui.image {
     display: inline-block;
     vertical-align: top;
   }
+
   .ui.middle.aligned.images .image,
   .ui.middle.aligned.image,
   .ui.middle.aligned.image svg,
@@ -105,6 +108,7 @@ img.ui.image {
     display: inline-block;
     vertical-align: middle;
   }
+
   .ui.bottom.aligned.images .image,
   .ui.bottom.aligned.image,
   .ui.bottom.aligned.image svg,
@@ -235,6 +239,7 @@ img.ui.image {
     margin-right: @floatedHorizontalMargin;
     margin-bottom: @floatedVerticalMargin;
   }
+
   .ui.right.floated.images,
   .ui.right.floated.image {
     float: right;
@@ -269,6 +274,7 @@ img.ui.image {
   height: auto;
   font-size: @medium;
 }
+
 & when not (@variationImageSizes = false) {
   each(@variationImageSizes, {
     @w: @{value}Width;

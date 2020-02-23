@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'icon';
+@type: 'element';
+@element: 'icon';
 
 @import (multiple) '../../theme.config';
 
@@ -118,6 +118,7 @@ i.emphasized.icon:not(.disabled), i.emphasized.icons:not(.disabled) {
     opacity: @linkOpacity;
     transition: opacity @defaultDuration @defaultEasing;
   }
+
   i.link.icon:hover, i.link.icons:hover {
     opacity: 1;
   }
@@ -138,6 +139,7 @@ i.emphasized.icon:not(.disabled), i.emphasized.icons:not(.disabled) {
     width: @circularSize !important;
     height: @circularSize !important;
   }
+
   & when (@variationIconInverted) {
     i.circular.inverted.icon {
       border: none;
@@ -155,6 +157,7 @@ i.emphasized.icon:not(.disabled), i.emphasized.icons:not(.disabled) {
   i.horizontally.flipped.icon {
     transform: scale(-1, 1);
   }
+
   i.vertically.flipped.icon {
     transform: scale(1, -1);
   }
@@ -231,6 +234,7 @@ i.emphasized.icon:not(.disabled), i.emphasized.icons:not(.disabled) {
     padding: @borderedVerticalPadding @borderedHorizontalPadding !important;
     box-shadow: @borderedShadow;
   }
+
   & when (@variationIconInverted) {
     i.bordered.inverted.icon {
       border: none;
@@ -245,6 +249,7 @@ i.emphasized.icon:not(.disabled), i.emphasized.icons:not(.disabled) {
   --------------------*/
 
   /* Inverted Shapes */
+
   i.inverted.bordered.icon,
   i.inverted.circular.icon {
     background-color: @black;
@@ -272,6 +277,7 @@ each(@colors, {
     i.inverted.@{color}.icon.icon.icon.icon {
       color: @l;
     }
+
     i.inverted.bordered.@{color}.icon.icon.icon.icon,
     i.inverted.circular.@{color}.icon.icon.icon.icon {
       background-color: @c;
@@ -289,6 +295,7 @@ i.icon,
 i.icons {
   font-size: @medium;
 }
+
 & when not (@variationIconSizes = false) {
   each(@variationIconSizes, {
     @s: @@value;
@@ -330,6 +337,7 @@ i.icons {
 
   & when (@variationIconCorner) {
     /* Corner Icon */
+
     i.icons .corner.icon {
       top: auto;
       left: auto;
@@ -339,30 +347,35 @@ i.icons {
       font-size: @cornerIconSize;
       text-shadow: @cornerIconShadow;
     }
+
     i.icons .icon.corner[class*="top right"] {
       top: 0;
       left: auto;
       right: 0;
       bottom: auto;
     }
+
     i.icons .icon.corner[class*="top left"] {
       top: 0;
       left: 0;
       right: auto;
       bottom: auto;
     }
+
     i.icons .icon.corner[class*="bottom left"] {
       top: auto;
       left: 0;
       right: auto;
       bottom: 0;
     }
+
     i.icons .icon.corner[class*="bottom right"] {
       top: auto;
       left: auto;
       right: 0;
       bottom: 0;
     }
+
     & when (@variationIconInverted) {
       i.icons .inverted.corner.icon {
         text-shadow: @cornerIconInvertedShadow;

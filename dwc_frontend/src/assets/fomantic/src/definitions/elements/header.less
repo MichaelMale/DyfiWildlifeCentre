@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'element';
-@element : 'header';
+@type: 'element';
+@element: 'header';
 
 @import (multiple) '../../theme.config';
 
@@ -38,6 +38,7 @@
 .ui.header:first-child {
   margin-top: @firstMargin;
 }
+
 .ui.header:last-child {
   margin-bottom: @lastMargin;
 }
@@ -89,6 +90,7 @@
   height: @imageHeight;
   vertical-align: @imageAlignment;
 }
+
 .ui.header > .image:not(.icon):only-child,
 .ui.header > img:only-child {
   margin-right: @imageMargin;
@@ -134,7 +136,6 @@
 }
 
 
-
 /*******************************
             Types
 *******************************/
@@ -169,6 +170,7 @@
     @s: @{value}FontSize;;
     .ui.@{value}.header {
       font-size: @@s;
+
       & when (@@s >= 2) {
         min-height: 1em;
       }
@@ -177,6 +179,7 @@
       .ui.@{value}.header .sub.header {
         font-size: @@sf;
       }
+
       .ui.@{value}.sub.header {
         font-size: @@shf;
       }
@@ -209,6 +212,7 @@
     text-align: center;
     margin: @iconHeaderTopMargin 0 @iconHeaderBottomMargin;
   }
+
   .ui.icon.header:after {
     content: '';
     display: block;
@@ -220,6 +224,7 @@
   .ui.icon.header:first-child {
     margin-top: @iconHeaderFirstMargin;
   }
+
   .ui.icon.header .icon {
     float: none;
     display: block;
@@ -231,24 +236,30 @@
     margin: 0 auto @iconHeaderMargin;
     opacity: @iconHeaderOpacity;
   }
+
   .ui.icon.header .corner.icon {
     font-size: @cornerIconHeaderSize;
   }
+
   .ui.icon.header .content {
     display: block;
     padding: 0;
   }
+
   .ui.icon.header .circular.icon {
     font-size: @circularHeaderIconSize;
   }
+
   .ui.icon.header .square.icon {
     font-size: @squareHeaderIconSize;
   }
+
   & when (@variationHeaderBlock) {
     .ui.block.icon.header .icon {
       margin-bottom: 0;
     }
   }
+
   .ui.icon.header.aligned {
     margin-left: auto;
     margin-right: auto;
@@ -278,9 +289,11 @@
   .ui.inverted.header {
     color: @invertedColor;
   }
+
   .ui.inverted.header .sub.header {
     color: @invertedSubHeaderColor;
   }
+
   & when (@variationHeaderAttached) {
     .ui.inverted.attached.header {
       background: @invertedAttachedBackground;
@@ -288,6 +301,7 @@
       border-color: transparent;
     }
   }
+
   & when (@variationHeaderBlock) {
     .ui.inverted.block.header {
       background: @invertedBlockBackground;
@@ -324,9 +338,11 @@ each(@colors, {
     .ui.inverted.@{color}.header.header.header {
       color: @l;
     }
+
     a.ui.inverted.@{color}.header.header.header:hover {
       color: @lh;
     }
+
     .ui.inverted.@{color}.dividing.header {
       border-bottom: @dividedColoredBorderWidth solid @l;
     }
@@ -341,9 +357,11 @@ each(@colors, {
   .ui.left.aligned.header {
     text-align: left;
   }
+
   .ui.right.aligned.header {
     text-align: right;
   }
+
   .ui.centered.header,
   .ui.center.aligned.header {
     text-align: center;
@@ -354,6 +372,7 @@ each(@colors, {
   .ui.justified.header {
     text-align: justify;
   }
+
   .ui.justified.header:after {
     display: inline-block;
     content: '';
@@ -372,6 +391,7 @@ each(@colors, {
     margin-top: 0;
     margin-right: @floatedMargin;
   }
+
   .ui[class*="right floated"].header {
     float: right;
     margin-top: 0;
@@ -398,12 +418,15 @@ each(@colors, {
     padding-bottom: @dividedBorderPadding;
     border-bottom: @dividedBorder;
   }
+
   .ui.dividing.header .sub.header {
     padding-bottom: @dividedSubHeaderPadding;
   }
+
   .ui.dividing.header .icon {
     margin-bottom: @dividedIconPadding;
   }
+
   & when (@variationHeaderInverted) {
     .ui.inverted.dividing.header {
       border-bottom-color: @invertedDividedBorderColor;
@@ -423,9 +446,11 @@ each(@colors, {
     border: @blockBorder;
     border-radius: @blockBorderRadius;
   }
+
   .ui.block.header:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
     font-size: @mediumBlock;
   }
+
   & when not (@variationHeaderSizes = false) {
     each(@variationHeaderSizes, {
       @s: @{value}Block;
@@ -449,23 +474,29 @@ each(@colors, {
     border: @attachedBorder;
     border-radius: 0;
   }
+
   .ui.attached.block.header {
     background: @blockBackground;
   }
+
   .ui.attached:not(.top).header {
     border-top: none;
   }
+
   .ui.top.attached.header {
     border-radius: @attachedBorderRadius @attachedBorderRadius 0 0;
   }
+
   .ui.bottom.attached.header {
     border-radius: 0 0 @attachedBorderRadius @attachedBorderRadius;
   }
 
   /* Attached Sizes */
+
   .ui.attached.header:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
     font-size: @mediumAttachedSize;
   }
+
   & when not (@variationHeaderSizes = false) {
     each(@variationHeaderSizes, {
       @s: @{value}AttachedSize;

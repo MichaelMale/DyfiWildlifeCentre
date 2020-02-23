@@ -9,13 +9,12 @@
  */
 
 
-
 /*******************************
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'sidebar';
+@type: 'module';
+@element: 'sidebar';
 
 @import (multiple) '../../theme.config';
 
@@ -60,6 +59,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
+
 & when (@variationSidebarRight) {
   .ui.right.sidebar {
     right: 0 !important;
@@ -74,6 +74,7 @@
     width: 100% !important;
     height: auto !important;
   }
+
   & when (@variationSidebarTop) {
     .ui.top.sidebar {
       top: 0 !important;
@@ -81,6 +82,7 @@
       transform: translate3d(0, -100%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.sidebar {
       top: auto !important;
@@ -104,6 +106,7 @@
 /* Whole Page */
 body.pushable {
   background: @canvasBackground;
+
   &.dimmed {
     background: inherit;
   }
@@ -113,6 +116,7 @@ body.pushable {
 .pushable:not(body) {
   transform: translate3d(0, 0, 0);
 }
+
 .pushable:not(body) > .ui.sidebar,
 .pushable:not(body) > .fixed,
 .pushable:not(body) > .pusher:after {
@@ -216,6 +220,7 @@ body.pushable > .pusher {
     box-shadow: @horizontalBoxShadow;
   }
 }
+
 & when (@variationSidebarTop) or (@variationSidebarBottom) {
   .ui.top.visible.sidebar,
   .ui.bottom.visible.sidebar {
@@ -230,18 +235,21 @@ body.pushable > .pusher {
     transform: translate3d(@width, 0, 0);
   }
 }
+
 & when (@variationSidebarRight) {
   .ui.visible.right.sidebar ~ .fixed,
   .ui.visible.right.sidebar ~ .pusher {
     transform: translate3d(-@width, 0, 0);
   }
 }
+
 & when (@variationSidebarTop) {
   .ui.visible.top.sidebar ~ .fixed,
   .ui.visible.top.sidebar ~ .pusher {
     transform: translate3d(0, @height, 0);
   }
 }
+
 & when (@variationSidebarBottom) {
   .ui.visible.bottom.sidebar ~ .fixed,
   .ui.visible.bottom.sidebar ~ .pusher {
@@ -251,6 +259,7 @@ body.pushable > .pusher {
 
 & when (@variationSidebarLeft) or (@variationSidebarRight) {
   /* opposite sides visible forces content overlay */
+
   .ui.visible.left.sidebar ~ .ui.visible.right.sidebar ~ .fixed,
   .ui.visible.left.sidebar ~ .ui.visible.right.sidebar ~ .pusher,
   .ui.visible.right.sidebar ~ .ui.visible.left.sidebar ~ .fixed,
@@ -304,6 +313,7 @@ body.pushable > .pusher {
   }
 
   /* Left Visible */
+
   & when (@variationSidebarLeft) {
     & when (@variationSidebarThin) {
       .ui.visible.thin.left.sidebar ~ .fixed,
@@ -331,6 +341,7 @@ body.pushable > .pusher {
   }
 
   /* Right Visible */
+
   & when (@variationSidebarRight) {
     & when (@variationSidebarThin) {
       .ui.visible.thin.right.sidebar ~ .fixed,
@@ -359,7 +370,6 @@ body.pushable > .pusher {
 }
 
 
-
 /*******************************
           Animations
 *******************************/
@@ -370,26 +380,31 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Set-up */
+
   .ui.overlay.sidebar {
     z-index: @topLayer;
   }
 
   /* Initial */
+
   & when (@variationSidebarLeft) {
     .ui.left.overlay.sidebar {
       transform: translate3d(-100%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.right.overlay.sidebar {
       transform: translate3d(100%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.top.overlay.sidebar {
       transform: translate3d(0%, -100%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.overlay.sidebar {
       transform: translate3d(0%, 100%, 0);
@@ -397,33 +412,40 @@ body.pushable > .pusher {
   }
 
   /* Animation */
+
   .animating.ui.overlay.sidebar,
   .ui.visible.overlay.sidebar {
     transition: transform @duration @easing;
   }
 
   /* End - Sidebar */
+
   & when (@variationSidebarLeft) {
     .ui.visible.left.overlay.sidebar {
       transform: translate3d(0%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.visible.right.overlay.sidebar {
       transform: translate3d(0%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.visible.top.overlay.sidebar {
       transform: translate3d(0%, 0, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.visible.bottom.overlay.sidebar {
       transform: translate3d(0%, 0, 0);
     }
   }
+
   /* End - Pusher */
+
   .ui.visible.overlay.sidebar ~ .fixed,
   .ui.visible.overlay.sidebar ~ .pusher {
     transform: none !important;
@@ -437,27 +459,32 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Initial */
+
   .ui.push.sidebar {
     transition: transform @duration @easing;
     z-index: @topLayer;
   }
 
   /* Sidebar - Initial */
+
   & when (@variationSidebarLeft) {
     .ui.left.push.sidebar {
       transform: translate3d(-100%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.right.push.sidebar {
       transform: translate3d(100%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.top.push.sidebar {
       transform: translate3d(0%, -100%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.push.sidebar {
       transform: translate3d(0%, 100%, 0);
@@ -465,6 +492,7 @@ body.pushable > .pusher {
   }
 
   /* End */
+
   .ui.visible.push.sidebar {
     transform: translate3d(0%, 0, 0);
   }
@@ -476,12 +504,14 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Initial */
+
   .ui.uncover.sidebar {
     transform: translate3d(0, 0, 0);
     z-index: @bottomLayer;
   }
 
   /* End */
+
   .ui.visible.uncover.sidebar {
     transform: translate3d(0, 0, 0);
     transition: transform @duration @easing;
@@ -494,26 +524,31 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Initial */
+
   .ui.slide.along.sidebar {
     z-index: @bottomLayer;
   }
 
   /* Sidebar - Initial */
+
   & when (@variationSidebarLeft) {
     .ui.left.slide.along.sidebar {
       transform: translate3d(-50%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.right.slide.along.sidebar {
       transform: translate3d(50%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.top.slide.along.sidebar {
       transform: translate3d(0, -50%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.slide.along.sidebar {
       transform: translate3d(0%, 50%, 0);
@@ -521,11 +556,13 @@ body.pushable > .pusher {
   }
 
   /* Animation */
+
   .ui.animating.slide.along.sidebar {
     transition: transform @duration @easing;
   }
 
   /* End */
+
   .ui.visible.slide.along.sidebar {
     transform: translate3d(0%, 0, 0);
   }
@@ -537,26 +574,31 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Initial */
+
   .ui.slide.out.sidebar {
     z-index: @bottomLayer;
   }
 
   /* Sidebar - Initial */
+
   & when (@variationSidebarLeft) {
     .ui.left.slide.out.sidebar {
       transform: translate3d(50%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.right.slide.out.sidebar {
       transform: translate3d(-50%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.top.slide.out.sidebar {
       transform: translate3d(0%, 50%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.slide.out.sidebar {
       transform: translate3d(0%, -50%, 0);
@@ -564,11 +606,13 @@ body.pushable > .pusher {
   }
 
   /* Animation */
+
   .ui.animating.slide.out.sidebar {
     transition: transform @duration @easing;
   }
 
   /* End */
+
   .ui.visible.slide.out.sidebar {
     transform: translate3d(0%, 0, 0);
   }
@@ -580,6 +624,7 @@ body.pushable > .pusher {
   ---------------*/
 
   /* Initial */
+
   .ui.scale.down.sidebar {
     transition: transform @duration @easing;
     z-index: @topLayer;
@@ -591,16 +636,19 @@ body.pushable > .pusher {
       transform: translate3d(-100%, 0, 0);
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.right.scale.down.sidebar {
       transform: translate3d(100%, 0, 0);
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.top.scale.down.sidebar {
       transform: translate3d(0%, -100%, 0);
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.bottom.scale.down.sidebar {
       transform: translate3d(0%, 100%, 0);
@@ -608,21 +656,25 @@ body.pushable > .pusher {
   }
 
   /* Pusher - Initial */
+
   & when (@variationSidebarLeft) {
     .ui.scale.down.left.sidebar ~ .pusher {
       transform-origin: 75% 50%;
     }
   }
+
   & when (@variationSidebarRight) {
     .ui.scale.down.right.sidebar ~ .pusher {
       transform-origin: 25% 50%;
     }
   }
+
   & when (@variationSidebarTop) {
     .ui.scale.down.top.sidebar ~ .pusher {
       transform-origin: 50% 75%;
     }
   }
+
   & when (@variationSidebarBottom) {
     .ui.scale.down.bottom.sidebar ~ .pusher {
       transform-origin: 50% 25%;
@@ -630,9 +682,11 @@ body.pushable > .pusher {
   }
 
   /* Animation */
+
   .ui.animating.scale.down > .visible.ui.sidebar {
     transition: transform @duration @easing;
   }
+
   .ui.visible.scale.down.sidebar ~ .pusher,
   .ui.animating.scale.down.sidebar ~ .pusher {
     display: block !important;
@@ -642,9 +696,11 @@ body.pushable > .pusher {
   }
 
   /* End */
+
   .ui.visible.scale.down.sidebar {
     transform: translate3d(0, 0, 0);
   }
+
   .ui.visible.scale.down.sidebar ~ .pusher {
     transform: scale(0.75);
   }

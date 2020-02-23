@@ -3,10 +3,10 @@
  *******************************/
 
 var
-  gulp   = require('gulp'),
+    gulp = require('gulp'),
 
-  // read user config to know what task to load
-  config = require('./tasks/config/user')
+    // read user config to know what task to load
+    config = require('./tasks/config/user')
 ;
 
 
@@ -30,5 +30,5 @@ require('./tasks/collections/docs')(gulp);
 ---------------*/
 
 if (config.rtl) {
-  require('./tasks/collections/rtl')(gulp);
+    require('./tasks/collections/rtl')(gulp);
 }

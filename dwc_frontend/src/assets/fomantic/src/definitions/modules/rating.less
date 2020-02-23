@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'rating';
+@type: 'module';
+@element: 'rating';
 
 @import (multiple) '../../theme.config';
 
@@ -27,6 +27,7 @@
   white-space: @whiteSpace;
   vertical-align: @verticalAlign;
 }
+
 .ui.rating:last-child {
   margin-right: 0;
 }
@@ -99,9 +100,9 @@ each(@colors, {
   .ui.@{color}.rating .active.icon {
     color: @l;
     text-shadow: 0px -@shadowWidth 0px @c,
-                 -@shadowWidth 0px 0px @c,
-                 0px @shadowWidth 0px @c,
-                 @shadowWidth 0px 0px @c;
+    -@shadowWidth 0px 0px @c,
+    0px @shadowWidth 0px @c,
+    @shadowWidth 0px 0px @c;
   }
   .ui.@{color}.rating .icon.selected,
   .ui.@{color}.rating .icon.selected.active,
@@ -109,9 +110,9 @@ each(@colors, {
     background: inherit;
     color: @lh;
     text-shadow: 0px -@shadowWidth 0px @h,
-                 -@shadowWidth 0px 0px @h,
-                 0px @shadowWidth 0px @h,
-                 @shadowWidth 0px 0px @h;
+    -@shadowWidth 0px 0px @h,
+    0px @shadowWidth 0px @h,
+    @shadowWidth 0px 0px @h;
 
     -webkit-text-stroke: unset;
     background-clip: unset;
@@ -136,6 +137,7 @@ each(@colors, {
   --------------------*/
 
   /* disabled rating */
+
   .ui.disabled.rating .icon {
     cursor: default;
   }
@@ -150,11 +152,11 @@ each(@colors, {
 .ui.rating.selected .active.icon {
   opacity: @interactiveActiveIconOpacity;
 }
+
 .ui.rating.selected .icon.selected,
 .ui.rating .icon.selected {
   opacity: @interactiveSelectedIconOpacity;
 }
-
 
 
 /*******************************
@@ -164,10 +166,11 @@ each(@colors, {
 .ui.rating {
   font-size: @medium;
 }
+
 & when not (@variationRatingSizes = false) {
   each(@variationRatingSizes, {
     @s: @@value;
-    .ui.@{value}.rating  {
+    .ui.@{value}.rating {
       font-size: @s;
     }
   })

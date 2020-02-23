@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'module';
-@element : 'transition';
+@type: 'module';
+@element: 'transition';
 
 @import (multiple) '../../theme.config';
 
@@ -42,6 +42,7 @@
 
 & when (@variationTransitionLoading) {
   /* Loading */
+
   .loading.transition {
     position: absolute;
     top: -99999px;
@@ -59,12 +60,13 @@
 .visible.transition {
   display: block !important;
   visibility: visible !important;
-/*  backface-visibility: @backfaceVisibility;
-  transform: @use3DAcceleration;*/
+  /*  backface-visibility: @backfaceVisibility;
+    transform: @use3DAcceleration;*/
 }
 
 & when (@variationTransitionDisabled) {
   /* Disabled */
+
   .disabled.transition {
     animation-play-state: paused;
   }

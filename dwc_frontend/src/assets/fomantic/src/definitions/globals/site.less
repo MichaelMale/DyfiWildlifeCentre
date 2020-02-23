@@ -13,8 +13,8 @@
             Theme
 *******************************/
 
-@type    : 'global';
-@element : 'site';
+@type: 'global';
+@element: 'site';
 
 @import (multiple) '../../theme.config';
 
@@ -65,15 +65,19 @@ h1 {
   min-height: 1rem;
   font-size: @h1;
 }
+
 h2 {
   font-size: @h2;
 }
+
 h3 {
   font-size: @h3;
 }
+
 h4 {
   font-size: @h4;
 }
+
 h5 {
   font-size: @h5;
 }
@@ -103,9 +107,11 @@ p {
   margin: @paragraphMargin;
   line-height: @paragraphLineHeight;
 }
+
 p:first-child {
   margin-top: 0;
 }
+
 p:last-child {
   margin-bottom: 0;
 }
@@ -118,6 +124,7 @@ a {
   color: @linkColor;
   text-decoration: @linkUnderline;
 }
+
 a:hover {
   color: @linkHoverColor;
   text-decoration: @linkHoverUnderline;
@@ -177,10 +184,12 @@ a:hover {
   background-color: @highlightBackground;
   color: @highlightColor;
 }
+
 ::-moz-selection {
   background-color: @highlightBackground;
   color: @highlightColor;
 }
+
 ::selection {
   background-color: @highlightBackground;
   color: @highlightColor;
@@ -192,11 +201,13 @@ input::-webkit-selection {
   background-color: @inputHighlightBackground;
   color: @inputHighlightColor;
 }
+
 textarea::-moz-selection,
 input::-moz-selection {
   background-color: @inputHighlightBackground;
   color: @inputHighlightColor;
 }
+
 textarea::selection,
 input::selection {
   background-color: @inputHighlightBackground;
