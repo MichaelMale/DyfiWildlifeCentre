@@ -15,4 +15,5 @@ describe('Bottom buttons unit tests', () => {
     it('should render the BottomButton component', () => {
         expect(wrapper.containsMatchingElement(Button)).toEqual(true);
     });
+
 });

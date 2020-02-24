@@ -16,7 +16,7 @@ const centreMarker = { // The centre marker is the Dyfi Wildlife Centre, where t
 // styles, height and width should be the same size as the container holding it
 const mapStyles = {
     width: '100%',
-    height: '100vh',
+    height: '90vh',
 };
 
 function GoogleMaps(props) {
@@ -50,9 +50,7 @@ function GoogleMaps(props) {
             map: googleMap.current
         });
 
-    /**
-     *
-     */
+
     useEffect(() => {
         const googleMapScript = document.createElement('script');
         googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API_KEY}&libraries=places`
@@ -60,7 +58,7 @@ function GoogleMaps(props) {
 
         googleMapScript.addEventListener('load', () => {
             googleMap.current = createGoogleMap();
-            marker.current = createMarker()
+            marker.current = createMarker();
         })
     });
 
