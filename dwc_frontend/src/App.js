@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from './components/Menu';
 import GoogleMaps from "./components/GoogleMap";
+import BottomButtons from "./components/BottomButtons";
 
 export default class App extends React.Component {
     render() {
@@ -8,6 +9,7 @@ export default class App extends React.Component {
             <React.Fragment>
                 <Menu/>
                 <GoogleMaps/>
+                <BottomButtons/>
             </React.Fragment>
         )
 

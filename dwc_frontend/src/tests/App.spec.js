@@ -2,9 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import App from '../App';
 import GoogleMaps from "../components/GoogleMap";
-import {Menu} from "semantic-ui-react";
+import BottomButtons from "../components/BottomButtons";
 
-describe('App', () => {
+/**
+ * Unit tests for the App component
+ */
+describe('App unit tests', () => {
     let wrapper;
 
     beforeEach(() => wrapper = shallow(<App />));
@@ -20,5 +23,9 @@ describe('App', () => {
    it('should render the GoogleMaps component', () => {
        expect(wrapper.containsMatchingElement(<GoogleMaps/>)).toEqual(true);
    });
+
+   it('should render the BottomButton component', () => {
+       expect(wrapper.containsMatchingElement(<BottomButtons/>)).toEqual(true);
+    });
 
 });
