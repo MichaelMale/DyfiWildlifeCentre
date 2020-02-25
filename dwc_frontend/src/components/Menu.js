@@ -3,7 +3,7 @@ import { Container, Menu } from 'semantic-ui-react';
 
 export default () => (
     <Menu>
-        <Container>
+        <Container fluid>
             <Menu.Item as="a" header>
                 Dyfi Wildlife Centre
             </Menu.Item>
