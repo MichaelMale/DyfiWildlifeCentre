@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Container } from "semantic-ui-react";
 
+
 class BottomButtons extends React.Component {
 
     constructor(props) {

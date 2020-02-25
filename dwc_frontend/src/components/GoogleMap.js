@@ -1,3 +1,4 @@
+// TODO: Update to use google-maps-react's declarative approach.
 import React from 'react';
 
 // Variables
@@ -43,6 +44,7 @@ class GoogleMap extends React.Component {
             },
             disableDefaultUI: true,
             mapTypeId: 'hybrid',
+            zoomControl: true,
         });
 
     createMarker = () =>

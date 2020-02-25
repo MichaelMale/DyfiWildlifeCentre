@@ -5,7 +5,6 @@ import {Button} from "semantic-ui-react";
 
 describe('Bottom buttons unit tests', () => {
     let wrapper;
-
     beforeEach(() => wrapper = shallow(<BottomButtons/>));
 
     it('should render two Button components', () => {
@@ -15,5 +14,4 @@ describe('Bottom buttons unit tests', () => {
     it('should render the BottomButton component', () => {
         expect(wrapper.containsMatchingElement(Button)).toEqual(true);
     });
-
 });
