@@ -17,7 +17,7 @@ describe('App unit tests', () => {
    });
 
    it('renders one <GoogleMaps /> component', () => {
-      expect(wrapper.find('GoogleMaps').length).toEqual(1);
+      expect(wrapper.find('GoogleMap').length).toEqual(1);
    });
 
    it('should render the GoogleMaps component', () => {
