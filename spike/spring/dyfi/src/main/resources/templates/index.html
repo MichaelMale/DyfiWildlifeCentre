@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dyfi Wildlife Centre - Home</title>
+    <template th:replace="fragments/header :: header"></template>
+
+    <link as="script"
+          href="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&language=en&region=GB&callback=initMap"
+          rel="preload">
+    <script async
+            defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&language=en&region=GB&callback=initMap"></script>
+</head>
+<body>
+
+<div class="fluid raised segment" th:include="fragments/top_menu :: topMenu"></div>
+<!-- Google Map container. Use Spring to get more variables etc. rather than hard-coding everything. -->
+<div class="fluid container" id="map">
+</div>
+<script>
+    function initMap() {
+        const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
+        const aberystwythUniversity = {lat: 52.41806, lng: -4.06576};
+        let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: dyfiWildlifeCentre,
+            mapTypeId: 'satellite',
+            disableDefaultUI: true
+        });
+
+            const marker = new google.maps.Marker({
+                position: dyfiWildlifeCentre,
+                map: map,
+                title: 'Dyfi Wildlife Centre'
+            });
+
+        const marker2 = new google.maps.Marker({
+            position: aberystwythUniversity,
+            map: map,
+            title: 'Aberystwyth University'
+        })
+    }
+</script>
+<div class="fluid container">
+    <button class="ui left floated button">Filters</button>
+    <button class="ui right floated button">Reset</button>
+</div>
+
+<div class="fluid grid">
+
+</div>
+
+
+</body>
+
+</html>

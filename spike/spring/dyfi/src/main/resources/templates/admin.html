@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dyfi Wildlife Centre - Admin Panel</title>
+    <template th:replace="fragments/header :: header"></template>
+</head>
+
+<body>
+<div class="fluid raised segment" th:include="fragments/top_menu :: topMenu"></div>
+
+</body>
+<div class="ui one column stackable center aligned page grid">
+    <div class="column twelve wide">
+        <h2 class="ui header">
+            Dyfi Wildlife Centre<br />Admin Panel
+            <div class="sub header">Please log in to administrate this application. If you require an account,
+                please contact <a href="mailto:info@montwt.co.uk">info@montwt.co.uk</a>, or phone <a
+                        href="tel:+441938555654">01938 555654</a>.
+            </div>
+        </h2>
+
+        <form class="ui form">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="text" name="password">
+            </div>
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" tabindex="0" class="hidden">
+                    <label>Remember me</label>
+                </div>
+            </div>
+            <button class="ui button" type="submit">Submit</button>
+            <a href="#" onClick="return false;">Forgotten password</a>
+        </form>
+
+    </div>
+</div>
+</html>
