@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <!-- Import Google Icon Font -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Import Materialize CSS -->
-    <!-- Eventually use the local -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!-- Responsiveness -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <meta charset="UTF-8">
-    <title>Spring Test</title>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre</title>
+    <style>
+        #map {
+            height:calc(99vh - 56px);
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Dyfi Wildlife Centre</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Admin Panel</a></li>
-        </ul>
-    </div>
-</nav>
 
+<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
+<div class="col s12 m6" id="map">
+</div>
+<script>
+    function initMap() {
+        const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
+        const aberystwythUniversity = {lat: 52.41806, lng: -4.06576};
+        let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: dyfiWildlifeCentre,
+            mapTypeId: 'satellite',
+            disableDefaultUI: true
+        });
+
+        const marker = new google.maps.Marker({
+            position: dyfiWildlifeCentre,
+            map: map,
+            title: 'Dyfi Wildlife Centre'
+        });
+
+        const marker2 = new google.maps.Marker({
+            position: aberystwythUniversity,
+            map: map,
+            title: 'Aberystwyth University'
+        })
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
