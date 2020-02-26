@@ -15,7 +15,7 @@
 	<description>A full-stack web application for the Dyfi Wildlife Centre</description>
 
 	<properties>
-		<java.version>13</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
