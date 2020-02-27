@@ -16,16 +16,17 @@
 
 <div class="col s12 m6" id="map">
 </div>
-<script>
+<script th:inline="javascript">
     function initMap() {
         const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
-        const aberystwythUniversity = {lat: 52.41806, lng: -4.06576};
-        let map = new google.maps.Map(document.getElementById('map'), {
+        const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 16,
             center: dyfiWildlifeCentre,
-            mapTypeId: 'satellite',
+            mapTypeId: 'hybrid',
             disableDefaultUI: true
         });
+
+
 
         const marker = new google.maps.Marker({
             position: dyfiWildlifeCentre,
@@ -33,11 +34,13 @@
             title: 'Dyfi Wildlife Centre'
         });
 
-        const marker2 = new google.maps.Marker({
-            position: aberystwythUniversity,
+        const springGeneratedMarker = new google.maps.Marker({
+            position: {lat: [[${marker_test_lat}]], lng: [[${marker_test_long}]]},
             map: map,
-            title: 'Aberystwyth University'
-        })
+            title: '[[${marker_test_name}]]'
+        });
+
+
     }
 </script>
 
