@@ -25,13 +25,35 @@
             mapTypeId: 'hybrid',
             disableDefaultUI: true
         });
+        // TODO: Is there a way to use fragments in this?
+        const html = '<div class="row">\n' +
+            '    <div class="col s12 m7">\n' +
+            '        <div class="card">\n' +
+            '            <div class="card-image">\n' +
+            '                <img src="https://materializecss.com/images/sample-1.jpg"\n' +
+            '                     alt="Sample 1">\n' +
+            '                <span class="card-title">Card Title</span>\n' +
+            '            </div>\n' +
+            '            <div class="card-content">\n' +
+            '                <p>I am a very simple card. I am good at containing small\n' +
+            '                    bits of information. I am convenient because I require\n' +
+            '                    little markup to use effectively.</p>\n' +
+            '            </div>\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>';
 
-
+        let infoWindow = new google.maps.InfoWindow({
+            content: html
+        });
 
         const marker = new google.maps.Marker({
             position: dyfiWildlifeCentre,
             map: map,
             title: 'Dyfi Wildlife Centre'
+        });
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
         });
 
         const springGeneratedMarker = new google.maps.Marker({

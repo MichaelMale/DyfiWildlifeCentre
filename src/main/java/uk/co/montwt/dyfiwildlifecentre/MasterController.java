@@ -14,6 +14,7 @@ public class MasterController {
 
     @RequestMapping("/")
     public ModelAndView thymeleafView(Map<String, Object> model) {
+
         model.put("marker_test_name", repository.getPointsOfInterest().get(1).getName());
         model.put("marker_test_long", repository.getPointsOfInterest().get(1).getLongitude());
         model.put("marker_test_lat", repository.getPointsOfInterest().get(1).getLatitude());
