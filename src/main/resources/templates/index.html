@@ -8,6 +8,7 @@
             height:calc(99vh - 56px);
             width: 100%;
         }
+
     </style>
 </head>
 <body>
@@ -16,6 +17,20 @@
 
 <div class="col s12 m6" id="map">
 </div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <!-- TODO: Place an image here (ref: issue #51) -->
+        <!-- TODO: Use JavaScript innerHTML instead of static text -->
+        <!-- TODO: Make this a Thymeleaf fragment -->
+        <h4>The Dyfi Widlife Centre - A Community Project</h4>
+        <p>
+            2018 is our 10th year of running the Dyfi Osprey Project at Cors Dyfi Reserve. In that time, starting from humble beginnings, we have seen the Dyfi Osprey Project grow from a bit of a curiosity to one of the leading osprey conservation, engagement and research projects in the world. The conservation work we have done over the last decade has also significantly improved the reserve’s habitat and Cors Dyfi is now one of the best-recorded and monitored nature reserves in Wales.
+        </p>
+    </div>
+
+</div>
+
 <script th:inline="javascript">
     function initMap() {
         const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
@@ -25,27 +40,6 @@
             mapTypeId: 'hybrid',
             disableDefaultUI: true
         });
-        // TODO: Is there a way to use fragments in this?
-        const html = '<div class="row">\n' +
-            '    <div class="col s12 m7">\n' +
-            '        <div class="card">\n' +
-            '            <div class="card-image">\n' +
-            '                <img src="https://materializecss.com/images/sample-1.jpg"\n' +
-            '                     alt="Sample 1">\n' +
-            '                <span class="card-title">Card Title</span>\n' +
-            '            </div>\n' +
-            '            <div class="card-content">\n' +
-            '                <p>I am a very simple card. I am good at containing small\n' +
-            '                    bits of information. I am convenient because I require\n' +
-            '                    little markup to use effectively.</p>\n' +
-            '            </div>\n' +
-            '        </div>\n' +
-            '    </div>\n' +
-            '</div>';
-
-        let infoWindow = new google.maps.InfoWindow({
-            content: html
-        });
 
         const marker = new google.maps.Marker({
             position: dyfiWildlifeCentre,
@@ -53,7 +47,9 @@
             title: 'Dyfi Wildlife Centre'
         });
         marker.addListener('click', function() {
-            infoWindow.open(map, marker);
+            const element = document.getElementById('modal1');
+            const instance = M.Modal.init(element, {dismissible: true});
+            instance.open();
         });
 
         const springGeneratedMarker = new google.maps.Marker({
@@ -69,6 +65,7 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 </body>
 
 </html>
