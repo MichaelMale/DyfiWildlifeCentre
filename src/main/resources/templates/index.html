@@ -5,8 +5,17 @@
     <title>Dyfi Wildlife Centre</title>
     <style>
         #map {
-            height:calc(99vh - 56px);
+            height: calc(99vh - 56px);
             width: 100%;
+        }
+
+        .modal {
+            max-height: 100%;
+        }
+
+
+        #scrollable {
+            overflow: auto;
         }
 
     </style>
@@ -20,13 +29,37 @@
 
 <div id="modal1" class="modal">
     <div class="modal-content">
-        <!-- TODO: Place an image here (ref: issue #51) -->
-        <!-- TODO: Use JavaScript innerHTML instead of static text -->
-        <!-- TODO: Make this a Thymeleaf fragment -->
-        <h4>The Dyfi Widlife Centre - A Community Project</h4>
-        <p>
-            2018 is our 10th year of running the Dyfi Osprey Project at Cors Dyfi Reserve. In that time, starting from humble beginnings, we have seen the Dyfi Osprey Project grow from a bit of a curiosity to one of the leading osprey conservation, engagement and research projects in the world. The conservation work we have done over the last decade has also significantly improved the reserve’s habitat and Cors Dyfi is now one of the best-recorded and monitored nature reserves in Wales.
-        </p>
+        <div class="container-fluid">
+            <div class="card large z-depth-0">
+                <div class="card-image">
+                    <img src="osprey.jpeg"
+                         alt="Sample 1">
+                    <span class="card-title black-text">Dyfi Wildlife Centre</span>
+                </div>
+                <div class="card-content" id="scrollable">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum elit imperdiet lacus
+                        fringilla, sit amet bibendum massa congue. Curabitur nisl risus, semper vitae orci quis, viverra
+                        sagittis enim. Nam sem ex, semper at egestas eget, ullamcorper nec dolor. Donec sed vehicula
+                        odio, at aliquam tellus. Aliquam vulputate ligula et ligula pretium viverra. Pellentesque vitae
+                        tortor elit. Nulla viverra, ipsum ac tincidunt iaculis, risus ligula rhoncus tellus, ut accumsan
+                        dui leo et erat. Vestibulum pellentesque tristique libero id mollis. Nullam sit amet blandit mi.
+                        Mauris id purus pretium, vulputate magna vitae, gravida mi.
+
+                        Ut mollis, quam non scelerisque ultricies, magna diam posuere nibh, mollis sagittis ex tellus eu
+                        tellus. Maecenas placerat orci purus, ut commodo risus imperdiet at. Nunc venenatis velit nunc,
+                        ut gravida nunc condimentum nec. Nam a dolor sit amet tellus pulvinar posuere sit amet et neque.
+                        Donec ut magna ac nisi cursus placerat. Sed nisl erat, auctor sit amet fermentum non, vulputate
+                        non nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et mauris nisi.
+                        Sed gravida augue scelerisque dui varius placerat. Duis imperdiet sed tortor ornare lobortis.
+                        Duis blandit turpis sem, ac condimentum lorem semper eget.
+
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices eros ac mollis
+                        tincidunt. Praesent et ullamcorper mauris. Ut varius et sem eget ultrices. Proin a vestibulum
+                        mauris. Ut venenatis vehicula orci. Integer tortor risus, feugiat sed nisi sit amet, condimentum
+                        dictum diam.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -46,7 +79,7 @@
             map: map,
             title: 'Dyfi Wildlife Centre'
         });
-        marker.addListener('click', function() {
+        marker.addListener('click', function () {
             const element = document.getElementById('modal1');
             const instance = M.Modal.init(element, {dismissible: true});
             instance.open();
