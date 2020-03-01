@@ -5,7 +5,7 @@
 
 spike/* linguist-vendored
 node-modules/* linguist-vendored
-lazysizes.min.js linguis-vendored
+lazysizes.min.js linguist-vendored
 
 docs/* linguist-documentation
 xp-docs/* linguist-documentation
