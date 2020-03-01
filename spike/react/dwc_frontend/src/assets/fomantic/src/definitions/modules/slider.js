@@ -10,7 +10,6 @@
 
 ;(function ($, window, document, undefined) {
 
-    
 
     window = (typeof window != 'undefined' && window.Math == Math)
         ? window
