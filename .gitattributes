@@ -4,8 +4,8 @@
 # Vendored languages (Spike work included as well)
 
 spike/* linguist-vendored
-jquery-3.4.1-min.js linguist-vendored
 node-modules/* linguist-vendored
-materialize/* linguist-vendored
+lazysizes.min.js linguis-vendored
 
 docs/* linguist-documentation
+xp-docs/* linguist-documentation

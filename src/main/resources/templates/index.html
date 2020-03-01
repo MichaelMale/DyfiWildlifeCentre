@@ -3,22 +3,13 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre</title>
-    <style>
-        #map {
-            height: calc(99vh - 56px);
-            width: 100%;
-        }
+    <link rel="stylesheet" th:href="@{/css/customIndexStyle.min.css}" type="text/css"/>
 
-        .modal {
-            max-height: 100%;
-        }
+    <!-- lazysizes
+    Copyright (c) 2015 Alexander Farkas
+    Licensing and source code available: https://github.com/aFarkas/lazysizes -->
 
-
-        #scrollable {
-            overflow: auto;
-        }
-
-    </style>
+    <script th:src="@{/js/lazysizes.min.js}" async=""></script>
 </head>
 <body>
 
@@ -27,66 +18,12 @@
 <div class="col s12 m6" id="map">
 </div>
 
-<div id="poiCard" class="modal">
-    <div class="modal-content">
-        <div class="container-fluid">
-            <div class="card large z-depth-0">
-                <div class="card-image">
-                    <img src="osprey.jpeg"
-                         alt="An example image">
-                    <span class="card-title black-text" id="poi_title"></span>
-                </div>
-                <div class="card-content" id="scrollable">
-                    <p id="poi_description"></p>
-                </div>
-            </div>
-        </div>
-    </div>
+<fragment th:replace="fragments/poi_card :: poiCard"></fragment>
 
-</div>
-
-<script th:inline="javascript">
-
-    function initMap() {
-        const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
-        const map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            center: dyfiWildlifeCentre,
-            mapTypeId: 'hybrid',
-            disableDefaultUI: true
-        });
-
-        const marker = new google.maps.Marker({
-            position: dyfiWildlifeCentre,
-            map: map,
-            title: 'Dyfi Wildlife Centre'
-        });
-        marker.addListener('click', function () {
-            const element = document.getElementById('poiCard');
-            element.querySelector('#poi_title').innerHTML = "Title";
-            element.querySelector('#poi_description').innerHTML = "Description";
-            const instance = M.Modal.init(element, {
-                dismissible: true,
-                inDuration: 500,
-                outDuration: 500});
-
-            instance.open();
-        });
-
-        const springGeneratedMarker = new google.maps.Marker({
-            position: {lat: [[${marker_test_lat}]], lng: [[${marker_test_long}]]},
-            map: map,
-            title: '[[${marker_test_name}]]'
-        });
-
-
-    }
-</script>
-
+<script th:src="@{/js/googlemaps.min.js}"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
 </body>
 
 </html>

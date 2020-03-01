@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+
+<div id="poiCard" class="modal" th:fragment="poiCard">
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="card large z-depth-0">
+                <div class="card-image">
+                    <img data-src="osprey.jpeg" alt="An example image" class="lazyload">
+                    <span class="card-title black-text" id="poi_title"></span>
+                </div>
+                <div class="card-content" id="scrollable">
+                    <p id="poi_description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
