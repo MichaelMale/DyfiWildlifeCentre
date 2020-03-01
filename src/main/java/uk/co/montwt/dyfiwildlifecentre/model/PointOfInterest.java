@@ -33,7 +33,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public String getName() {
-        return null;
+        return this.name;
     }
 
     /**
@@ -43,7 +43,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public String getDescription() {
-        return null;
+        return this.description;
     }
 
     /**
@@ -53,7 +53,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public double getLatitude() {
-        return 0;
+        return this.latitude;
     }
 
     /**
@@ -63,7 +63,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public double getLongitude() {
-        return 0;
+        return this.longitude;
     }
 
     /**
@@ -73,7 +73,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     /**
@@ -83,7 +83,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public void setDescription(String description) {
-
+        this.description = description;
     }
 
     /**
@@ -93,7 +93,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public void setLatitude(double latitude) {
-
+        this.latitude = latitude;
     }
 
     /**
@@ -103,7 +103,7 @@ public class PointOfInterest implements POI {
      */
     @Override
     public void setLongitude(double longitude) {
-
+        this.longitude = longitude;
     }
 
     /**
@@ -112,7 +112,7 @@ public class PointOfInterest implements POI {
      * @return A Point2D object that contains a latitude and longitude in double floating-point precision.
      */
     @Override
-    public Point2D getCoordinates() {
+    public Point2D.Double generateCoordinates() {
         return null;
     }
 

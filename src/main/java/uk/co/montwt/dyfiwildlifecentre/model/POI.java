@@ -62,7 +62,7 @@ interface POI {
      * Gets both the latitude and longitude of the Point of Interest.
      * @return  A Point2D object that contains a latitude and longitude in double floating-point precision.
      */
-    Point2D getCoordinates();
+    Point2D.Double generateCoordinates();
 
     /**
      * Returns the Point of Interest in the GeoJSON format.
