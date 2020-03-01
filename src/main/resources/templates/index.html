@@ -3,7 +3,13 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/customIndexStyle.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/customIndexStyle.css}"/>
+
+    <!-- lazysizes
+    Copyright (c) 2015 Alexander Farkas
+    Licensing and source code available: https://github.com/aFarkas/lazysizes -->
+
+    <script th:src="@{/js/lazysizes.min.js}" async=""></script>
 </head>
 <body>
 
@@ -18,7 +24,6 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
 </body>
 
 </html>

@@ -4,18 +4,20 @@ function initMap() {
         zoom: 16,
         center: dyfiWildlifeCentre,
         mapTypeId: 'hybrid',
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        clickableIcons: false
     });
 
     const marker = new google.maps.Marker({
         position: dyfiWildlifeCentre,
         map: map,
-        title: 'Dyfi Wildlife Centre'
+        title: 'Dyfi Wildlife Centre',
+        description: 'Description'
     });
     marker.addListener('click', function () {
         const element = document.getElementById('poiCard');
-        element.querySelector('#poi_title').innerHTML = "Title";
-        element.querySelector('#poi_description').innerHTML = "Description";
+        element.querySelector('#poi_title').innerHTML = marker.title;
+        element.querySelector('#poi_description').innerHTML = marker.description;
         const instance = M.Modal.init(element, {
             dismissible: true,
             inDuration: 500,

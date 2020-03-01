@@ -70,4 +70,11 @@ public class IndexViewTests {
         Assertions.assertNotNull(map);
     }
 
+    @Test
+    @DisplayName("When the index page is opened, the map should be in a column class.")
+    public void uponLoadingPage_mapShowsColS12M6() {
+        DomElement map = page.getElementById("map");
+        Assertions.assertEquals("col s12 m6", map.getAttribute("class"));
+    }
+
 }
