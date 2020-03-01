@@ -1,0 +1,19 @@
+/*
+Custom style used for the maps and modal in the main page of the User Interface
+
+Author: Michael Male <mim39@aber.ac.uk>
+Version: 1.0
+
+ */
+#map {
+    height: calc(99vh - 56px);
+    width: 100%;
+}
+
+.modal {
+    max-height: 100%;
+}
+
+#scrollable {
+    overflow: auto;
+}

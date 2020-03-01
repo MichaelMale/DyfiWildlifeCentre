@@ -14,6 +14,9 @@ import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -42,6 +45,22 @@ public class IndexViewTests {
     public void uponLoadingPage_contentAppears()  {
         final String pageAsText = page.asText();
         Assertions.assertFalse(pageAsText.isEmpty());
+    }
+
+    @Test
+    @DisplayName("When the index page is opened, a navbar should appear with the correct text.")
+    public void uponLoadingPage_navBarElementAppears() {
+        DomElement menu = page.getElementById("primary-navbar");
+        List<String> expectedLines = List.of("Dyfi Wildlife Centre", "Admin Panel");
+        List<String> actualLines = Arrays.asList(menu.getVisibleText().split("\\r?\\n"));
+        Assertions.assertLinesMatch(expectedLines, actualLines);
+    }
+
+    @Test
+    @DisplayName("When the index page is opened, the navbar should be light blue.")
+    public void uponLoadingPage_navBarIsLightBlue() {
+        DomElement menu = page.getElementById("primary-navbar");
+        Assertions.assertEquals("light-blue", menu.getAttribute("class"));
     }
 
     @Test
