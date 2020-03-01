@@ -1,13 +1,23 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
+import java.awt.geom.Point2D;
 
-import java.util.Objects;
+/**
+ * PointOfInterest.java - This class represents a Point of Interest. It will be used whenever an end user would like
+ * to add somewhere of interest that they would like shown on the Google map. It contains the name of the POI, its
+ * description, and its coordinates. Currently, this class represents an object that will be statically created.
+ * Further iterations will involve linking it to a PostgreSQL database, and including filters.
+ *
+ * @author Michael Male
+ * @version 0.1
+ * @see POI Interface that this class implements
+ */
+public class PointOfInterest implements POI {
 
-public class PointOfInterest {
-    String name;
-    String description;
-    double latitude;
-    double longitude;
+    private String name;
+    private String description;
+    private double latitude;
+    private double longitude;
 
     public PointOfInterest(String name, String description, double latitude, double longitude) {
         this.name = name;
@@ -16,51 +26,103 @@ public class PointOfInterest {
         this.longitude = longitude;
     }
 
+    /**
+     * Gets the name of the Point of Interest.
+     *
+     * @return String containing the name of the Point Of Interest.
+     */
+    @Override
     public String getName() {
-        return name;
+        return null;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * Gets the Point of Interest's description
+     *
+     * @return String containing the description of the Point Of Interest.
+     */
+    @Override
     public String getDescription() {
-        return description;
+        return null;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Gets the latitude of the Point of Interest.
+     *
+     * @return double containing the latitude of the Point Of Interest.
+     */
+    @Override
     public double getLatitude() {
-        return latitude;
+        return 0;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
+    /**
+     * Gets the longitude of the Point of Interest.
+     *
+     * @return double containing the longitude of the Point of Interest.
+     */
+    @Override
     public double getLongitude() {
-        return longitude;
+        return 0;
     }
 
+    /**
+     * Sets the name for the Point of Interest.
+     *
+     * @param name String containing the name of the Point of Interest.
+     */
+    @Override
+    public void setName(String name) {
+
+    }
+
+    /**
+     * Sets the description for the Point of Interest.
+     *
+     * @param description String containing the description of the Point of Interest.
+     */
+    @Override
+    public void setDescription(String description) {
+
+    }
+
+    /**
+     * Sets the latitude of the Point of Interest.
+     *
+     * @param latitude double containing the latitude of the Point of Interest.
+     */
+    @Override
+    public void setLatitude(double latitude) {
+
+    }
+
+    /**
+     * Sets the longitude of the Point of Interest.
+     *
+     * @param longitude double containing the longitude of the Point of Interest.
+     */
+    @Override
     public void setLongitude(double longitude) {
-        this.longitude = longitude;
+
     }
 
+    /**
+     * Gets both the latitude and longitude of the Point of Interest.
+     *
+     * @return A Point2D object that contains a latitude and longitude in double floating-point precision.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PointOfInterest that = (PointOfInterest) o;
-        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(that.getLongitude(), getLongitude()) == 0 &&
-                getName().equals(that.getName()) &&
-                getDescription().equals(that.getDescription());
+    public Point2D getCoordinates() {
+        return null;
     }
 
+    /**
+     * Returns the Point of Interest in the GeoJSON format.
+     *
+     * @return String containing Point of Interest details in a GeoJSON format.
+     */
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getLatitude(), getLongitude());
+    public String toGeoJSON() {
+        return null;
     }
 }
