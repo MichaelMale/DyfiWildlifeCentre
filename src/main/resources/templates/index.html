@@ -3,7 +3,7 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/customIndexStyle.css}"/>
+    <link rel="stylesheet" th:href="@{/css/customIndexStyle.min.css}" type="text/css"/>
 
     <!-- lazysizes
     Copyright (c) 2015 Alexander Farkas
@@ -20,7 +20,7 @@
 
 <fragment th:replace="fragments/poi_card :: poiCard"></fragment>
 
-<script th:src="@{/js/googlemaps.js}"></script>
+<script th:src="@{/js/googlemaps.min.js}"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
