@@ -3,6 +3,7 @@ package uk.co.montwt.dyfiwildlifecentre.model;
 import com.google.gson.Gson;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 /**
  * PointOfInterest.java - This class represents a Point of Interest. It will be used whenever an end user would like
@@ -127,5 +128,32 @@ public class PointOfInterest implements POI {
     public String toJSON() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    /**
+     * Compares one PointOfInterest to another to check if it is the same.
+     *
+     * @param o The object to be compared to the object this method was called on
+     * @return  boolean: true if it is equal to the other object, false if it is not
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PointOfInterest that = (PointOfInterest) o;
+        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
+                Double.compare(that.getLongitude(), getLongitude()) == 0 &&
+                getName().equals(that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription());
+    }
+
+    /**
+     * Generates a unique hash for each instantiation of this object.
+     *
+     * @return  integer containing this unique hash
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getDescription(), getLatitude(), getLongitude());
     }
 }

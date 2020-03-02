@@ -68,4 +68,27 @@ public class PointOfInterestTests {
                         " departments.\",\"latitude\":52.41806,\"longitude\":-4.06576}",
                 poi.toJSON());
     }
+
+    @Test
+    @DisplayName("Confirm that the equals method returns true if objects are the same.")
+    public void whenEqualsMethodIsCalledOnEqualObjects_MethodReturnsTrue() {
+        PointOfInterest secondPOI = new PointOfInterest(
+                "Aberystwyth University",
+                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
+                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
+                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
+                        " faculties and 17 departments.",
+                52.41806,
+                -4.06576
+        );
+        Assertions.assertTrue(poi.equals(secondPOI));
+    }
+
+    @Test
+    @DisplayName("Confrim that the equals method returns false if objects are not the same.")
+    public void whenEqualsMethodIsCalledOnUnequalObjects_MethodReturnsFalse() {
+        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
+        Assertions.assertFalse(poi.equals(unequalPOI));
+    }
+
 }
