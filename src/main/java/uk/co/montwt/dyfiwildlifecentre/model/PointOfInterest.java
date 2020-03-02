@@ -1,5 +1,7 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
+import com.google.gson.Gson;
+
 import java.awt.geom.Point2D;
 
 /**
@@ -37,36 +39,6 @@ public class PointOfInterest implements POI {
     }
 
     /**
-     * Gets the Point of Interest's description
-     *
-     * @return String containing the description of the Point Of Interest.
-     */
-    @Override
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Gets the latitude of the Point of Interest.
-     *
-     * @return double containing the latitude of the Point Of Interest.
-     */
-    @Override
-    public double getLatitude() {
-        return this.latitude;
-    }
-
-    /**
-     * Gets the longitude of the Point of Interest.
-     *
-     * @return double containing the longitude of the Point of Interest.
-     */
-    @Override
-    public double getLongitude() {
-        return this.longitude;
-    }
-
-    /**
      * Sets the name for the Point of Interest.
      *
      * @param name String containing the name of the Point of Interest.
@@ -74,6 +46,16 @@ public class PointOfInterest implements POI {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the Point of Interest's description
+     *
+     * @return String containing the description of the Point Of Interest.
+     */
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     /**
@@ -87,6 +69,16 @@ public class PointOfInterest implements POI {
     }
 
     /**
+     * Gets the latitude of the Point of Interest.
+     *
+     * @return double containing the latitude of the Point Of Interest.
+     */
+    @Override
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    /**
      * Sets the latitude of the Point of Interest.
      *
      * @param latitude double containing the latitude of the Point of Interest.
@@ -94,6 +86,16 @@ public class PointOfInterest implements POI {
     @Override
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    /**
+     * Gets the longitude of the Point of Interest.
+     *
+     * @return double containing the longitude of the Point of Interest.
+     */
+    @Override
+    public double getLongitude() {
+        return this.longitude;
     }
 
     /**
@@ -113,16 +115,17 @@ public class PointOfInterest implements POI {
      */
     @Override
     public Point2D.Double generateCoordinates() {
-        return null;
+        return new Point2D.Double(this.getLatitude(), this.getLongitude());
     }
 
     /**
-     * Returns the Point of Interest in the GeoJSON format.
+     * Returns the Point of Interest in the JSON format.
      *
-     * @return String containing Point of Interest details in a GeoJSON format.
+     * @return String containing Point of Interest details in a JSON format.
      */
     @Override
-    public String toGeoJSON() {
-        return null;
+    public String toJSON() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

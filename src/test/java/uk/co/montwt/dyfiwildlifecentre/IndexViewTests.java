@@ -3,18 +3,14 @@ package uk.co.montwt.dyfiwildlifecentre;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.assertj.core.api.Assert;
-import org.assertj.core.error.AssertionErrorMessagesAggregrator;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +38,7 @@ public class IndexViewTests {
 
     @Test
     @DisplayName("When the index page is opened, content appears on the page.")
-    public void uponLoadingPage_contentAppears()  {
+    public void uponLoadingPage_contentAppears() {
         final String pageAsText = page.asText();
         Assertions.assertFalse(pageAsText.isEmpty());
     }

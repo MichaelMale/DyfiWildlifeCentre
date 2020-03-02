@@ -2,7 +2,6 @@ package uk.co.montwt.dyfiwildlifecentre;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
-
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
@@ -56,8 +55,17 @@ public class PointOfInterestTests {
     @DisplayName("A Point of Interest with a latitude and longitude passed to it should be able to return a Point2D " +
             "object containing both values.")
     public void whenPOIIsInstantiated_MethodCanReturnAPoint2DRepresentation() {
-        Point2D.Double expectedObject = new Point2D.Double(52.41806, -4.06576);
+        Assertions.assertEquals(new Point2D.Double(52.41806, -4.06576), poi.generateCoordinates());
+    }
 
-        Assertions.assertEquals(expectedObject, poi.generateCoordinates());
+    @Test
+    @DisplayName("Confirm that a valid JSON representation is returned when calling method.")
+    public void whenJSONMethodIsCalled_MethodReturnsValidRepresentation() {
+        Assertions.assertEquals("{\"name\":\"Aberystwyth University\",\"description\":\"Aberystwyth University " +
+                        "(Welsh: Prifysgol Aberystwyth) is a public research university in Aberystwyth, Wales. " +
+                        "Aberystwyth was a founding member institution of the former federal University of Wales." +
+                        " The university has over 8,000 students studying across 3 academic faculties and 17" +
+                        " departments.\",\"latitude\":52.41806,\"longitude\":-4.06576}",
+                poi.toJSON());
     }
 }
