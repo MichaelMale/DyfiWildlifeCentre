@@ -11,9 +11,13 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.controller;
 
-public interface POIControllerInterface {
+import org.springframework.stereotype.Controller;
+
+
+@Controller
+public class MasterController {
 
 
 }

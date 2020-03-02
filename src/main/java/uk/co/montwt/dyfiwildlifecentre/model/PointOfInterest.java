@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2020 Michael Male
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import com.google.gson.Gson;
@@ -17,16 +30,38 @@ import java.util.Objects;
  */
 public class PointOfInterest implements POI {
 
+    private long id;
     private String name;
     private String description;
     private double latitude;
     private double longitude;
 
-    public PointOfInterest(String name, String description, double latitude, double longitude) {
+    public PointOfInterest(long id, String name, String description, double latitude, double longitude) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    /**
+     * Gets the ID of the Point of Interest.
+     *
+     * @return ID of the point of interest.
+     */
+    @Override
+    public long getId() {
+        return this.id;
+    }
+
+    /**
+     * Sets the ID of the Point of Interest.
+     *
+     * @param id ID of the point of interest.
+     */
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -131,29 +166,26 @@ public class PointOfInterest implements POI {
     }
 
     /**
-     * Compares one PointOfInterest to another to check if it is the same.
+     * Compares one PointOfInterest to another to check if it is the same. This method compares solely by its ID.
      *
      * @param o The object to be compared to the object this method was called on
-     * @return  boolean: true if it is equal to the other object, false if it is not
+     * @return boolean: true if it is equal to the other object, false if it is not
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PointOfInterest that = (PointOfInterest) o;
-        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(that.getLongitude(), getLongitude()) == 0 &&
-                getName().equals(that.getName()) &&
-                Objects.equals(getDescription(), that.getDescription());
+        return getId() == that.getId();
     }
 
     /**
-     * Generates a unique hash for each instantiation of this object.
+     * A hash representation of an object by its ID.
      *
-     * @return  integer containing this unique hash
+     * @return Hash containing a representation of the object it is called on.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getLatitude(), getLongitude());
+        return Objects.hash(getId());
     }
 }

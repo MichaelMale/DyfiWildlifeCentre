@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2020 Michael Male
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import java.awt.geom.Point2D;
@@ -9,6 +22,20 @@ import java.awt.geom.Point2D;
  * @version 0.1
  */
 interface POI {
+
+    /**
+     * Gets the ID of the Point of Interest.
+     *
+     * @return ID of the point of interest.
+     */
+    long getId();
+
+    /**
+     * Sets the ID of the Point of Interest.
+     *
+     * @param id ID of the point of interest.
+     */
+    void setId(long id);
 
     /**
      * Gets the name of the Point of Interest.
