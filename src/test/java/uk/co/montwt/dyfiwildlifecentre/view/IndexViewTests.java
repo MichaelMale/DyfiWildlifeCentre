@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.view;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;

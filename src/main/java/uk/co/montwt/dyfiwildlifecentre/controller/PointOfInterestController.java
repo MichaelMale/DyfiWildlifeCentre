@@ -34,7 +34,7 @@ public class PointOfInterestController implements POIControllerInterface {
      * @return POI that relates to this ID, null if not found.
      */
     @Override
-    @GetMapping("/poi/get/{id}")
+    @GetMapping("/poi/get/id/{id}")
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
         return null;
     }
@@ -69,7 +69,7 @@ public class PointOfInterestController implements POIControllerInterface {
      * @return POI if found, null if not.
      */
     @Override
-    @GetMapping("poi/get/{name}")
+    @GetMapping("poi/get/name/{name}")
     public List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name) {
         return null;
     }
