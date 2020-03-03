@@ -25,23 +25,23 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 public class PointOfInterestTests {
 
-    private static PointOfInterest poi;
+    private static List<PointOfInterest> poiList;
 
     @BeforeAll
     static void init() {
-        poi = new PointOfInterest(
+        poiList = new ArrayList<>();
+        PointOfInterest poi = new PointOfInterest(
                 "Aberystwyth University",
                 "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
                         "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
@@ -50,6 +50,19 @@ public class PointOfInterestTests {
                 52.41806,
                 -4.06576
         );
+        PointOfInterest secondPOI = new PointOfInterest(
+                "Aberystwyth University",
+                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
+                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
+                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
+                        " faculties and 17 departments.",
+                52.41806,
+                -4.06576
+        );
+        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
+        poiList.add(poi);
+        poiList.add(secondPOI);
+        poiList.add(unequalPOI);
     }
 
     @Test
@@ -72,7 +85,7 @@ public class PointOfInterestTests {
     @DisplayName("A Point of Interest with a latitude and longitude passed to it should be able to return a Point2D " +
             "object containing both values.")
     public void whenPOIIsInstantiated_MethodCanReturnAPoint2DRepresentation() {
-        Assertions.assertEquals(new Point2D.Double(52.41806, -4.06576), poi.generateCoordinates());
+        Assertions.assertEquals(new Point2D.Double(52.41806, -4.06576), poiList.get(0).generateCoordinates());
     }
 
     @Test
@@ -84,51 +97,6 @@ public class PointOfInterestTests {
                         "Aberystwyth was a founding member institution of the former federal University of Wales." +
                         " The university has over 8,000 students studying across 3 academic faculties and 17" +
                         " departments.\",\"latitude\":52.41806,\"longitude\":-4.06576}",
-                poi.toJSON());
+                poiList.get(0).toJSON());
     }
-
-    @Test
-    @DisplayName("Confirm that the equals method returns true if objects are the same.")
-    public void whenEqualsMethodIsCalledOnEqualObjects_MethodReturnsTrue() {
-        PointOfInterest secondPOI = new PointOfInterest(
-                "Aberystwyth University",
-                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
-                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
-                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
-                        " faculties and 17 departments.",
-                52.41806,
-                -4.06576
-        );
-        Assertions.assertEquals(poi, secondPOI);
-    }
-
-    @Test
-    @DisplayName("Confirm that the equals method returns false if objects are not the same.")
-    public void whenEqualsMethodIsCalledOnUnequalObjects_MethodReturnsFalse() {
-        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
-        Assertions.assertNotEquals(poi, unequalPOI);
-    }
-
-    @Test
-    @DisplayName("Confirm that hash code for two equal objects is the same.")
-    public void whenHashCodeMethodIsCalledOnEqualObjects_HashCodeIsTheSame() {
-        PointOfInterest secondPOI = new PointOfInterest(
-                "Aberystwyth University",
-                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
-                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
-                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
-                        " faculties and 17 departments.",
-                52.41806,
-                -4.06576
-        );
-        Assertions.assertEquals(poi.hashCode(), secondPOI.hashCode());
-    }
-
-    @Test
-    @DisplayName("Confirm that the hash code for two unequal objects is different.")
-    public void whenHashCodeMethodIsCalledOnUnequalObjects_HashCodeIsDifferent() {
-        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
-        Assertions.assertNotEquals(poi.hashCode(), unequalPOI.hashCode());
-    }
-
 }
