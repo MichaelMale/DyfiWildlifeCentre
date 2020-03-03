@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+
 
 import java.awt.geom.Point2D;
 
@@ -78,7 +78,7 @@ public class PointOfInterestTests {
     @Test
     @DisplayName("Confirm that a valid JSON representation is returned when calling method.")
     public void whenJSONMethodIsCalled_MethodReturnsValidRepresentation() {
-        Assertions.assertEquals("{\"id\":1,\"name\":\"Aberystwyth University\",\"description\":\"Aberystwyth " +
+        Assertions.assertEquals("{\"id\":0,\"name\":\"Aberystwyth University\",\"description\":\"Aberystwyth " +
                         "University " +
                         "(Welsh: Prifysgol Aberystwyth) is a public research university in Aberystwyth, Wales. " +
                         "Aberystwyth was a founding member institution of the former federal University of Wales." +

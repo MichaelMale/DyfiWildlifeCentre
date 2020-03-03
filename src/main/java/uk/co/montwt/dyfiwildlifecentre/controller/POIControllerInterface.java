@@ -28,39 +28,44 @@ public interface POIControllerInterface {
 
     /**
      * Gets a POI by its ID.
-     * @param id    ID of the POI.
-     * @return  POI that relates to this ID, null if not found.
+     *
+     * @param id ID of the POI.
+     * @return POI that relates to this ID, null if not found.
      */
     @GetMapping("/poi/get/{id}")
     PointOfInterest getPointOfInterestById(@PathVariable("id") long id);
 
     /**
      * Gets all Points of Interest in the DAO.
-     * @return  List of type PointOfInterest containing all POIs received from the DAO.
+     *
+     * @return List of type PointOfInterest containing all POIs received from the DAO.
      */
-    @GetMapping("/poi/getAll")
+    @GetMapping("/poi/get/all")
     List<PointOfInterest> getAllPointsOfInterest();
 
     /**
      * Creates a Point of Interest and places it into the database.
-     * @param poi   Point of Interest to be added into the database.
-     * @return  POI that was added.
+     *
+     * @param poi Point of Interest to be added into the database.
+     * @return POI that was added.
      */
     @PostMapping("/poi/create")
     PointOfInterest createPointOfInterest(@RequestBody PointOfInterest poi);
 
     /**
      * Gets a Point of Interest by its name.
-     * @param name  Name of the Point of Interest.
-     * @return  POI if found, null if not.
+     *
+     * @param name Name of the Point of Interest.
+     * @return POI if found, null if not.
      */
     @GetMapping("/poi/get/{name}")
     List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name);
 
     /**
      * Deletes a Point of Interest by its ID.
-     * @param id    ID pertaining to the Point of Interest.
-     * @return  POI that was deleted.
+     *
+     * @param id ID pertaining to the Point of Interest.
+     * @return POI that was deleted.
      */
     @DeleteMapping("/poi/delete/{id}")
     PointOfInterest deletePointOfInterestById(@PathVariable("id") long id);

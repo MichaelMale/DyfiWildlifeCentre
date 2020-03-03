@@ -27,8 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,6 +60,15 @@ public class PointOfInterestControllerTests {
     @DisplayName("When an ID that is not in the databse is requested an HTTP 404 status code should be returned")
     public void whenIDThatIsNotInTheDatabaseIsRequested_HTTP404StatusCodeShouldBeReturned() throws Exception {
         this.mockMvc.perform(get("/poi/get/id/-1")).andDo(print()).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("When a request is made to get all entries in the database, the expected JSON representation is " +
+            "returned")
+    public void whenRequestMadeToGetAllEntriesInDatabase_expectedJSONStringReturned() throws Exception {
+        String expectedString = "[{\"id\":1,\"name\":\"Place One\",\"description\":\"Place One Description\"," +
+                "\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":2,\"name\":\"Place Two\",\"description\":\"Place Two Description\",\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":3,\"name\":\"Place Three\",\"description\":\"Place Three Description\",\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":4,\"name\":\"Place Four\",\"description\":\"Place Four Description\",\"latitude\":52.41806,\"longitude\":-4.06576}]";
+        this.mockMvc.perform(get("/poi")).andDo(print()).andExpect(content().string(expectedString));
     }
 
 }

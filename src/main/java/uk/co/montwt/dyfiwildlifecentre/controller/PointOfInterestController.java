@@ -53,9 +53,9 @@ public class PointOfInterestController implements POIControllerInterface {
      * @return List of type PointOfInterest containing all POIs received from the DAO.
      */
     @Override
-    @GetMapping("/poi/getAll")
+    @GetMapping("/poi")
     public List<PointOfInterest> getAllPointsOfInterest() {
-        return null;
+        return repository.findAll();
     }
 
     /**
