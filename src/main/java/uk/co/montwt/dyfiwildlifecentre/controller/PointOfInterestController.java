@@ -19,13 +19,20 @@ package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
 import org.springframework.web.bind.annotation.*;
+import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 
 import java.util.List;
 
 @RestController
 public class PointOfInterestController implements POIControllerInterface {
 
+    private final PointOfInterestRepository repository;
+
+    PointOfInterestController(PointOfInterestRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Gets a POI by its ID.
@@ -36,7 +43,8 @@ public class PointOfInterestController implements POIControllerInterface {
     @Override
     @GetMapping("/poi/get/id/{id}")
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
-        return null;
+        return repository.findById(id)
+                .orElseThrow(() -> new PointOfInterestNotFoundException(id));
     }
 
     /**

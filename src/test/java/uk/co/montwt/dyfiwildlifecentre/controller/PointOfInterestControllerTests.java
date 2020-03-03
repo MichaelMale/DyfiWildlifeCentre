@@ -52,14 +52,16 @@ public class PointOfInterestControllerTests {
 
     @Test
     @DisplayName("Should get the correct POI labelled '1'")
-    public void whenPerformingGetRequest_ControllerShouldGetCorrectPOI() throws Exception {
-        String expectedString = "{\"id\":1,\"name\":\"Aberystwyth University\",\"description\":\"Aberystwyth University" +
-                " (Welsh: Prifysgol Aberystwyth) is a public research university in Aberystwyth, Wales. Aberystwyth was" +
-                " a founding member institution of the former federal University of Wales. The university has over 8,000" +
-                " students studying across 3 academic faculties and 17 departments.\",\"latitude\":52.41806,\"longitude\"" +
-                ":-4.06576}\n";
+    public void whenPerformingGetRequestOnId_ControllerShouldGetCorrectPOI() throws Exception {
+        String expectedString = "{\"id\":1,\"name\":\"Place One\",\"description\":\"Place One Description\",\"latitude\":52.41806,\"longitude\":-4.06576}";
 
         this.mockMvc.perform(get("/poi/get/id/1")).andDo(print()).andExpect(content().string(expectedString));
+    }
+
+    @Test
+    @DisplayName("When an ID that is not in the databse is requested an HTTP 404 status code should be returned")
+    public void whenIDThatIsNotInTheDatabaseIsRequested_HTTP404StatusCodeShouldBeReturned() throws Exception {
+        this.mockMvc.perform(get("/poi/get/id/-1")).andDo(print()).andExpect(status().isNotFound());
     }
 
 }

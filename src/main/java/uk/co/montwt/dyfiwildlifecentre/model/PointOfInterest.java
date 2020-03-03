@@ -18,7 +18,12 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import com.google.gson.Gson;
+import jdk.jfr.MetadataDefinition;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
@@ -32,16 +37,21 @@ import java.util.Objects;
  * @version 0.1
  * @see POI Interface that this class implements
  */
+
+@Entity
 public class PointOfInterest implements POI {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String name;
     private String description;
     private double latitude;
     private double longitude;
 
-    public PointOfInterest(long id, String name, String description, double latitude, double longitude) {
-        this.id = id;
+    protected PointOfInterest() {}
+
+    public PointOfInterest(String name, String description, double latitude, double longitude) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
@@ -192,4 +202,5 @@ public class PointOfInterest implements POI {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
 }

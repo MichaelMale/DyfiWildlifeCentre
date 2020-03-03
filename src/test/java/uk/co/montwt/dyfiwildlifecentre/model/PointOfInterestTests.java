@@ -41,7 +41,7 @@ public class PointOfInterestTests {
 
     @BeforeAll
     static void init() {
-        poi = new PointOfInterest(1,
+        poi = new PointOfInterest(
                 "Aberystwyth University",
                 "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
                         "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
@@ -90,7 +90,7 @@ public class PointOfInterestTests {
     @Test
     @DisplayName("Confirm that the equals method returns true if objects are the same.")
     public void whenEqualsMethodIsCalledOnEqualObjects_MethodReturnsTrue() {
-        PointOfInterest secondPOI = new PointOfInterest(1,
+        PointOfInterest secondPOI = new PointOfInterest(
                 "Aberystwyth University",
                 "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
                         "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
@@ -105,14 +105,14 @@ public class PointOfInterestTests {
     @Test
     @DisplayName("Confirm that the equals method returns false if objects are not the same.")
     public void whenEqualsMethodIsCalledOnUnequalObjects_MethodReturnsFalse() {
-        PointOfInterest unequalPOI = new PointOfInterest(2, "Title", "Description", 0, 0);
+        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
         Assertions.assertNotEquals(poi, unequalPOI);
     }
 
     @Test
     @DisplayName("Confirm that hash code for two equal objects is the same.")
     public void whenHashCodeMethodIsCalledOnEqualObjects_HashCodeIsTheSame() {
-        PointOfInterest secondPOI = new PointOfInterest(1,
+        PointOfInterest secondPOI = new PointOfInterest(
                 "Aberystwyth University",
                 "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
                         "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
@@ -127,7 +127,7 @@ public class PointOfInterestTests {
     @Test
     @DisplayName("Confirm that the hash code for two unequal objects is different.")
     public void whenHashCodeMethodIsCalledOnUnequalObjects_HashCodeIsDifferent() {
-        PointOfInterest unequalPOI = new PointOfInterest(2, "Title", "Description", 0, 0);
+        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
         Assertions.assertNotEquals(poi.hashCode(), unequalPOI.hashCode());
     }
 
