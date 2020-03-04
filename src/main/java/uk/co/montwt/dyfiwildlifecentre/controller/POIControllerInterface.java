@@ -17,6 +17,7 @@
 
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 
@@ -49,8 +50,8 @@ public interface POIControllerInterface {
      * @param poi Point of Interest to be added into the database.
      * @return POI that was added.
      */
-    @PostMapping("/poi/create")
-    PointOfInterest createPointOfInterest(@RequestBody PointOfInterest poi);
+    @PostMapping(value = "/poi/create", consumes = "application/json", produces = "application/json")
+    ResponseEntity<Object> createPointOfInterest(@RequestBody PointOfInterest poi) throws Exception;
 
     /**
      * Gets a Point of Interest by its name.

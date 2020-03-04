@@ -23,7 +23,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.client.RestTemplate;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,11 +60,11 @@ public class PointOfInterestControllerTests {
     public void whenPerformingGetRequestOnId_ControllerShouldGetCorrectPOI() throws Exception {
         String expectedString = "{\"id\":1,\"name\":\"Place One\",\"description\":\"Place One Description\",\"latitude\":52.41806,\"longitude\":-4.06576}";
 
-        this.mockMvc.perform(get("/poi/get/id/1")).andDo(print()).andExpect(content().string(expectedString));
+        this.mockMvc.perform(get("/poi/get/id/1")).andDo(print()).andExpect(status().isFound()).andExpect(content().string(expectedString));
     }
 
     @Test
-    @DisplayName("When an ID that is not in the databse is requested an HTTP 404 status code should be returned")
+    @DisplayName("When an ID that is not in the database is requested an HTTP 404 status code should be returned")
     public void whenIDThatIsNotInTheDatabaseIsRequested_HTTP404StatusCodeShouldBeReturned() throws Exception {
         this.mockMvc.perform(get("/poi/get/id/-1")).andDo(print()).andExpect(status().isNotFound());
     }
@@ -69,6 +76,26 @@ public class PointOfInterestControllerTests {
         String expectedString = "[{\"id\":1,\"name\":\"Place One\",\"description\":\"Place One Description\"," +
                 "\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":2,\"name\":\"Place Two\",\"description\":\"Place Two Description\",\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":3,\"name\":\"Place Three\",\"description\":\"Place Three Description\",\"latitude\":52.41806,\"longitude\":-4.06576},{\"id\":4,\"name\":\"Place Four\",\"description\":\"Place Four Description\",\"latitude\":52.41806,\"longitude\":-4.06576}]";
         this.mockMvc.perform(get("/poi")).andDo(print()).andExpect(content().string(expectedString));
+    }
+
+    @Test
+    @DisplayName("Should be able to add a POI to the database")
+    public void confirmThatDatabaseAllowsYouToAddAPointOfInterest() throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+
+        TestRestTemplate testRestTemplate = new TestRestTemplate();
+
+        PointOfInterest newPOI = new PointOfInterest("Test1", "Test1Description", 0, 0);
+        final String baseUrl = "http://localhost:8080/poi/create";
+        URI uri = new URI(baseUrl);
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/poi/create")
+                        .content(newPOI.toJSON())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
     }
 
 }

@@ -18,11 +18,15 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -42,6 +46,7 @@ public class PointOfInterestController implements POIControllerInterface {
      */
     @Override
     @GetMapping("/poi/get/id/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new PointOfInterestNotFoundException(id));
@@ -65,9 +70,20 @@ public class PointOfInterestController implements POIControllerInterface {
      * @return POI that was added.
      */
     @Override
-    @GetMapping("/poi/create")
-    public PointOfInterest createPointOfInterest(@RequestBody PointOfInterest poi) {
-        return null;
+    @PostMapping(value = "/poi/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> createPointOfInterest(@RequestBody PointOfInterest poi) throws Exception {
+
+        int id = repository.findAll().size() + 1;
+        poi.setId(id);
+
+        repository.save(poi);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(poi.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     /**

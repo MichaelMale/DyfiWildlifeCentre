@@ -38,7 +38,8 @@ function initMap() {
         const instance = M.Modal.init(element, {
             dismissible: true,
             inDuration: 500,
-            outDuration: 500});
+            outDuration: 500
+        });
 
         instance.open();
     });
