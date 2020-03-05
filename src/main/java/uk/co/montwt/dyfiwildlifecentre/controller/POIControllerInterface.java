@@ -69,7 +69,7 @@ public interface POIControllerInterface {
      * @return POI that was deleted.
      */
     @DeleteMapping("/poi/delete/{id}")
-    PointOfInterest deletePointOfInterestById(@PathVariable("id") long id);
+    void deletePointOfInterestById(@PathVariable("id") long id);
 
 
 }

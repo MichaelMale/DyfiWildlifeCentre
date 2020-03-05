@@ -18,14 +18,12 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-/*public interface PointOfInterestRepository extends CrudRepository<PointOfInterest, Long> {
-
-    List<PointOfInterest> findByName(String name);
-
-    PointOfInterest findById(long id);
-}*/
+import java.util.List;
 
 public interface PointOfInterestRepository extends JpaRepository<PointOfInterest, Long> {
 
+    @Query("SELECT poi FROM PointOfInterest poi WHERE LOWER(poi.name) = LOWER(:name)")
+    List<PointOfInterest> findAllPointsOfInterestByName(String name);
 }

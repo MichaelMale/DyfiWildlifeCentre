@@ -94,8 +94,9 @@ public class PointOfInterestController implements POIControllerInterface {
      */
     @Override
     @GetMapping("poi/get/name/{name}")
+    @ResponseStatus(HttpStatus.FOUND)
     public List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name) {
-        return null;
+        return repository.findAllPointsOfInterestByName(name);
     }
 
     /**
@@ -106,7 +107,7 @@ public class PointOfInterestController implements POIControllerInterface {
      */
     @Override
     @DeleteMapping("/poi/delete/{id}")
-    public PointOfInterest deletePointOfInterestById(@PathVariable("id") long id) {
-        return null;
+    public void deletePointOfInterestById(@PathVariable("id") long id) {
+        repository.deleteById(id);
     }
 }
