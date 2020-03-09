@@ -31,10 +31,11 @@ public class LoadDatabase {
 
         return (args) -> {
             // Save some sample data
-            repository.save(new PointOfInterest("Place One", "Place One Description", 52.41806, -4.06576));
-            repository.save(new PointOfInterest("Place Two", "Place Two Description", 52.41806, -4.06576));
-            repository.save(new PointOfInterest("Place Three", "Place Three Description", 52.41806, -4.06576));
-            repository.save(new PointOfInterest("Place Four", "Place Four Description", 52.41806, -4.06576));
+            repository.save(new PointOfInterest("Dyfi Wildlife Centre", "Place One Description", 52.568774, -3.918031));
+            repository.save(new PointOfInterest("Aberystwyth University", "Place Two Description", 52.4125057,
+                    -4.06108));
+            repository.save(new PointOfInterest("Glyndale", "Place Three Description", 52.4162989, -4.07767));
+            repository.save(new PointOfInterest("Poole Harbour", "Place Four Description", 50.6937948, -2.0061704));
         };
     }
 }

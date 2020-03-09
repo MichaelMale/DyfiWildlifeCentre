@@ -35,6 +35,7 @@ async function getPointsOfInterest(url) {
  */
 async function initMap() {
     const allPointsOfInterest = await getPointsOfInterest('/poi');
+
     console.log(allPointsOfInterest); // Debug data to confirm correct POIs have been entered.
     const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
     const map = new google.maps.Map(document.getElementById('map'), {
@@ -63,6 +64,17 @@ async function initMap() {
 
         instance.open();
     });
+
+    allPointsOfInterest.forEach(
+        poi => {
+            const marker = new google.maps.Marker({
+                position: {lat: poi.latitude, lng: poi.longitude},
+                map: map,
+                title: poi.name,
+                description: poi.description
+            });
+        }
+    );
 
     // const springGeneratedMarker = new google.maps.Marker({
     //     position: {lat: [[${marker_test_lat}]], lng: [[${marker_test_long}]]},
