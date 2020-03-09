@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /**
  * An asynchronous function, that uses the JavaScript Fetch API to perform an HTTP GET Request to an API containing
  * all Points Of Interest. The current utilisation of this is as a helper function to support initMap() in creating

@@ -17,6 +17,7 @@
 
 package uk.co.montwt.dyfiwildlifecentre.view;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+
 @SpringBootTest
 @WebAppConfiguration
 public class IndexViewTests {
@@ -44,6 +46,8 @@ public class IndexViewTests {
     @BeforeEach
     public void setup() throws IOException {
         webClient = MockMvcWebClientBuilder.webAppContextSetup(wac).build();
+        webClient.getOptions().setThrowExceptionOnScriptError(false); // Will be using JSUnit to test JavaScript.
+        // HTMLUnit appears to require a different version.
         page = webClient.getPage("http://localhost:8080/");
     }
 
