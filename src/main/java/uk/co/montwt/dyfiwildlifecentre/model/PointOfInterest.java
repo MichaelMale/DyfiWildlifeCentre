@@ -18,6 +18,7 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,12 +44,14 @@ public class PointOfInterest implements POI {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+
     private String name;
     private String description;
     private double latitude;
     private double longitude;
 
-    protected PointOfInterest() {
+    public PointOfInterest() {
     }
 
     public PointOfInterest(String name, String description, double latitude, double longitude) {
@@ -203,4 +206,10 @@ public class PointOfInterest implements POI {
         return Objects.hash(getId());
     }
 
+    @Override
+    public String toString() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        return gson.toJson(this);
+    }
 }

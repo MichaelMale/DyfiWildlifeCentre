@@ -18,21 +18,18 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 
 @Controller
-public class MasterController {
+public class AdminController {
 
-
-    @RequestMapping("/")
-    public String index() {
-        return "index";
+    @GetMapping("/admin")
+    public String adminForm(Model model) {
+        model.addAttribute("pointOfInterest", new PointOfInterest());
+        return "admin";
     }
 
-//    @RequestMapping("/admin")
-//    public String admin(Model model) {
-//        model.addAttribute("poi", new PointOfInterest());
-//        return "admin";
-//    }
+
 }

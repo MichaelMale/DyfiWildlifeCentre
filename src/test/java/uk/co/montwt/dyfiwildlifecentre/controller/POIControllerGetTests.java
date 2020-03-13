@@ -49,7 +49,7 @@ public class POIControllerGetTests extends PointOfInterestControllerTests {
         String expectedString = "[{\"id\":1,\"name\":\"Dyfi Wildlife Centre\",\"description\":\"Place One " +
                 "Description\",\"latitude\":52.568774,\"longitude\":-3.918031},{\"id\":2,\"name\":\"Aberystwyth University\",\"description\":\"Place Two Description\",\"latitude\":52.4125057,\"longitude\":-4.06108},{\"id\":3,\"name\":\"Glyndale\",\"description\":\"Place Three Description\",\"latitude\":52.4162989,\"longitude\":-4.07767},{\"id\":4,\"name\":\"Poole Harbour\",\"description\":\"Place Four Description\",\"latitude\":50.6937948,\"longitude\":-2.0061704}]";
         this.mockMvc.perform(get("/poi")).andDo(print()).andExpect(content().string(expectedString));
-}
+    }
 
     @Test
     @DisplayName("Should be able to find a POI by its name")

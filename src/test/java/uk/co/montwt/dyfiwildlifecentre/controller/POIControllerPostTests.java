@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class POIControllerPostTests extends PointOfInterestControllerTests{
+public class POIControllerPostTests extends PointOfInterestControllerTests {
 
     @Test
     @DisplayName("Should be able to add a POI to the database")
@@ -44,7 +44,7 @@ public class POIControllerPostTests extends PointOfInterestControllerTests{
 
         TestRestTemplate testRestTemplate = new TestRestTemplate();
 
-        PointOfInterest newPOI = new PointOfInterest("Test1", "Test1Description", 0, 0);
+        PointOfInterest newPOI = new PointOfInterest("Test1", "Test1Description", 50, 50);
         final String baseUrl = "http://localhost:8080/poi/create";
         URI uri = new URI(baseUrl);
 

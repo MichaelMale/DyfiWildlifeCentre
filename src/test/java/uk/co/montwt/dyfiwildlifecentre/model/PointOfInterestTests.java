@@ -52,6 +52,7 @@ public class PointOfInterestTests {
                 52.41806,
                 -4.06576
         );
+        poi.setId(0);
         PointOfInterest secondPOI = new PointOfInterest(
                 "Aberystwyth University",
                 "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
@@ -61,7 +62,9 @@ public class PointOfInterestTests {
                 52.41806,
                 -4.06576
         );
+        secondPOI.setId(1);
         PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
+        unequalPOI.setId(2);
         poiList.add(poi);
         poiList.add(secondPOI);
         poiList.add(unequalPOI);
@@ -100,5 +103,26 @@ public class PointOfInterestTests {
                         " The university has over 8,000 students studying across 3 academic faculties and 17" +
                         " departments.\",\"latitude\":52.41806,\"longitude\":-4.06576}",
                 poiList.get(0).toJSON());
+    }
+
+    @Test
+    @DisplayName("POI should be equal with itself")
+    public void ifSameObjectIsEqualled_POIShouldReturnTrue() {
+        Assertions.assertEquals(poiList.get(0), poiList.get(0));
+        Assertions.assertEquals(poiList.get(0).hashCode(), poiList.get(0).hashCode());
+    }
+
+    @Test
+    @DisplayName("POI should not be equal with null")
+    public void ifObjectIsEqualledWithNull_POIShouldReturnFalse() {
+        Assertions.assertNotEquals(poiList.get(0), null);
+        Assertions.assertNotEquals((double) poiList.get(0).hashCode(), null);
+    }
+
+    @Test
+    @DisplayName("POI should not be equal with a different POI")
+    public void ifObjectIsEqualledWithDifferentObject_POIShouldReturnFalse() {
+        Assertions.assertNotEquals(poiList.get(0), poiList.get(2));
+        Assertions.assertNotEquals(poiList.get(0).hashCode(), poiList.get(2).hashCode());
     }
 }

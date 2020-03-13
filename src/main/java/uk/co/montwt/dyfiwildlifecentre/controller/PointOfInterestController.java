@@ -18,10 +18,13 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
@@ -33,6 +36,7 @@ import java.util.List;
 public class PointOfInterestController implements POIControllerInterface {
 
     private final PointOfInterestRepository repository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     PointOfInterestController(PointOfInterestRepository repository) {
         this.repository = repository;
@@ -87,6 +91,25 @@ public class PointOfInterestController implements POIControllerInterface {
     }
 
     /**
+     * Submits a Point of Interest based on information in the form.
+     *
+     * @param pointOfInterest A POI
+     * @return RedirectView which redirects the server to the index page, which will contain the newly created point
+     * of interest.
+     */
+    @PostMapping("/poi/form_create")
+    public RedirectView submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) {
+        logger.info("HTTP Post Request instantiated from form");
+        int id = repository.findAll().size() + 1;
+        pointOfInterest.setId(id);
+        logger.info("POI set to have ID " + id);
+
+        repository.save(pointOfInterest);
+        logger.info("POI saved: \n" + pointOfInterest.toString());
+        return new RedirectView("/");
+    }
+
+    /**
      * Gets a Point of Interest by its name.
      *
      * @param name Name of the Point of Interest.
@@ -110,4 +133,6 @@ public class PointOfInterestController implements POIControllerInterface {
     public void deletePointOfInterestById(@PathVariable("id") long id) {
         repository.deleteById(id);
     }
+
+
 }
