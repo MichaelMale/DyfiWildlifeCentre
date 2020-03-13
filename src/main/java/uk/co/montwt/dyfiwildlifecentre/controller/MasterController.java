@@ -15,23 +15,24 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.controller;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class DyfiWildlifeCentreApplicationTests {
+@Controller
+public class MasterController {
 
-    @Autowired
-    private DyfiWildlifeCentreApplication application;
 
-    @Test
-    void contextLoads() throws Exception {
-        assertThat(application).isNotNull();
+    @RequestMapping("/")
+    public String index() {
+        return "index";
     }
 
+//    @RequestMapping("/admin")
+//    public String admin(Model model) {
+//        model.addAttribute("poi", new PointOfInterest());
+//        return "admin";
+//    }
 }

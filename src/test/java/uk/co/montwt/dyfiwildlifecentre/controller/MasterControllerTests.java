@@ -15,8 +15,10 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.controller;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,14 +26,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class DyfiWildlifeCentreApplicationTests {
+public class MasterControllerTests {
 
     @Autowired
-    private DyfiWildlifeCentreApplication application;
+    private MasterController controller;
 
     @Test
     void contextLoads() throws Exception {
-        assertThat(application).isNotNull();
+        assertThat(controller).isNotNull();
     }
 
+    @Test
+    @DisplayName("Confirm that the index method returns the correct string")
+    void onCallingIndexMethod_ConfirmMethodReturnsCorrectString() {
+        Assertions.assertEquals("index", controller.index());
+    }
+
+//    @Test
+//    @DisplayName("Confirm that the admin method returns the correct string")
+//    void onCallingAdminMethod_ConfirmMethodReturnsCorrectString() {
+//        Assertions.assertEquals("admin", controller.admin());
+//    }
 }

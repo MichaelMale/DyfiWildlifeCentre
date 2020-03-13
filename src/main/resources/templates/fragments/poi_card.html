@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright (C) 2020 Michael Male
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
@@ -6,12 +23,12 @@
 
 <body>
 
-<div id="poiCard" class="modal" th:fragment="poiCard">
+<div class="modal" id="poiCard" th:fragment="poiCard">
     <div class="modal-content">
         <div class="container-fluid">
             <div class="card large z-depth-0">
                 <div class="card-image">
-                    <img data-src="osprey.jpeg" alt="An example image" class="lazyload">
+                    <img alt="An example image" class="lazyload" data-src="osprey.jpeg">
                     <span class="card-title black-text" id="poi_title"></span>
                 </div>
                 <div class="card-content" id="scrollable">

@@ -15,23 +15,11 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.exception;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+public class PointOfInterestNotFoundException extends RuntimeException {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest
-class DyfiWildlifeCentreApplicationTests {
-
-    @Autowired
-    private DyfiWildlifeCentreApplication application;
-
-    @Test
-    void contextLoads() throws Exception {
-        assertThat(application).isNotNull();
+    public PointOfInterestNotFoundException(long id) {
+        super("Could not find POI " + id);
     }
-
 }

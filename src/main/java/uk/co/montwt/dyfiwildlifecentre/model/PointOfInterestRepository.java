@@ -15,23 +15,15 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.model;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
-@SpringBootTest
-class DyfiWildlifeCentreApplicationTests {
+public interface PointOfInterestRepository extends JpaRepository<PointOfInterest, Long> {
 
-    @Autowired
-    private DyfiWildlifeCentreApplication application;
-
-    @Test
-    void contextLoads() throws Exception {
-        assertThat(application).isNotNull();
-    }
-
+    @Query("SELECT poi FROM PointOfInterest poi WHERE LOWER(poi.name) = LOWER(:name)")
+    List<PointOfInterest> findAllPointsOfInterestByName(String name);
 }
