@@ -20,10 +20,7 @@ package uk.co.montwt.dyfiwildlifecentre.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
@@ -39,6 +36,7 @@ import java.util.Objects;
  */
 
 @Entity
+@Table(name = "points_of_interest")
 public class PointOfInterest implements POI {
 
     @Id
