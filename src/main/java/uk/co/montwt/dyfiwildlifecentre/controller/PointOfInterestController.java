@@ -73,6 +73,7 @@ public class PointOfInterestController implements POIControllerInterface {
      * @param poi Point of Interest to be added into the database.
      * @return POI that was added.
      */
+    @Deprecated
     @Override
     @PostMapping(value = "/poi/create", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> createPointOfInterest(@RequestBody PointOfInterest poi) throws Exception {

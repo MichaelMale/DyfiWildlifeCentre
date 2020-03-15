@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="row">
-        <form action="#" class="col s12 m6" method="post" th:action="@{/poi/form_create}"
+        <form id="poiSubmissionForm" action="#" class="col s12 m6" method="post" th:action="@{/poi/form_create}"
               th:object="${pointOfInterest}">
             <div class="row">
 
@@ -92,7 +92,7 @@
 
                 <!-- Add to the database -->
                 <div class="input-field col s6 m3">
-                    <button class="btn waves-effect waves-light">Add</button>
+                    <button id="addToDb" class="btn waves-effect waves-light">Add</button>
                 </div>
 
             </div>
