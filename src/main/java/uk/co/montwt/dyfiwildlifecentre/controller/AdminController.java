@@ -26,10 +26,22 @@ import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 public class AdminController {
 
     @GetMapping("/admin")
-    public String adminForm(Model model) {
-        model.addAttribute("pointOfInterest", new PointOfInterest());
-        return "admin";
+    public String adminHome(Model model) {
+        return "admin/home";
     }
+
+    @GetMapping("/admin/add")
+    public String adminAdd(Model model) {
+        model.addAttribute("pointOfInterest", new PointOfInterest());
+        return "admin/add";
+    }
+
+    @GetMapping("/admin/list")
+    public String adminList(Model model) {
+        return "admin/list";
+    }
+
+
 
 
 }

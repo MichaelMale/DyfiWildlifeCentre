@@ -1,10 +1,84 @@
+<!--
+  ~ Copyright (C) 2020 Michael Male
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre - Admin Panel</title>
 </head>
 <body>
-$END$
+
+<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s6 m3">
+            <p><h1>Existing POIs</h1></p>
+            <p><h5>Check out the points of interest that are already in the database.</h5></p>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col s6 m3" id="pointsOfInterest"></div>
+
+    </div>
+</div>
+<script>
+async function getPointsOfInterest(url) {
+    const response = await fetch(url);
+
+    return response.json();
+}
+
+async function initList() {
+    const allPointsOfInterest = await getPointsOfInterest('/poi');
+
+    allPointsOfInterest.sort(function(a, b) {
+        let nameA = a.name.toUpperCase();
+        let nameB = b.name.toUpperCase();
+
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    // let str = '<ul class="collection-with-header">\n';
+
+    let str = '<div class="collection">'
+
+    allPointsOfInterest.forEach(
+        poi => {
+            str += '<a href="./poi/get/id/' + poi.id + '" class="collection-item">' + poi.name + '</a>\n';
+        }
+    );
+
+    str += '</div>';
+    console.log(str);
+    document.getElementById("pointsOfInterest").innerHTML = str;
+}
+
+initList();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

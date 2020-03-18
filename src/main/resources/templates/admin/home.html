@@ -20,83 +20,31 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <style>
-        /* Removes spinners from latitude and longitude as unnecessary */
-
-        /* Chrome, Safari, Edge, Opera */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
 </head>
 <body>
 
 <fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col s12 m6">
-            <p>
-            <h1>Create a Point of Interest</h1></p>
-            <p><h5>Add information to the form below to create a Point of Interest for the map.</h5></p>
+            <p><h1>Admin Panel</h1></p>
+            <p><h5>Choose from the following options.</h5></p>
+
         </div>
     </div>
     <div class="row">
-        <form id="poiSubmissionForm" action="#" class="col s12 m6" method="post" th:action="@{/poi/form_create}"
-              th:object="${pointOfInterest}">
-            <div class="row">
-
-                <!-- POI name -->
-                <div class="input-field col s12 m6">
-                    <input class="validate" id="name" placeholder="Name" th:field="*{name}" type="text" required>
-                    <label for="name">Name</label>
-                </div>
-
+        <div class="col s12 m6">
+            <div class="col s12 m6 l4">
+                <a class="waves-effect waves-light btn" href="/admin/add">Add</a>
             </div>
-            <div class="row">
-
-                <!-- POI Description -->
-                <div class="input-field col s12 m6">
-                    <textarea class="materialize-textarea" id="description" th:field="*{description}"></textarea>
-                    <label for="description">Description</label>
-                </div>
-
+            <div class="col s12 m6 l4">
+                <a class="waves-effect waves-light btn" href="/admin/list">Edit</a>
             </div>
-            <div class="row">
-
-                <!-- Latitude -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="latitude" max="90" min="-90" placeholder="Latitude" step="0.00000001"
-                           th:field="*{latitude}"
-                           type="number">
-                    <label for="latitude">Latitude</label>
-                </div>
-
-                <!-- Longitude -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="longitude" max="180" min="-180" placeholder="Longitude"
-                           step="0.00000001"
-                           th:field="*{longitude}" type="number">
-                    <label for="longitude">Longitude</label>
-                </div>
-
+            <div class="col s12 m6 l4">
+                <a class="waves-effect waves-light btn" href="#">Delete</a>
             </div>
-            <div class="row">
-
-
-                <!-- Add to the database -->
-                <div class="input-field col s6 m3">
-                    <button id="addToDb" class="btn waves-effect waves-light">Add</button>
-                </div>
-
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
