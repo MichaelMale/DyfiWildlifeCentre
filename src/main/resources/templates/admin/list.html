@@ -20,10 +20,22 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
+    <style>
+        #list {
+            float: left;
+            width: 50%;
+        }
+        #editForm {
+            float: left;
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
 
 <fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
+
 
 <div class="container-fluid">
     <div class="row">
@@ -32,17 +44,34 @@
             <p><h5>Check out the points of interest that are already in the database.</h5></p>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="list">
 
         <div class="col s6 m3" id="pointsOfInterest"></div>
 
     </div>
 </div>
+
+<!-- Make into a fragment and put it into add as well -->
+<div id="editForm" data-poi-id="" class="container-fluid">
+    <!-- Prefilled form, similar to the one in add, that can be used to edit any information and do a PATCH. -->
+    data
+</div>
+
 <script>
 async function getPointsOfInterest(url) {
     const response = await fetch(url);
 
     return response.json();
+}
+
+function loadEditModal(id) {
+    let x = document.getElementById("editForm").setAttribute("data-poi-id", id);
+
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }
 
 async function initList() {
@@ -62,13 +91,11 @@ async function initList() {
         }
     });
 
-    // let str = '<ul class="collection-with-header">\n';
-
-    let str = '<div class="collection">'
+    let str = '<div class="collection">';
 
     allPointsOfInterest.forEach(
         poi => {
-            str += '<a href="./poi/get/id/' + poi.id + '" class="collection-item">' + poi.name + '</a>\n';
+            str += '<a onclick=\'loadEditModal(' + poi.id + ')\' class="collection-item">' + poi.name + '</a>';
         }
     );
 
