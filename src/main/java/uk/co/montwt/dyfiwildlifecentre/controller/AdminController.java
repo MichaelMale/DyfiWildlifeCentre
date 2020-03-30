@@ -41,7 +41,10 @@ public class AdminController {
         return "admin/list";
     }
 
-
+    @GetMapping("/admin/edit_active")
+    public String adminEditActive(Model model) {
+        return "admin/edit_active";
+    }
 
 
 }

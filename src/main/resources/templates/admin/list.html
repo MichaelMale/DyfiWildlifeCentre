@@ -20,16 +20,6 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <style>
-        #list {
-            float: left;
-            width: 50%;
-        }
-        #editForm {
-            float: left;
-            width: 50%;
-        }
-    </style>
 </head>
 <body>
 
@@ -51,24 +41,19 @@
 
 
 
-<div class="container-fluid">
+<div class="container-fluid center">
     <div class="row">
-        <div class="col s6 m3">
-            <p><h1>Existing POIs</h1></p>
-            <p><h5>Check out the points of interest that are already in the database.</h5></p>
+        <div class="col s12 m6">
+            <p>
+            <h1>List of POIs</h1></p>
+            <p><h5>Click on a POI to see, edit, or remove information
+            about it.</h5></p>
         </div>
     </div>
-    <div class="row" id="list">
-
-        <div class="col s6 m3" id="pointsOfInterest"></div>
-
+    <div class="row">
+        <div class="col s12 m6" id="pointsOfInterest">
+        </div>
     </div>
-</div>
-
-<!-- Make into a fragment and put it into add as well -->
-<div id="editForm" data-poi-id="" class="container-fluid">
-    <!-- Prefilled form, similar to the one in add, that can be used to edit any information and do a PATCH. -->
-    data
 </div>
 
 <script>
@@ -79,13 +64,7 @@ async function getPointsOfInterest(url) {
 }
 
 function loadEditModal(id) {
-    let x = document.getElementById("editForm").setAttribute("data-poi-id", id);
-
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
+    alert(id);
 }
 
 async function initList() {
@@ -114,7 +93,6 @@ async function initList() {
     );
 
     str += '</div>';
-    console.log(str);
     document.getElementById("pointsOfInterest").innerHTML = str;
 }
 
