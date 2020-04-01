@@ -20,10 +20,18 @@ package uk.co.montwt.dyfiwildlifecentre.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 
 @Controller
 public class AdminController {
+
+    private final PointOfInterestRepository repository;
+
+    AdminController(PointOfInterestRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/admin")
     public String adminHome(Model model) {
@@ -38,11 +46,13 @@ public class AdminController {
 
     @GetMapping("/admin/list")
     public String adminList(Model model) {
+        model.addAttribute("pointsOfInterest", repository.findAll());
         return "admin/list";
     }
 
     @GetMapping("/admin/edit_active")
-    public String adminEditActive(Model model) {
+    public String adminEditActive(@RequestParam("name") String poiName, Model model) {
+        model.addAttribute("pointOfInterestName", poiName);
         return "admin/edit_active";
     }
 

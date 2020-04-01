@@ -29,10 +29,4 @@ public class MasterController {
     public String index() {
         return "index";
     }
-
-//    @RequestMapping("/admin")
-//    public String admin(Model model) {
-//        model.addAttribute("poi", new PointOfInterest());
-//        return "admin";
-//    }
 }

@@ -52,52 +52,13 @@
     </div>
     <div class="row">
         <div class="col s12 m6" id="pointsOfInterest">
+            <div class="collection" th:each="poi : ${pointsOfInterest}">
+                <a href="#" class="collection-item" th:text="${poi.name}"></a>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-async function getPointsOfInterest(url) {
-    const response = await fetch(url);
-
-    return response.json();
-}
-
-function loadEditModal(id) {
-    alert(id);
-}
-
-async function initList() {
-    const allPointsOfInterest = await getPointsOfInterest('/poi');
-
-    allPointsOfInterest.sort(function(a, b) {
-        let nameA = a.name.toUpperCase();
-        let nameB = b.name.toUpperCase();
-
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        } else {
-            return 0;
-        }
-    });
-
-    let str = '<div class="collection">';
-
-    allPointsOfInterest.forEach(
-        poi => {
-            str += '<a onclick=\'loadEditModal(' + poi.id + ')\' class="collection-item">' + poi.name + '</a>';
-        }
-    );
-
-    str += '</div>';
-    document.getElementById("pointsOfInterest").innerHTML = str;
-}
-
-initList();
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>
