@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 
+import java.util.Optional;
+
 @Controller
 public class AdminController {
 
@@ -51,8 +53,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin/edit_active")
-    public String adminEditActive(@RequestParam("name") String poiName, Model model) {
-        model.addAttribute("pointOfInterestName", poiName);
+    public String adminEditActive(@RequestParam("id") long id, Model model) {
+        var poi = repository.findById(id);
+        poi.ifPresent(pointOfInterest -> model.addAttribute("poi", pointOfInterest));
         return "admin/edit_active";
     }
 

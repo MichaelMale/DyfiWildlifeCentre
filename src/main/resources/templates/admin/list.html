@@ -20,6 +20,12 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
+    <style>
+        #pointsOfInterest {
+            overflow: auto;
+            height: 50%;
+        }
+    </style>
 </head>
 <body>
 
@@ -52,8 +58,9 @@
     </div>
     <div class="row">
         <div class="col s12 m6" id="pointsOfInterest">
-            <div class="collection" th:each="poi : ${pointsOfInterest}">
-                <a href="#" class="collection-item" th:text="${poi.name}"></a>
+            <div class="collection">
+                <a class="collection-item" th:each="poi : ${pointsOfInterest}" th:text="${poi.name}"
+                   th:href="@{/admin/edit_active(id=${poi.id})}"></a>
             </div>
         </div>
     </div>
