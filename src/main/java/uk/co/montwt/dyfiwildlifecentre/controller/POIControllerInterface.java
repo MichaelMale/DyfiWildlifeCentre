@@ -19,6 +19,7 @@ package uk.co.montwt.dyfiwildlifecentre.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 
 import java.util.List;
@@ -72,4 +73,6 @@ public interface POIControllerInterface {
     void deletePointOfInterestById(@PathVariable("id") long id);
 
 
+    @PostMapping("/poi/update")
+    RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi, @RequestParam("id") long id);
 }

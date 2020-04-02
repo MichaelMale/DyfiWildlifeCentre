@@ -18,12 +18,26 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface PointOfInterestRepository extends JpaRepository<PointOfInterest, Long> {
 
     @Query("SELECT poi FROM PointOfInterest poi WHERE LOWER(poi.name) = LOWER(:name)")
     List<PointOfInterest> findAllPointsOfInterestByName(String name);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE PointOfInterest SET name =(:name), description=(:description), latitude=(:latitude), longitude=" +
+            "(:longitude) " +
+            "WHERE id=(:id)")
+    void update(@Param("name") String name,
+                @Param("description") String description,
+                @Param("latitude") double latitude,
+                @Param("longitude") double longitude,
+                @Param("id") long id);
 }

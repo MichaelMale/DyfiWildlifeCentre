@@ -54,6 +54,7 @@ public class AdminController {
 
     @GetMapping("/admin/edit_active")
     public String adminEditActive(@RequestParam("id") long id, Model model) {
+        model.addAttribute("id", id);
         var poi = repository.findById(id);
         poi.ifPresent(pointOfInterest -> model.addAttribute("poi", pointOfInterest));
         return "admin/edit_active";

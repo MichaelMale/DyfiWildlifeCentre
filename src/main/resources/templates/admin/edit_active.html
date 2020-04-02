@@ -48,7 +48,8 @@
     </div>
     <div class="row">
 
-        <form action="#" class="col s12 m6" id="poiUpdateForm">
+        <form class="col s12 m6" id="poiUpdateForm" th:object="${poi}" method="post"
+              th:action="@{/poi/update(id=${id})}">
 
             <!-- POI name -->
             <div class="row">
@@ -56,7 +57,7 @@
                 <div class="input-field col s12 m6">
 
                     <input class="validate" id="name" placeholder="Name"
-                           required type="text" th:value="${poi.getName()}">
+                           required type="text" th:value="${poi.getName()}" th:field="*{name}">
                     <label for="name">Name</label>
 
                 </div>
@@ -68,7 +69,7 @@
 
                 <div class="input-field col s12 m6">
                     <textarea class="materialize-textarea"
-                              id="description"><th:block th:text="${poi.getDescription()}"></th:block></textarea>
+                              id="description" th:field="*{description}"><th:block th:text="${poi.getDescription()}"></th:block></textarea>
                     <label for="description">Description</label>
                 </div>
 
@@ -82,7 +83,7 @@
 
                     <input class="validate" id="latitude" max="90" min="-90"
                            placeholder="Latitude" step="0.00000001"
-                           type="number" th:value="${poi.getLatitude()}">
+                           type="number" th:value="${poi.getLatitude()}" th:field="*{latitude}">
                     <label for="latitude">Latitude</label>
 
                 </div>
@@ -91,7 +92,7 @@
                 <div class="input-field col s6 m3">
                     <input class="validate" id="longitude" max="180"
                            min="-180" placeholder="Longitude"
-                           step="0.00000001" type="number" th:value="${poi.getLongitude()}">
+                           step="0.00000001" type="number" th:value="${poi.getLongitude()}" th:field="*{longitude}">
                     <label for="longitude">Longitude</label>
                 </div>
 

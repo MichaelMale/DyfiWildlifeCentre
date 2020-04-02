@@ -136,4 +136,13 @@ public class PointOfInterestController implements POIControllerInterface {
     }
 
 
+    @Override
+    @PostMapping("/poi/update")
+    public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi, @RequestParam("id") long id) {
+        poi.setId(id);
+        repository.save(poi);
+        return new RedirectView("/");
+    }
+
+
 }
