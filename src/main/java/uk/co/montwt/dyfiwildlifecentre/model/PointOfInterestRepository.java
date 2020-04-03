@@ -30,14 +30,4 @@ public interface PointOfInterestRepository extends JpaRepository<PointOfInterest
     @Query("SELECT poi FROM PointOfInterest poi WHERE LOWER(poi.name) = LOWER(:name)")
     List<PointOfInterest> findAllPointsOfInterestByName(String name);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE PointOfInterest SET name =(:name), description=(:description), latitude=(:latitude), longitude=" +
-            "(:longitude) " +
-            "WHERE id=(:id)")
-    void update(@Param("name") String name,
-                @Param("description") String description,
-                @Param("latitude") double latitude,
-                @Param("longitude") double longitude,
-                @Param("id") long id);
 }
