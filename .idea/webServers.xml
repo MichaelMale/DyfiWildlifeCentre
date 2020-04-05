@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8ce95ecd-4aae-4261-bf3f-09dcc8381c56" name="Aber M Drive" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="M:\MMP_Backup" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

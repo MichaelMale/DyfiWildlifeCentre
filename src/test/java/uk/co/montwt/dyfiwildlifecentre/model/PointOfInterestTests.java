@@ -125,4 +125,6 @@ public class PointOfInterestTests {
         Assertions.assertNotEquals(poiList.get(0), poiList.get(2));
         Assertions.assertNotEquals(poiList.get(0).hashCode(), poiList.get(2).hashCode());
     }
+
+
 }

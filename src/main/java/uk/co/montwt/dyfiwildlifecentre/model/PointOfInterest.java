@@ -21,6 +21,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
@@ -43,10 +46,17 @@ public class PointOfInterest implements POI {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
+    @NotEmpty(message = "Error: A name must be specified")
     private String name;
+
     private String description;
+
+    @Min(value = -180, message = "Error: Latitude cannot be lower than -180")
+    @Max(value = 180, message = "Error: Latitude cannot be greater than 180")
     private double latitude;
+
+    @Min(value = -90, message = "Error: Longitude cannot be lower than -90")
+    @Max(value = 90, message = "Error: Longitude cannot be greater than 90")
     private double longitude;
 
     public PointOfInterest() {

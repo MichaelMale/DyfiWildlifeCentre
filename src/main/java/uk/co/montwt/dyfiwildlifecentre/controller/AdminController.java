@@ -20,15 +20,44 @@ package uk.co.montwt.dyfiwildlifecentre.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
+
+import java.util.Optional;
 
 @Controller
 public class AdminController {
 
+    private final PointOfInterestRepository repository;
+
+    AdminController(PointOfInterestRepository repository) {
+        this.repository = repository;
+    }
+
     @GetMapping("/admin")
-    public String adminForm(Model model) {
+    public String adminHome(Model model) {
+        return "admin/home";
+    }
+
+    @GetMapping("/admin/add")
+    public String adminAdd(Model model) {
         model.addAttribute("pointOfInterest", new PointOfInterest());
-        return "admin";
+        return "admin/add";
+    }
+
+    @GetMapping("/admin/list")
+    public String adminList(Model model) {
+        model.addAttribute("pointsOfInterest", repository.findAll());
+        return "admin/list";
+    }
+
+    @GetMapping("/admin/edit_active")
+    public String adminEditActive(@RequestParam("id") long id, Model model) {
+        model.addAttribute("id", id);
+        var poi = repository.findById(id);
+        poi.ifPresent(pointOfInterest -> model.addAttribute("poi", pointOfInterest));
+        return "admin/edit_active";
     }
 
 

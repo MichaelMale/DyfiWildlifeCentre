@@ -15,18 +15,22 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre.controller;
+package uk.co.montwt.dyfiwildlifecentre.view;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
+
+@SpringBootTest
+@WebAppConfiguration
+public class AdminViewTests {
+
+    @Autowired
+    private WebApplicationContext wac;
+
+    private HtmlPage page;
 
 
-@Controller
-public class MasterController {
-
-
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
 }

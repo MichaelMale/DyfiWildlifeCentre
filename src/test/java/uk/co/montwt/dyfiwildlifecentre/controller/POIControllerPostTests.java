@@ -17,44 +17,15 @@
 
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.RestTemplate;
-import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
-
-import java.net.URI;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class POIControllerPostTests extends PointOfInterestControllerTests {
 
-    @Test
-    @DisplayName("Should be able to add a POI to the database")
-    public void confirmThatDatabaseAllowsYouToAddAPointOfInterest() throws Exception {
-        RestTemplate restTemplate = new RestTemplate();
-
-        TestRestTemplate testRestTemplate = new TestRestTemplate();
-
-        PointOfInterest newPOI = new PointOfInterest("Test1", "Test1Description", 50, 50);
-        final String baseUrl = "http://localhost:8080/poi/create";
-        URI uri = new URI(baseUrl);
-
-        this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post("/poi/create")
-                        .content(newPOI.toJSON())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
-    }
+    /* TODO: Create acceptance tests for PostgreSQL-based posting */
 
 }

@@ -33,7 +33,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class PointOfInterestController implements POIControllerInterface {
+public class PointOfInterestController{
 
     private final PointOfInterestRepository repository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,7 +48,6 @@ public class PointOfInterestController implements POIControllerInterface {
      * @param id ID of the POI.
      * @return POI that relates to this ID, null if not found.
      */
-    @Override
     @GetMapping("/poi/get/id/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
@@ -61,7 +60,6 @@ public class PointOfInterestController implements POIControllerInterface {
      *
      * @return List of type PointOfInterest containing all POIs received from the DAO.
      */
-    @Override
     @GetMapping("/poi")
     public List<PointOfInterest> getAllPointsOfInterest() {
         return repository.findAll();
@@ -73,7 +71,7 @@ public class PointOfInterestController implements POIControllerInterface {
      * @param poi Point of Interest to be added into the database.
      * @return POI that was added.
      */
-    @Override
+    @Deprecated
     @PostMapping(value = "/poi/create", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> createPointOfInterest(@RequestBody PointOfInterest poi) throws Exception {
 
@@ -115,7 +113,6 @@ public class PointOfInterestController implements POIControllerInterface {
      * @param name Name of the Point of Interest.
      * @return POI if found, null if not.
      */
-    @Override
     @GetMapping("poi/get/name/{name}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name) {
@@ -128,10 +125,24 @@ public class PointOfInterestController implements POIControllerInterface {
      * @param id ID pertaining to the Point of Interest.
      * @return POI that was deleted.
      */
-    @Override
-    @DeleteMapping("/poi/delete/{id}")
-    public void deletePointOfInterestById(@PathVariable("id") long id) {
+    @GetMapping("/poi/delete")
+    public RedirectView deletePointOfInterestById(@RequestParam("id") long id) {
         repository.deleteById(id);
+        return new RedirectView("/admin/list");
+    }
+
+    /**
+     * Updates a Point of Interest, given its ID.
+     *
+     * @param poi   The Point Of Interest with its updated members.
+     * @param id    The Point of Interest's ID
+     * @return  A redirect that indicates the outcome of the method.
+     */
+    @PostMapping("/poi/update")
+    public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi, @RequestParam("id") long id) {
+        poi.setId(id);
+        repository.save(poi);
+        return new RedirectView("/");
     }
 
 

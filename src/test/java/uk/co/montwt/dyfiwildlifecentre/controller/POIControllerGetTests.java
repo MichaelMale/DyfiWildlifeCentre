@@ -31,8 +31,9 @@ public class POIControllerGetTests extends PointOfInterestControllerTests {
     @Test
     @DisplayName("Should get the correct POI labelled '1'")
     public void whenPerformingGetRequestOnId_ControllerShouldGetCorrectPOI() throws Exception {
-        String expectedString = "{\"id\":1,\"name\":\"Dyfi Wildlife Centre\",\"description\":\"Place One Description\",\"latitude\":52.568774,\"longitude\":-3.918031}";
-
+        String expectedString =
+                "{\"id\":1,\"name\":\"Dyfi Wildlife Centre\"," +
+                        "\"description\":\"This is the amazing place where things happen.\",\"latitude\":52.568774,\"longitude\":-3.918031}";
         this.mockMvc.perform(get("/poi/get/id/1")).andDo(print()).andExpect(status().isFound()).andExpect(content().string(expectedString));
     }
 
@@ -40,22 +41,6 @@ public class POIControllerGetTests extends PointOfInterestControllerTests {
     @DisplayName("When an ID that is not in the database is requested an HTTP 404 status code should be returned")
     public void whenIDThatIsNotInTheDatabaseIsRequested_HTTP404StatusCodeShouldBeReturned() throws Exception {
         this.mockMvc.perform(get("/poi/get/id/-1")).andDo(print()).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @DisplayName("When a request is made to get all entries in the database, the expected JSON representation is " +
-            "returned")
-    public void whenRequestMadeToGetAllEntriesInDatabase_expectedJSONStringReturned() throws Exception {
-        String expectedString = "[{\"id\":1,\"name\":\"Dyfi Wildlife Centre\",\"description\":\"Place One " +
-                "Description\",\"latitude\":52.568774,\"longitude\":-3.918031},{\"id\":2,\"name\":\"Aberystwyth University\",\"description\":\"Place Two Description\",\"latitude\":52.4125057,\"longitude\":-4.06108},{\"id\":3,\"name\":\"Glyndale\",\"description\":\"Place Three Description\",\"latitude\":52.4162989,\"longitude\":-4.07767},{\"id\":4,\"name\":\"Poole Harbour\",\"description\":\"Place Four Description\",\"latitude\":50.6937948,\"longitude\":-2.0061704}]";
-        this.mockMvc.perform(get("/poi")).andDo(print()).andExpect(content().string(expectedString));
-    }
-
-    @Test
-    @DisplayName("Should be able to find a POI by its name")
-    public void whenPerformingAGetRequestForAPOIByItsName_APIReturnsCorrectStatusAndString() throws Exception {
-        String expectedString = "[{\"id\":2,\"name\":\"Aberystwyth University\",\"description\":\"Place Two Description\",\"latitude\":52.4125057,\"longitude\":-4.06108}]";
-        this.mockMvc.perform(get("/poi/get/name/Aberystwyth University")).andDo(print()).andExpect(status().isFound()).andExpect(content().string(expectedString));
     }
 
 }

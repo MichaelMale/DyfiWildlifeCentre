@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (C) 2020 Michael Male
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre - Admin Panel</title>
+</head>
+<body>
+
+<nav class="nav-extended light-blue" id="admin-navbar">
+    <div class="nav-wrapper">
+        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
+        <ul class="right hide-on-med-and-down" id="nav-mobile">
+            <li><a href="/admin">Admin Panel</a></li>
+        </ul>
+    </div>
+    <div class="nav-content">
+        <ul class="tabs tabs-transparent">
+            <li class="tab"><a href="/admin">Home</a></li>
+            <li class="tab"><a href="/admin/add">Add</a></li>
+            <li class="tab"><a class="active" href="/admin/list">List</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12 m6">
+            <h6>Editing <span th:text="${poi.getName()}" style="font-weight: bold"></span></h6>
+        </div>
+    </div>
+    <div class="row">
+
+        <form class="col s12 m6" id="poiUpdateForm" th:object="${poi}" method="post"
+              th:action="@{/poi/update(id=${id})}">
+
+            <!-- POI name -->
+            <div class="row">
+
+                <div class="input-field col s12 m6">
+
+                    <input class="validate" id="name" placeholder="Name"
+                           required type="text" th:value="${poi.getName()}" th:field="*{name}">
+                    <label for="name">Name</label>
+
+                </div>
+
+            </div>
+
+            <!-- POI Description -->
+            <div class="row">
+
+                <div class="input-field col s12 m6">
+                    <textarea class="materialize-textarea"
+                              id="description" th:field="*{description}"><th:block th:text="${poi.getDescription()}"></th:block></textarea>
+                    <label for="description">Description</label>
+                </div>
+
+            </div>
+
+            <!-- POI coordinates -->
+            <div class="row">
+
+                <!-- Latitude -->
+                <div class="input-field col s6 m3">
+
+                    <input class="validate" id="latitude" max="90" min="-90"
+                           placeholder="Latitude" step="0.00000001"
+                           type="number" th:value="${poi.getLatitude()}" th:field="*{latitude}">
+                    <label for="latitude">Latitude</label>
+
+                </div>
+
+                <!-- Longitude -->
+                <div class="input-field col s6 m3">
+                    <input class="validate" id="longitude" max="180"
+                           min="-180" placeholder="Longitude"
+                           step="0.00000001" type="number" th:value="${poi.getLongitude()}" th:field="*{longitude}">
+                    <label for="longitude">Longitude</label>
+                </div>
+
+
+            </div>
+
+            <!-- Add the updated POI -->
+            <div class="row">
+
+                <div class="input-field col s6 m3">
+
+                    <button class="btn waves-effect waves-light"
+                            id="updateDb">Update
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
