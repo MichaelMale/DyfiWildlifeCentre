@@ -31,8 +31,9 @@ public class POIControllerGetTests extends PointOfInterestControllerTests {
     @Test
     @DisplayName("Should get the correct POI labelled '1'")
     public void whenPerformingGetRequestOnId_ControllerShouldGetCorrectPOI() throws Exception {
-        String expectedString = "{\"id\":1,\"name\":\"Dyfi Wildlife Centre\",\"description\":\"The Dyfi Osprey Project is located at the Cors Dyfi nature reserve near Derwenlas, in the county of Powys, Wales and is under the management of the Montgomeryshire Wildlife Trust.\",\"latitude\":52.568774,\"longitude\":-3.918031}";
-
+        String expectedString =
+                "{\"id\":1,\"name\":\"Dyfi Wildlife Centre\"," +
+                        "\"description\":\"This is the amazing place where things happen.\",\"latitude\":52.568774,\"longitude\":-3.918031}";
         this.mockMvc.perform(get("/poi/get/id/1")).andDo(print()).andExpect(status().isFound()).andExpect(content().string(expectedString));
     }
 
