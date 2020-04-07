@@ -44,8 +44,10 @@ async function initMap() {
         disableDefaultUI: true,
         clickableIcons: false
     });
-    /* TODO: Get the MarkerClusterPlus library from Google Maps GitHub */
-    // let markerCluster = new MarkerClusterer(map, marker);
+    /* Creates a marker clusterer. Initial markers are null as they are
+     added iteratively
+     */
+    let markerCluster = new MarkerClusterer(map,null,{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     allPointsOfInterest.forEach(
         poi => {
             const marker = new google.maps.Marker({
@@ -54,7 +56,8 @@ async function initMap() {
                 title: poi.name,
                 description: poi.description
             });
-            // markerCluster.addMarker(marker);
+            markerCluster.addMarker(marker); // Iterative addition of a
+            // marker to the cluster, that performs clustering automatically
             marker.addListener('click', function () {
                 const element = document.getElementById('poiCard');
                 element.querySelector('#poi_title').innerHTML = marker.title;
