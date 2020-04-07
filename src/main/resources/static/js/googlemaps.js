@@ -35,8 +35,6 @@ async function getPointsOfInterest(url) {
  */
 async function initMap() {
     const allPointsOfInterest = await getPointsOfInterest('/poi');
-
-    console.log(allPointsOfInterest); // Debug data to confirm correct POIs have been entered.
     const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031}; // Co-ordinates for the Cors Dyfi Nature Reserve,
     // which should be located at the centre of the map.
     const map = new google.maps.Map(document.getElementById('map'), {
@@ -46,7 +44,10 @@ async function initMap() {
         disableDefaultUI: true,
         clickableIcons: false
     });
-
+    /* Creates a marker clusterer. Initial markers are null as they are
+     added iteratively
+     */
+    let markerCluster = new MarkerClusterer(map,null,{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     allPointsOfInterest.forEach(
         poi => {
             const marker = new google.maps.Marker({
@@ -55,6 +56,8 @@ async function initMap() {
                 title: poi.name,
                 description: poi.description
             });
+            markerCluster.addMarker(marker); // Iterative addition of a
+            // marker to the cluster, that performs clustering automatically
             marker.addListener('click', function () {
                 const element = document.getElementById('poiCard');
                 element.querySelector('#poi_title').innerHTML = marker.title;
