@@ -126,5 +126,24 @@ public class PointOfInterestTests {
         Assertions.assertNotEquals(poiList.get(0).hashCode(), poiList.get(2).hashCode());
     }
 
+    @Test
+    @DisplayName("If POI is Wildlife Centre, distance from Wildlife Centre " +
+            "should be 0")
+    public void ifObjectIsDWC_DistanceFromDWCShouldBeZero() {
+        final PointOfInterest testCase = new PointOfInterest("Dyfi Wildlife " +
+                "Centre",
+                "Description", 52.568774, -3.918031);
+        Assertions.assertEquals(0, testCase.calculateDistanceFromCentre());
+    }
+
+    @Test
+    @DisplayName("If POI is at centre coordinates, distance from Wildlife " +
+            "Centre should be 3639")
+    public void ifObjectIsAtCentreCoordinates_DistanceFromCentreShouldBeValue() {
+        final PointOfInterest testCase = new PointOfInterest("Null Island",
+                "Description", 0, 0);
+        Assertions.assertEquals(3639, testCase.calculateDistanceFromCentre());
+    }
+
 
 }

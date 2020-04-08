@@ -25,6 +25,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 /**
@@ -177,6 +180,53 @@ public class PointOfInterest implements POI {
     @Override
     public Point2D.Double generateCoordinates() {
         return new Point2D.Double(this.getLatitude(), this.getLongitude());
+    }
+
+    /**
+     * Calculates the distance between the given coordinates and the
+     * coordinates of the Dyfi Wildlife Centre. This is calculated using the
+     * Haversine formula.
+     *
+     * Code adapted from
+     * <a href="https://rosettacode.org/wiki/Haversine_formula#Java">here</a>.
+     *
+     * @return double containing the distance in miles to 4 significant
+     * figures.
+     */
+    @Override
+    public double calculateDistanceFromCentre() {
+        final double EARTH_RADIUS_MILES = 3958.8; // Approximate radius of
+        // Earth in miles, used to calculate the distance.
+
+        /* Local variables used for cleaner code */
+        double dyfiLat = 52.568774;
+        double dyfiLng = -3.918031;
+
+        double currentLat = this.getLatitude();
+        double currentLng = this.getLongitude();
+
+        if ((dyfiLat == currentLat) && (dyfiLng == currentLng)) {
+            return 0; // If there is no difference between both coordinates,
+            // distance of 0 is returned, to avoid unnecessary calculation.
+        } else {
+            double dLat = Math.toRadians(currentLat - dyfiLat);
+            double dLng = Math.toRadians(currentLng - dyfiLng);
+            dyfiLat = Math.toRadians(dyfiLat);
+            currentLat = Math.toRadians(currentLat);
+
+            double a =
+                    Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLng / 2), 2)
+                    * Math.cos(dyfiLat) * Math.cos(currentLat);
+            double c = 2 * Math.asin(Math.sqrt(a));
+            double result = (EARTH_RADIUS_MILES * c);
+            /* Converts result into a BigDecimal that is then rounded to 4
+            significant figures.
+             */
+            MathContext mathContext = new MathContext(4, RoundingMode.DOWN);
+            BigDecimal bigDecimal = new BigDecimal(result, mathContext);
+            return bigDecimal.doubleValue();
+        }
+
     }
 
     /**

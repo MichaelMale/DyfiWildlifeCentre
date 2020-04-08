@@ -105,6 +105,14 @@ interface POI {
     Point2D.Double generateCoordinates();
 
     /**
+     * Calculates the distance between the given coordinates and the
+     * coordinates of the Dyfi Wildlife Centre.
+     * @return 0 if the object is the Dyfi Wildlife Centre, double containing
+     * distance if not.
+     */
+    double calculateDistanceFromCentre();
+
+    /**
      * Returns the Point of Interest in the JSON format.
      *
      * @return String containing Point of Interest details in a JSON format.
