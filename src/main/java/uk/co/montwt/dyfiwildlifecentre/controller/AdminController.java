@@ -35,11 +35,6 @@ public class AdminController {
         this.repository = repository;
     }
 
-    @GetMapping("/admin")
-    public String adminHome(Model model) {
-        return "admin/home";
-    }
-
     @GetMapping("/admin/add")
     public String adminAdd(Model model) {
         model.addAttribute("pointOfInterest", new PointOfInterest());

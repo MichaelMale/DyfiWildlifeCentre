@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 Michael Male
  *
@@ -18,56 +17,43 @@
 
 package uk.co.montwt.dyfiwildlifecentre;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
-public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+               .formLogin()
                     .loginPage("/login")
                     .permitAll()
                     .and()
-                .logout()
-                    .permitAll()
-                    .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+               .logout()
+                    .permitAll();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        User.UserBuilder users = User.withDefaultPasswordEncoder();
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(users.username("admin").password("admin").roles(
-//                "ADMIN").build());
-//        return manager;
-//    }
+    @Bean
+    @Override
+    public UserDetailsService userDetailsService() {
+        // TODO: Change withDefaultPasswordEncoder() method to an encrypted one
+        UserDetails user =
+                User.withDefaultPasswordEncoder().username("user").password(
+                        "password").roles("USER").build();
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}password").roles("ADMIN");
+        return new InMemoryUserDetailsManager(user);
     }
 }

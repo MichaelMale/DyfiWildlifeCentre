@@ -16,12 +16,43 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre</title>
 </head>
 <body>
+<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
 
+    <div class="container ui">
+        <div class="row" th:if="${param.error}">
+            <div class="col s12 m6">Invalid username and password.</div>
+        </div>
+        <div class="row" th:if="${param.logout}">
+            <div class="col s12 m6">You have been logged out.</div>
+        </div>
+
+        <div class="row">
+            <form th:action="@{/login}" method="post" class="col s12 m6">
+                <div class="row">
+                    <div
+                            class="col s12 m6"><label> User Name :
+                        <input type="text" name="username"/> </label></div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <label> Password:
+                            <input type="password" name="password"/> </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <input type="submit" value="Sign In" /></div>
+                    </div>
+            </form>
+        </div>
+
+    </div>
 </body>
 </html>
