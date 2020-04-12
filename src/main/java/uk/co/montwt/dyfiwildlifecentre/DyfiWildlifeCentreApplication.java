@@ -17,6 +17,7 @@
 
 package uk.co.montwt.dyfiwildlifecentre;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -29,6 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0 2020-04-12
  */
 @SpringBootApplication
+@EnableEncryptableProperties
 public class DyfiWildlifeCentreApplication {
 
     public static void main(String[] args) {

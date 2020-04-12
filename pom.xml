@@ -131,6 +131,13 @@
             <version>3.0.4.RELEASE</version>
         </dependency>
 
+        <!-- https://search.maven.org/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter/3.0.2/jar -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
 
 
     </dependencies>
