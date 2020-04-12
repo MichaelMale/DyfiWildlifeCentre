@@ -68,7 +68,8 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/poi").permitAll() // Permits a GET Request to
                 // the getAllPointsOfInterest() method, used only to update
                 // the map
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**",
+                        "/osprey.jpeg").permitAll()
                 // Permits all request to static resources
                 .antMatchers("/admin/**").hasAnyRole("ADMIN") // Only permits
                 // authenticated users with the 'ADMIN' role to access the
