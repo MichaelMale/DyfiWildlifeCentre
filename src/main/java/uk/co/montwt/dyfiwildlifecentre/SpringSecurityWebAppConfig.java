@@ -28,6 +28,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -73,9 +75,19 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
+        auth.jdbcAuthentication().dataSource(dataSource)
+        .passwordEncoder(passwordEncoder())
+        .usersByUsernameQuery("SELECT username,password,enabled FROM users " +
+                "WHERE username=?")
+        .authoritiesByUsernameQuery("SELECT username,authority FROM " +
+                "authorities " +
+                "WHERE username=?");
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     /**
      * Configures Spring Security, by allowing access to one GET request and
      * the index, and disallowing unauthenticated access to the admin panel.
