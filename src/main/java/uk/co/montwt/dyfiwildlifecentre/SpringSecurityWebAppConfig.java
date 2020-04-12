@@ -31,6 +31,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import javax.sql.DataSource;
+
 /**
  * SpringSecurityWebAppConfig.java - This class overrides a Spring Security
  * method to add parameters that permit requests and vice versa. It utilises
@@ -42,11 +44,37 @@ import org.springframework.security.web.access.AccessDeniedHandler;
  * @see WebSecurityConfigurerAdapter
  */
 @Configuration
+@EnableWebSecurity
 public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
 
-    /* TODO: Check why automatic field injection is not recommended */
+    private final AccessDeniedHandler accessDeniedHandler;
+
+
+    private final DataSource dataSource;
+
+    /**
+     * Constructor for objects of class SpringSecurityWebAppConfig.
+     *
+     * @param accessDeniedHandler   Autowired object of type
+     *                              AccessDeniedHandler that is instantiated
+     *                              via constructor-based dependency injection.
+     */
     @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    public SpringSecurityWebAppConfig(AccessDeniedHandler accessDeniedHandler
+            , DataSource dataSource) {
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * A method to enable JDBC authentication.
+     * @param auth  Builds an authentication manager.
+     * @throws Exception    if there is an issue with autnentication.
+     */
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource);
+    }
 
     /**
      * Configures Spring Security, by allowing access to one GET request and
@@ -56,8 +84,9 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
      *             pertinent to the configuration of web based security for
      *             specific http request. It is similar to an XML element in
      *             namespace configuration.
+     *
      * @throws Exception    If there is an error in the Spring Security
-     * configuration.
+     *                      configuration.
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -68,36 +97,41 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/poi").permitAll() // Permits a GET Request to
                 // the getAllPointsOfInterest() method, used only to update
                 // the map
-                .antMatchers("/css/**", "/js/**", "/images/**",
-                        "/osprey.jpeg").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 // Permits all request to static resources
-                .antMatchers("/admin/**").hasAnyRole("ADMIN") // Only permits
+                .antMatchers("/admin/**").hasRole("ADMIN") // Only
+                // permits
                 // authenticated users with the 'ADMIN' role to access the
                 // admin panel
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin()// Sets authenticated requests to be routed via
+                // the login page
                     .loginPage("/login")
                     .permitAll()
                     .and()
                 .logout()
                     .permitAll()
                     .and()
+                // An access denied exception will be handled via the
+                // mentioned class.
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
-    /**
-     * Configures global authentication settings. Currently, this is being
-     * used for demonstration purposes only. It needs to be configured to
-     * perform password-hashing and fetch users from the database.
-     * @param auth  SecurityBuilder used to create an AuthenticationManager,
-     *              an interface used to process an Authentication request.
-     * @throws Exception    If there is an error in authentication.
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}password").roles("ADMIN");
-    }
+//    /**
+//     * Configures global authentication settings. Currently, this is being
+//     * used for demonstration purposes only. It needs to be configured to
+//     * perform password-hashing and fetch users from the database.
+//     *
+//     * @param auth  SecurityBuilder used to create an AuthenticationManager,
+//     *              an interface used to process an Authentication request.
+//     *
+//     * @throws Exception    If there is an error in authentication.
+//     */
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password("{noop}password").roles("ADMIN");
+//    }
 }
