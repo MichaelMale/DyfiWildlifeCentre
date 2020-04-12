@@ -3,6 +3,4 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database dyfi_wildlife_centre;' -U postgres
-env:
-  global:
-    - JASYPT_ENCRYPTOR_PASSWORD=Df@<x$`!*)9`?Ck$
+  secure: "H9bsZ8P8WDUE2zNzWL5Gwbzb+zfdA0BpvkA44Zftdq7hwz7e/DiLhp4UsO0/n/g9CWWnriS9LLvOJ5D+jGidANMKykHy5uo+Fgdnl0Hj6VcjTYmn1iRk0mPi4T+1qr4VDjh4tCH2QeLyycTbpOD6Cn31J8yrBgAFpn7RdlBYGOrCnKW0gg1gox/nLNPbTx9Lezr9AiFjnkx3mAHf21BDx8uI3u3vIUBEBT6nCla2J3AbnvP2K1tK2p8FzgKbaueG7f8DUOxt60fg1Olv+a5ySqgBtHtdgtPxymW0QCuN5yZcLzFlmDr8o3DPl8636Yit00SA0r2uTigcxVdApdHB3lcV3ZOyoNdW6IFm3vPfRVCscGzu1Ieytdiw9McVgZLAFpCr2aksTtJwujjxhYrMmUlWLxB8CkZ+xOQ23RiOSR52kt0nHvNHgkqCqKFVuRL8OfDus5HpgHf9YMfYPpboTyJu8tofoSaAw3cXYViHI/1C4ElK0opqgovAXg/nBO+YCUEF2Jc1RNtGyPjESLTh9t3Cup+OWc7XCjVdwtXVIXI2soDxP5/A5NbNbG2jIeR6xTqs2StOn8+OL3R7X6JY4qxxKAsEST3maWSD6dbUtlRjOS5VDtFDkKJVLNxkPCwTScutInwyZuk6y7ODY98FfkLWlOSqSSdwEvBnT1teL1E="
