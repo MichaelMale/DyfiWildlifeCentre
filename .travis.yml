@@ -3,3 +3,6 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database dyfi_wildlife_centre;' -U postgres
+env:
+  global:
+    - JASYPT_ENCRYPTOR_PASSWORD=Df@<x$`!*)9`?Ck$
