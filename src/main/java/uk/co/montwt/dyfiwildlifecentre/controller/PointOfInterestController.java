@@ -32,12 +32,25 @@ import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * PointOfInterestController.java - A controller that implements a RESTful
+ * API for points of interest, including CRUD methods.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-04-12
+ * @see RestController
+ */
 @RestController
 public class PointOfInterestController{
 
     private final PointOfInterestRepository repository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * Constructor for objects of type PointOfInterestController, that uses
+     * the repository for POIs.
+     * @param repository    Object of type PointOfInterestRepository.
+     */
     PointOfInterestController(PointOfInterestRepository repository) {
         this.repository = repository;
     }

@@ -21,6 +21,7 @@ package uk.co.montwt.dyfiwildlifecentre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,19 +31,48 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+/**
+ * SpringSecurityWebAppConfig.java - This class overrides a Spring Security
+ * method to add parameters that permit requests and vice versa. It utilises
+ * a login form to ensure that only authenticated users can access the admin
+ * area, as well as perform POST requests.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-04-12
+ * @see WebSecurityConfigurerAdapter
+ */
 @Configuration
 public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
 
+    /* TODO: Check why automatic field injection is not recommended */
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
 
+    /**
+     * Configures Spring Security, by allowing access to one GET request and
+     * the index, and disallowing unauthenticated access to the admin panel.
+     *
+     * @param http Object of type HttpSecurity that holds parameters
+     *             pertinent to the configuration of web based security for
+     *             specific http request. It is similar to an XML element in
+     *             namespace configuration.
+     * @throws Exception    If there is an error in the Spring Security
+     * configuration.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/", "/index").permitAll() // Permits all
+                // requests to the single-page user-end application
+                .antMatchers("/poi").permitAll() // Permits a GET Request to
+                // the getAllPointsOfInterest() method, used only to update
+                // the map
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
+                // Permits all request to static resources
+                .antMatchers("/admin/**").hasAnyRole("ADMIN") // Only permits
+                // authenticated users with the 'ADMIN' role to access the
+                // admin panel
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -55,15 +85,14 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        User.UserBuilder users = User.withDefaultPasswordEncoder();
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(users.username("admin").password("admin").roles(
-//                "ADMIN").build());
-//        return manager;
-//    }
-
+    /**
+     * Configures global authentication settings. Currently, this is being
+     * used for demonstration purposes only. It needs to be configured to
+     * perform password-hashing and fetch users from the database.
+     * @param auth  SecurityBuilder used to create an AuthenticationManager,
+     *              an interface used to process an Authentication request.
+     * @throws Exception    If there is an error in authentication.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 

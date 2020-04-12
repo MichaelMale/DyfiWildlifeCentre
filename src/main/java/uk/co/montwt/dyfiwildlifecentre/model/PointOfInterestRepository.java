@@ -25,8 +25,24 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * PointOfInterestRepository.java - An interface used to extend a repository
+ * and connect to the SQL database.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-12
+ * @see JpaRepository
+ */
 public interface PointOfInterestRepository extends JpaRepository<PointOfInterest, Long> {
 
+    /**
+     * A custom query, used to find all points of interest where the given
+     * name is the same as a name in the database.
+     * @param name  The name to be checked.
+     * @return  List containing all Points Of Interest with that name. This
+     * is a one-to-many operation as there could be multiple POIs with the
+     * same name.
+     */
     @Query("SELECT poi FROM PointOfInterest poi WHERE LOWER(poi.name) = LOWER(:name)")
     List<PointOfInterest> findAllPointsOfInterestByName(String name);
 

@@ -20,7 +20,14 @@ package uk.co.montwt.dyfiwildlifecentre;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
+/**
+ * DyfiWildlifeCentreApplication.java - This is the entry point for the
+ * Spring Boot application, and uses the @SpringBootApplication annotation to
+ * ensure that all classes are loaded correctly.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-12
+ */
 @SpringBootApplication
 public class DyfiWildlifeCentreApplication {
 

@@ -17,8 +17,22 @@
 
 package uk.co.montwt.dyfiwildlifecentre.exception;
 
+/**
+ * PointOfInterestNotFoundException.java - A custom exception that is thrown
+ * when a POI is not found.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-12
+ * @see RuntimeException
+ */
 public class PointOfInterestNotFoundException extends RuntimeException {
 
+    /**
+     * Constructor for objects of type PointOfInterestNotFoundException,
+     * returning a relevant message.
+     * @param id    The ID entered, that could not be correlated with a Point
+     *             Of Interest.
+     */
     public PointOfInterestNotFoundException(long id) {
         super("Could not find POI " + id);
     }

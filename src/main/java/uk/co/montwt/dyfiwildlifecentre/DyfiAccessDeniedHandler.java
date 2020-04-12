@@ -30,11 +30,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * DyfiAccessDeniedHandler.java - A class that handles an error 403.
+ *
+ * @author Michael Male
+ * @version 0.1  2020-04-12
+ * @see AccessDeniedHandler
+ */
 @Component
 public class DyfiAccessDeniedHandler implements AccessDeniedHandler {
 
     private static Logger logger = LoggerFactory.getLogger(DyfiAccessDeniedHandler.class);
 
+    /**
+     * Overrides the handle method. This sends a redirect if a user tried to
+     * access a protected URL and couldn't.
+     * @param httpServletRequest    Class that provides request information
+     *                              for HTTP servlets.
+     * @param httpServletResponse   Class that provides response information
+     *                              for HTTP servlets.
+     * @param e The contents of an AccessDeniedException object.
+     * @throws IOException  Thrown if there is an exception in input or
+     * output.
+     * @throws ServletException Thrown if there is an issue with the HTTP
+     * servlet.
+     */
     @Override
     public void handle(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,

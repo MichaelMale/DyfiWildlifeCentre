@@ -43,7 +43,9 @@
 <div class="container ui">
     <div class="row">
         <div class="col s12 m6">
-            <h5>Hello</h5>
+            <h5>Hello, <span th:text="${
+    T(org.springframework.security.core.context.SecurityContextHolder)
+      .context.authentication.principal.username}"></span>!</h5>
         </div>
     </div>
     <div class="row">
@@ -57,7 +59,10 @@
                 click on the POIs tab. To add or edit users and their
                 permissions, click on the Users tab.</p>
             <p><form th:action="@{/logout}"
-                     method="post"><input type="submit" value="Sign Out"></form></p>
+                     method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+            <input type="submit" value="Sign Out"></form></p>
         </div>
     </div>
 </div>

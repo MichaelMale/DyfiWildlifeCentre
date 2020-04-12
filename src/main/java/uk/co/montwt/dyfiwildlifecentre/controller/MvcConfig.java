@@ -21,9 +21,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * MvcConfig.java - Implements a WebMvcConfigurer to provide a single method
+ * that attaches view controllers to the possible entry points.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-12
+ * @see WebMvcConfigurer
+ */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    /**
+     * Adds view controllers for the homepage, the login page, the admin
+     * homepage, and a 403 error page.
+     * @param registry  Object of type ViewControllerRegistry that assists
+     *                  with the registration of automated controllers.
+     */
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/").setViewName("index");

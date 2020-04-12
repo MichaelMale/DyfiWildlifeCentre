@@ -26,27 +26,61 @@ import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 
 import java.util.Optional;
 
+/**
+ * AdminController.java - This class contains the methods required to perform
+ * the successful GET requests for the admin panel section of the web
+ * application. Some of these involve fetching attributes using Thymeleaf.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-12-04
+ */
 @Controller
 public class AdminController {
 
     private final PointOfInterestRepository repository;
 
+    /**
+     * Constructor for objects of class AdminController.
+     * @param repository    The PointOfInterestRepository, an interface used
+     *                      to connect to the SQL server.
+     */
     AdminController(PointOfInterestRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * Gets the view for adding a point of interest to the map.
+     * @param model Passes a PointOfInterest constructor the view, that is
+     *              populated in the form.
+     * @return  String containing the correct URI for the view.
+     */
     @GetMapping("/admin/add")
     public String adminAdd(Model model) {
         model.addAttribute("pointOfInterest", new PointOfInterest());
         return "admin/add";
     }
 
+    /**
+     * Gets the view for listing every Point of Interest in the database.
+     * @param model Passes a List of type PointOfInterest to the view, that
+     *              is used within the view to populate the list.
+     * @return  String containing the correct URI for the view.
+     */
     @GetMapping("/admin/list")
     public String adminList(Model model) {
         model.addAttribute("pointsOfInterest", repository.findAll());
         return "admin/list";
     }
 
+    /**
+     * Gets the view for editing a Point Of Interest.
+     * @param id    Primitive of type long that contains the ID corresponding
+     *             to the Point Of Interest that is to be edited.
+     * @param model Finds the POI, if the ID given is valid, and passes it to
+     *             the view.
+     * @return  String containing the view, along with the parameter for the
+     * correct Point Of Interest.
+     */
     @GetMapping("/admin/edit_active")
     public String adminEditActive(@RequestParam("id") long id, Model model) {
         model.addAttribute("id", id);

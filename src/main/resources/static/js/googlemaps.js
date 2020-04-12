@@ -22,7 +22,10 @@
  * @returns {Promise<Array>} A promise that should contain an array containing the Points of Interest.
  */
 async function getPointsOfInterest(url) {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include'
+    });
 
     return response.json();
 }
