@@ -25,33 +25,49 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <body>
 <fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
 
-    <div class="container ui">
-        <div class="row" th:if="${param.error}">
-            <div class="col s12 m6">Invalid username and password.</div>
-        </div>
-        <div class="row" th:if="${param.logout}">
-            <div class="col s12 m6">You have been logged out.</div>
-        </div>
+    <div class="container">
 
         <div class="row">
-            <form th:action="@{/login}" method="post" class="col s12 m6">
-                <div class="row">
-                    <div
-                            class="col s12 m6"><label> User Name :
-                        <input type="text" name="username"/> </label></div>
-                </div>
-                <div class="row">
-                    <div class="col s12 m6">
-                        <label> Password:
-                            <input type="password" name="password"/> </label>
+            <div class="col s12 m4 l8">
+            <div class="card z-depth-0">
+                <div class="card-content grey-text">
+                    <div class="row center-align" th:if="${param.error}">
+                        <div class="col s12 m6">Invalid username and password.</div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 m6">
-                        <input type="submit" value="Sign In" /></div>
+                    <div class="row center-align" th:if="${param.logout}">
+                        <div class="col s12 m6">You have been logged out.</div>
                     </div>
-            </form>
-        </div>
+                    <span class="card-title center-align">Dyfi Wildlife
+                        Centre -
+                        Admin
+                        Panel</span>
+                    <p class="center-align">Please log in to administrate this
+                        application. If
+                        you require an account, please e-mail
+                        <a href="mailto:info@montwt.co.uk">info@montwt.co.uk</a>
+                        or phone
+                        <a href="tel:+441938555654">01938 555654</a>.</p>
+
+                    <form th:action="@{/login}" method="post">
+                        <div><label> User Name :
+                            <input type="text" name="username"/> </label></div>
+                        <div>
+                            <label> Password:
+                                <input type="password" name="password"/> </label>
+                        </div>
+                        <div class="card-action">
+                            <div>
+                                <input type="submit" value="Sign In" /></div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            </div>
+
+            </div>
 
     </div>
 </body>
