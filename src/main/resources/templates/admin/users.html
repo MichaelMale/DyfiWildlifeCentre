@@ -16,8 +16,7 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
@@ -35,21 +34,18 @@
 
 <fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
 
-<div class="container ui">
+
+
+<div class="container col s12 m6">
+
     <div class="row">
-        <div class="col s12 m6">
-            <h5>Hello, <span th:text="${
-    T(org.springframework.security.core.context.SecurityContextHolder)
-      .context.authentication.principal.username}"></span>!</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s12 m6">
-            <p>To add a POI, click on the Add tab. To see a List, click on
-                List. To add or edit a user, click on Users.</p>
-        </div>
+
     </div>
 </div>
+
+
+
+
 <fragment th:replace="fragments/footer :: footer"></fragment>
 <fragment th:replace="fragments/admin_tab_script" :: adminTabScript></fragment>
 </body>

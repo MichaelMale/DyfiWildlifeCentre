@@ -16,19 +16,21 @@
   -->
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title></title>
 </head>
-
 <body>
-<nav class="light-blue" id="primary-navbar" th:fragment="primaryNavbar">
-    <div class="nav-wrapper">
-        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-        <ul class="right" id="nav-mobile">
-            <li><a href="/admin">Admin Panel</a></li>
-        </ul>
-    </div>
-</nav>
+<div th:fragment="adminTabScript" th:remove="tag">
+    <!-- Tab checking -->
+    <script>
+        window.onload = function() {
+            const elem = document.getElementById('adminNav');
+            let instance = M.Tabs.init(elem);
+            instance.updateTabIndicator();
+        };
+    </script>
+</div>
 </body>
 </html>
