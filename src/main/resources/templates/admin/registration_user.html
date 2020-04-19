@@ -35,7 +35,7 @@
 
 <fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col s12 m6">
             <p>
@@ -44,18 +44,21 @@
         </div>
     </div>
     <div class="row">
-        <form class="col s12 m6" id="userRegistrationForm">
+        <form class="col s12 m6" id="userRegistrationForm"
+              action="#" method="post" th:action="@{/admin/register}"
+              th:object="${userForm}">
             <!-- User name -->
             <div class="row">
                 <input class="validate" id="username" placeholder="Name"
-                       required
+                       required th:field="*{username}"
                        type="text">
                 <label for="username">Username</label>
             </div>
 
             <!-- Password -->
             <div class="row">
-                <input class="validate" id="password" required type="password">
+                <input class="validate" id="password" required
+                       th:field="*{password}" type="password">
                 <label for="password">Password</label>
             </div>
 

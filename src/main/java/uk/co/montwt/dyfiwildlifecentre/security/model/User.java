@@ -18,6 +18,9 @@
 package uk.co.montwt.dyfiwildlifecentre.security.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
@@ -28,12 +31,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Error: A username must be provided.")
+//    @Min(value = 6, message = "Error: The username can't be fewer than six " +
+//            "characters.")
+//    @Max(value = 32, message = "Error: The username can't be greater than 32 " +
+//            "characters.")
     private String username;
 
+    @NotEmpty(message = "Error: A password must be provided.")
     private String password;
-
-    @Transient
-    private String confirmPassword;
 
     @ManyToMany
     private Set<Role> roles;
@@ -52,14 +58,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public Set<Role> getRoles() {
