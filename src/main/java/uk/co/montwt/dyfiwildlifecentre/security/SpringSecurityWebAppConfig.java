@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

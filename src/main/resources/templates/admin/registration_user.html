@@ -16,7 +16,8 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
@@ -34,38 +35,40 @@
 
 <fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
 
-
-
-<div class="container col s12 m6">
-
+<div class="container-fluid">
     <div class="row">
-    <h5>List of Users</h5>
+        <div class="col s12 m6">
+            <p>
+            <h1>Register a user</h1>
+            <p><h5>Use the form below to register a user.</h5>
+        </div>
     </div>
     <div class="row">
-        <ul class="collection">
-            <li class="collection-item avatar">
-                <img src="https://i.pravatar.cc/150" alt="" class="circle">
-                <span class="title">User name</span>
-                <a href="#" class="secondary-content">
-                    <i class="material-icons">
-                        send
-                    </i>
-                </a>
+        <form class="col s12 m6" id="userRegistrationForm">
+            <!-- User name -->
+            <div class="row">
+                <input class="validate" id="username" placeholder="Name"
+                       required
+                       type="text">
+                <label for="username">Username</label>
+            </div>
 
-                <a href="#"
-                   onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
-                    <i id="delete" class="material-icons">
-                        delete_forever
-                    </i>
-                </a>
-            </li>
-        </ul>
+            <!-- Password -->
+            <div class="row">
+                <input class="validate" id="password" required type="password">
+                <label for="password">Password</label>
+            </div>
+
+            <!-- Submit registration -->
+            <div class="row">
+                <div class="input-field col s6 m3">
+                    <button class="btn waves-effect waves-light"
+                            id="registerUser">Sign Up</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-
-
-
 <fragment th:replace="fragments/footer :: footer"></fragment>
 <fragment th:replace="fragments/admin_tab_script" :: adminTabScript></fragment>
 </body>

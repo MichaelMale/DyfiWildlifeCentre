@@ -94,4 +94,9 @@ public class AdminController {
         return "admin/users";
     }
 
+    @GetMapping("/admin/registration_user")
+    public String registrationUser() {
+        return "admin/registration_user";
+    }
+
 }

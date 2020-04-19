@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre;
+package uk.co.montwt.dyfiwildlifecentre.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
