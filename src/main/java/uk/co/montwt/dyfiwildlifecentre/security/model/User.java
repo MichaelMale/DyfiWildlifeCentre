@@ -21,6 +21,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -32,13 +33,12 @@ public class User {
     private Long id;
 
     @NotEmpty(message = "Error: A username must be provided.")
-//    @Min(value = 6, message = "Error: The username can't be fewer than six " +
-//            "characters.")
-//    @Max(value = 32, message = "Error: The username can't be greater than 32 " +
-//            "characters.")
+    @Size(min = 6, max = 32, message = "Error: Username must be between 6 and" +
+            " 32 characters.")
     private String username;
 
     @NotEmpty(message = "Error: A password must be provided.")
+    @Size(min = 8, message = "Error: Password must be at least 8 characters.")
     private String password;
 
     @ManyToMany
