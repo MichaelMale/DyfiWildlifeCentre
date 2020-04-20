@@ -28,18 +28,38 @@ import uk.co.montwt.dyfiwildlifecentre.security.model.User;
 import uk.co.montwt.dyfiwildlifecentre.security.service.SecurityService;
 import uk.co.montwt.dyfiwildlifecentre.security.service.UserService;
 
+/**
+ * UserController.java - A controller for the user management system. This
+ * makes calls to other methods and services, and forms an HTTP API of a GET
+ * and a POST request.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-04-20
+ */
 @Controller
 public class UserController {
     private UserService userService;
 
     private SecurityService securityService;
 
+    /**
+     * Constructor for objects of type UserController.
+     * @param userService   Autowired object of type UserService
+     * @param securityService   Autowired object of type SecurityService
+     */
     @Autowired
     public UserController(UserService userService, SecurityService securityService) {
         this.userService = userService;
         this.securityService = securityService;
     }
 
+    /**
+     * Manages a GET request to the user registration form. This method adds
+     * an empty User object to the Model for it to be filled in in the form,
+     * and loads the correct view.
+     * @param model Model that is part of the payload of the view.
+     * @return  String containing the reference to the view.
+     */
     @GetMapping("/admin/registration_user")
     public String userRegistration(Model model) {
         model.addAttribute("userForm", new User());
@@ -47,11 +67,19 @@ public class UserController {
         return "admin/registration_user";
     }
 
+    /**
+     * Manages a POST request in order to register a user. This method adds
+     * the newly-registered user to the database, with a hashed password, and
+     * automatically logs them in. It returns them to the admin panel homepage.
+     * @param userForm  The filled-in User object referenced by the GET
+     *                  request, and populated via the web form.
+     * @return  String containing the admin panel homepage.
+     */
     @PostMapping("/admin/register")
     public String register(@ModelAttribute("userForm") User userForm) {
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername(),
                 userForm.getPassword());
-        return "redirect:/admin/home";
+        return "admin/home";
     }
 }

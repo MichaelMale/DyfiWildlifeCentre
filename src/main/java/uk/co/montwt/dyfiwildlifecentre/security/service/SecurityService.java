@@ -18,6 +18,7 @@
 package uk.co.montwt.dyfiwildlifecentre.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,20 +26,41 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+/**
+ * Creates a service that provides details on security, this is used further
+ * within the controller.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-20
+ */
 @Service
 public class SecurityService {
     private final AuthenticationManager authenticationManager;
 
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Constructor for objects of type SecurityService.
+     * @param authenticationManager An autowired object of type
+     *                              AuthenticationManager
+     * @param userDetailsService    An autowired object of type
+     *                              UserDetailsService that utilises a
+     *                              qualifier defining its implementation
+     */
     @Autowired
     public SecurityService(AuthenticationManager
                                        authenticationManager,
-                           UserDetailsService userDetailsService) {
+                           @Qualifier("userDetailsServiceImpl")
+                                   UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * A methods that finds the user that is currently logged in.
+     * @return  String containing the username of the user that's currently
+     * logged in.
+     */
     public String findUsernameLoggedIn() {
         var userDetails = SecurityContextHolder.getContext().getAuthentication()
                 .getDetails();
@@ -50,6 +72,11 @@ public class SecurityService {
         }
     }
 
+    /**
+     * Automatically logs in a user after they have been registered.
+     * @param username  Username to use for the login
+     * @param password  Password to use for the login
+     */
     public void autoLogin(String username, String password) {
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(username);

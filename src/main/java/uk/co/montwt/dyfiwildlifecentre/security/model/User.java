@@ -24,6 +24,14 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
+/**
+ * User.java - An object that represents a user. A user in this context is
+ * someone who can access an authenticated area and manage the web
+ * application from its content management system.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-04-20
+ */
 @Entity
 @Table(name = "users")
 public class User {

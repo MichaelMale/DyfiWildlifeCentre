@@ -20,6 +20,14 @@ package uk.co.montwt.dyfiwildlifecentre.security.model;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Role.java - An object that represents a role. A role, or authority, is the
+ * level of access that a user has, and is used by Spring Security to define
+ * which parts of the app one can access.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-20
+ */
 @Entity
 @Table(name = "roles")
 public class Role {

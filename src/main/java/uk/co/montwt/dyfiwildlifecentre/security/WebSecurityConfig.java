@@ -29,21 +29,51 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * WebSecurityConfig.java - This class manages the instance of the Spring
+ * Security plugin that is being used for this application. It provides
+ * various methods that call beans and manage which parts of the website can
+ * be seen by visitors, and which are authenticated.
+ *
+ * @author Michael Male
+ * @version 0.1 2020-04-20
+ * @see WebSecurityConfigurerAdapter
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Constructor for objects of type WebSecurityConfig. Autowired to
+     * include a UserDetailsService
+     * @param userDetailsService Autowired class
+     * @see uk.co.montwt.dyfiwildlifecentre.security.service.UserDetailsServiceImpl
+     */
     @Autowired
     public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Calls a bean to instantiate a BCryptPassword encoder, that hashes
+     * passwords utilising the BCrypt hashing algorithm.
+     * @return  An instance of BCryptPasswordEncoder.
+     * @see BCryptPasswordEncoder
+     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the security parameters for the application. Further
+     * details are included within inline comments in the source code.
+     *
+     * @param http  An instance of HttpSecurity
+     * @throws Exception    if there is an issue with the security
+     * configuration.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -70,11 +100,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+    /**
+     * Calls a bean to instantiate an AuthenticationManager.
+     * @return  Object of type AuthenticationManager
+     * @throws Exception    If there is an issue with the authentication.
+     */
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }
 
+    /**
+     * Configures the user details service by adding the BCrypt encoder to it
+     * . This is then used to hash the password that is eventually saved into
+     * the database.
+     * @param auth  Object of type AuthenticationManagerBuilder that builds
+     *              an object of type AuthenticationManager.
+     * @throws Exception    if there is an issue with authentication or
+     * configuration.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)

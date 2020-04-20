@@ -19,5 +19,13 @@ package uk.co.montwt.dyfiwildlifecentre.security.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * RoleRepository.java - Interfaces with the DBMS to access and update the
+ * roles relation.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-20
+ * @see org.springframework.data.jpa.repository.JpaRepository
+ */
 public interface RoleRepository extends JpaRepository<Role, Long> {
 }

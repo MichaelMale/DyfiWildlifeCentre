@@ -19,6 +19,14 @@ package uk.co.montwt.dyfiwildlifecentre.security.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * UserRepository.java - This implements a repository that interfaces with
+ * the DBMS for the User object.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-20
+ * @see  org.springframework.data.jpa.repository.JpaRepository
+ */
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 }
