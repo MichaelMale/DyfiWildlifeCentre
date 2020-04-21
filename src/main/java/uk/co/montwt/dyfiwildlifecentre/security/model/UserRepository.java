@@ -18,6 +18,9 @@
 package uk.co.montwt.dyfiwildlifecentre.security.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * UserRepository.java - This implements a repository that interfaces with
@@ -29,4 +32,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
+
+    @Query(value="SELECT u.username FROM User u")
+    List<String> findAllUsernames();
+
+    @Query("DELETE FROM User u WHERE u.username = :username")
+    void deleteByUsername(String username);
 }

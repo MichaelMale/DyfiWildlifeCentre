@@ -89,9 +89,6 @@ public class AdminController {
         return "admin/edit_active";
     }
 
-    @GetMapping("/admin/users")
-    public String users() {
-        return "admin/users";
-    }
+
 
 }

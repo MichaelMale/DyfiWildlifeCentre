@@ -137,6 +137,8 @@ public class PointOfInterestController{
      *
      * @param id ID pertaining to the Point of Interest.
      * @return POI that was deleted.
+     *
+     * TODO: change to delete mapping
      */
     @GetMapping("/poi/delete")
     public RedirectView deletePointOfInterestById(@RequestParam("id") long id) {

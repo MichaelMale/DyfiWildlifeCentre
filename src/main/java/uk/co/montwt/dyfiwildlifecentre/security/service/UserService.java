@@ -25,6 +25,7 @@ import uk.co.montwt.dyfiwildlifecentre.security.model.User;
 import uk.co.montwt.dyfiwildlifecentre.security.model.UserRepository;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -46,7 +47,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findByUsername(String username) {
+    private User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public List<String> getAllUsernames() {
+        return userRepository.findAllUsernames();
+    }
+
+    public void deleteByUsername(String username) {
+        userRepository.deleteByUsername(username);
     }
 }

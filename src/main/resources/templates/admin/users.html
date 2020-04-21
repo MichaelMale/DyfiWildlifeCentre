@@ -21,6 +21,10 @@
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
     <style>
+        #listOfUsers {
+            overflow: auto;
+            height: 50%;
+        }
         #promptUsername {
             margin-left: 30px !important;
         }
@@ -36,30 +40,34 @@
 
 
 
-<div class="container col s12 m6">
+<div class="container ui">
 
+    <div class="row">
+        <p>To register a user, click
+            <a th:href="@{/admin/registration_user}">here</a>.</p>
+    </div>
     <div class="row">
     <h5>List of Users</h5>
     </div>
-    <div class="row">
-        <ul class="collection">
-            <li class="collection-item avatar">
-                <img src="https://i.pravatar.cc/150" alt="" class="circle">
-                <span class="title">User name</span>
-                <a href="#" class="secondary-content">
-                    <i class="material-icons">
-                        send
-                    </i>
-                </a>
+    <div class="row" id="listOfUsers">
 
-                <a href="#"
-                   onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
-                    <i id="delete" class="material-icons">
-                        delete_forever
-                    </i>
-                </a>
+        <ul class="collection">
+
+            <li class="collection-item" th:each="user : ${users}">
+                <div>
+                    <th:block th:text="${user}"></th:block>
+
+                    <a th:href="@{/poi/delete(name=${user})}"
+                       onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
+                        <i id="delete" class="material-icons">
+                            delete_forever
+                        </i>
+                    </a>
+
+                </div>
             </li>
         </ul>
+
     </div>
 </div>
 

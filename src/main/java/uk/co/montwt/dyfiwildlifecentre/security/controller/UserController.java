@@ -24,9 +24,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.security.model.User;
 import uk.co.montwt.dyfiwildlifecentre.security.service.SecurityService;
 import uk.co.montwt.dyfiwildlifecentre.security.service.UserService;
+
+import java.util.List;
 
 /**
  * UserController.java - A controller for the user management system. This
@@ -81,5 +85,17 @@ public class UserController {
         securityService.autoLogin(userForm.getUsername(),
                 userForm.getPassword());
         return "admin/home";
+    }
+
+    @GetMapping("/admin/users")
+    public String users(Model model) {
+        model.addAttribute("users", userService.getAllUsernames());
+        return "admin/users";
+    }
+
+    @GetMapping("/users/delete")
+    public RedirectView deleteUserByUsername(@RequestParam("username") String username) {
+        userService.deleteByUsername(username);
+        return new RedirectView("/admin/users");
     }
 }
