@@ -17,16 +17,20 @@
 
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
+public class MvcConfigTests {
 
-@Controller
-public class MasterController {
+    @Autowired
+    MvcConfig mvcConfig;
 
-
-    @RequestMapping("/")
-    public String index() {
-        return "index";
+    @Test
+    void contextLoads() throws Exception {
+        Assertions.assertThat(mvcConfig).isNotNull();
     }
 }

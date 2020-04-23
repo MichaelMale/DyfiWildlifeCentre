@@ -37,10 +37,9 @@ import java.util.Objects;
  * Further iterations will involve linking it to a PostgreSQL database, and including filters.
  *
  * @author Michael Male
- * @version 0.1
+ * @version 0.2 2020-04-12
  * @see POI Interface that this class implements
  */
-
 @Entity
 @Table(name = "points_of_interest")
 public class PointOfInterest implements POI {
@@ -62,9 +61,19 @@ public class PointOfInterest implements POI {
     @Max(value = 90, message = "Error: Longitude cannot be greater than 90")
     private double longitude;
 
+    /**
+     * Default Constructor for objects of type PointOfInterest.
+     */
     public PointOfInterest() {
     }
 
+    /**
+     * Overloaded constructor for objects of type PointOfInterest.
+     * @param name  The name of the Point Of Interest.
+     * @param description   The description of the Point Of Interest.
+     * @param latitude  The latitude of the Point Of Interest.
+     * @param longitude The longitude of the Point Of Interest.
+     */
     public PointOfInterest(String name, String description, double latitude, double longitude) {
         this.name = name;
         this.description = description;
@@ -264,6 +273,10 @@ public class PointOfInterest implements POI {
         return Objects.hash(getId());
     }
 
+    /**
+     * Used to provide a String representation of a Point Of Interest.
+     * @return  String containing a JSON representation of a POI.
+     */
     @Override
     public String toString() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

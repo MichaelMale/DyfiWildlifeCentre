@@ -16,19 +16,21 @@
   -->
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en_GB">
 <head>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre - Error</title>
 </head>
 
 <body>
-<nav class="light-blue" id="primary-navbar" th:fragment="primaryNavbar">
-    <div class="nav-wrapper">
-        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-        <ul class="right" id="nav-mobile">
-            <li><a href="/admin">Admin Panel</a></li>
-        </ul>
-    </div>
-</nav>
+<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
+<div class="container ui">
+    <h1>403 - Access is denied</h1>
+    <div th:inline="text">User '[[${#httpServletRequest.remoteUser}]]'
+        does not have permission to access this page.</div>
+</div>
 </body>
+
 </html>

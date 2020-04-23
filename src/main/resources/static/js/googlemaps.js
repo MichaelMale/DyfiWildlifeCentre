@@ -22,7 +22,10 @@
  * @returns {Promise<Array>} A promise that should contain an array containing the Points of Interest.
  */
 async function getPointsOfInterest(url) {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include'
+    });
 
     return response.json();
 }
@@ -47,7 +50,7 @@ async function initMap() {
     /* Creates a marker clusterer. Initial markers are null as they are
      added iteratively
      */
-    let markerCluster = new MarkerClusterer(map,null,{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    let markerCluster = new MarkerClusterer(map,null,{imagePath: 'images/clusters/m'});
     allPointsOfInterest.forEach(
         poi => {
             const marker = new google.maps.Marker({

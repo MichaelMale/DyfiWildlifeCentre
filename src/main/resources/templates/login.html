@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright (C) 2020 Michael Male
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <fragment th:replace="fragments/header :: header"></fragment>
+    <title>Dyfi Wildlife Centre</title>
+</head>
+<body>
+<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col s12 m4 l8">
+            <div class="card z-depth-0">
+                <div class="card-content grey-text">
+                    <div class="row center-align" th:if="${param.error}">
+                        <div class="col s12 m6">Invalid username and password.</div>
+                    </div>
+                    <div class="row center-align" th:if="${param.logout}">
+                        <div class="col s12 m6">You have been logged out.</div>
+                    </div>
+                    <span class="card-title center-align">Dyfi Wildlife
+                        Centre -
+                        Admin
+                        Panel</span>
+                    <p class="center-align">Please log in to administrate this
+                        application. If
+                        you require an account, please e-mail
+                        <a href="mailto:info@montwt.co.uk">info@montwt.co.uk</a>
+                        or phone
+                        <a href="tel:+441938555654">01938 555654</a>.</p>
+
+                    <form th:action="@{/login}" method="post">
+                        <div><label> User Name :
+                            <input type="text" name="username"/> </label></div>
+                        <div>
+                            <label> Password:
+                                <input type="password" name="password"/> </label>
+                        </div>
+                        <div class="card-action">
+                            <div>
+                                <input type="submit" value="Sign In" /></div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            </div>
+
+            </div>
+
+    </div>
+</body>
+</html>

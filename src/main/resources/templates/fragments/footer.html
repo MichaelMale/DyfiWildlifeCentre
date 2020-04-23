@@ -16,19 +16,14 @@
   -->
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en_GB">
 
-<head>
-</head>
+<head><title></title></head>
 
 <body>
-<nav class="light-blue" id="primary-navbar" th:fragment="primaryNavbar">
-    <div class="nav-wrapper">
-        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-        <ul class="right" id="nav-mobile">
-            <li><a href="/admin">Admin Panel</a></li>
-        </ul>
-    </div>
-</nav>
+<div th:fragment="footer" th:remove="tag">
+    <!-- Import Materialize JavaScript -->
+    <script th:src="@{/js/materialize.min.js}"></script>
+</div>
 </body>
 </html>

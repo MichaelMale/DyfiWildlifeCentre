@@ -16,20 +16,18 @@
   -->
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en_GB">
 
-<head></head>
+<head><title></title></head>
 
 <body>
 <div th:fragment="header" th:remove="tag">
     <!-- Import Google Icon Font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Import Materialize CSS -->
-    <!-- Eventually use the local -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link th:href="@{/css/materialize.min.css}" rel="stylesheet">
     <!-- Responsiveness -->
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-
     <meta charset="UTF-8">
 </div>
 </body>

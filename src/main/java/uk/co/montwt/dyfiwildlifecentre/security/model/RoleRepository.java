@@ -15,25 +15,17 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre.exception;
+package uk.co.montwt.dyfiwildlifecentre.security.model;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * PointOfInterestNotFoundException.java - A custom exception that is thrown
- * when a POI is not found.
+ * RoleRepository.java - Interfaces with the DBMS to access and update the
+ * roles relation.
  *
  * @author Michael Male
- * @version 1.0 2020-04-12
- * @see RuntimeException
+ * @version 1.0 2020-04-20
+ * @see org.springframework.data.jpa.repository.JpaRepository
  */
-public class PointOfInterestNotFoundException extends RuntimeException {
-
-    /**
-     * Constructor for objects of type PointOfInterestNotFoundException,
-     * returning a relevant message.
-     * @param id    The ID entered, that could not be correlated with a Point
-     *             Of Interest.
-     */
-    public PointOfInterestNotFoundException(long id) {
-        super("Could not find POI " + id);
-    }
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }

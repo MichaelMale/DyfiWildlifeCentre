@@ -34,30 +34,24 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        #promptUsername {
+             margin-left: 30px !important;
+         }
+
+        #promptSignOut {
+            margin-right: 30px !important;
+        }
     </style>
 </head>
 <body>
 
-<nav class="nav-extended light-blue" id="admin-navbar">
-    <div class="nav-wrapper">
-        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-        <ul class="right hide-on-med-and-down" id="nav-mobile">
-            <li><a href="/admin">Admin Panel</a></li>
-        </ul>
-    </div>
-    <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-            <li class="tab"><a href="/admin">Home</a></li>
-            <li class="tab"><a class="active" href="/admin/add">Add</a></li>
-            <li class="tab"><a href="/admin/list">List</a></li>
-        </ul>
-    </div>
-</nav>
+<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
 <div class="container-fluid">
     <div class="row">
         <div class="col s12 m6">
             <p>
-            <h1>Create a Point of Interest</h1></p>
+            <h1>Create a Point of Interest</h1>
             <p><h5>Add information to the form below to create a Point of Interest for the map.</h5></p>
         </div>
     </div>
@@ -115,6 +109,7 @@
         </form>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<fragment th:replace="fragments/footer :: footer"></fragment>
+<fragment th:replace="fragments/admin_tab_script" :: adminTabScript></fragment>
 </body>
 </html>

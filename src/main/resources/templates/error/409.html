@@ -16,29 +16,28 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en_GB">
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre</title>
-    <link rel="stylesheet" th:href="@{/css/customIndexStyle.css}" type="text/css"/>
-    <script async="" th:src="@{/js/lazysizes.min.js}"></script>
-    <script
-            src="https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js"></script>
+    <title>Dyfi Wildlife Centre - Error</title>
 </head>
-<body>
 
+<body>
 <fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
 
-<div class="col s12 m6" id="map">
+<div class="container ui">
+    <h1>409 - Conflict</h1>
+    <div>A database conflict has been detected. This is
+        generally caused by creating a user whose username already exists.
+    Please try using a different username.
+
+    <p><a class="waves-effect waves-light btn-large"
+          th:href="@{/admin/registration_user}">
+        <i class="material-icons left">arrow_back</i>
+        Return</a>
+    </div>
 </div>
-
-<fragment th:replace="fragments/poi_card :: poiCard"></fragment>
-
-<script async defer th:src="@{/js/googlemaps.js}">
-</script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
-<fragment th:replace="fragments/footer :: footer"></fragment>
 </body>
 
 </html>

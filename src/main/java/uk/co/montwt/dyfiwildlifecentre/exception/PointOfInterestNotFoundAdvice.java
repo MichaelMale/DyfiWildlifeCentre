@@ -23,9 +23,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * PointOfInterestNotFoundAdvice.java - A class that provides a message for a
+ * PointOfInterestNotFoundException
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-12
+ * @see PointOfInterestNotFoundException
+ */
 @ControllerAdvice
 public class PointOfInterestNotFoundAdvice {
 
+    /**
+     * Handles an exception that the POI is not found.
+     * @param ex    The exception that is being handled.
+     * @return  String containing the exception's message.
+     */
     @ResponseBody
     @ExceptionHandler(PointOfInterestNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
