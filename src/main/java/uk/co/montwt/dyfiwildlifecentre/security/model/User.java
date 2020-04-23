@@ -41,6 +41,7 @@ public class User {
     private Long id;
 
     @NotEmpty(message = "Error: A username must be provided.")
+    @Column(unique = true)
     @Size(min = 6, max = 32, message = "Error: Username must be between 6 and" +
             " 32 characters.")
     private String username;

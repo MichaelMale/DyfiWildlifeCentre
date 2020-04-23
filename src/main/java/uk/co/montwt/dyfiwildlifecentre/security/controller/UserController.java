@@ -18,18 +18,19 @@
 package uk.co.montwt.dyfiwildlifecentre.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.security.model.User;
 import uk.co.montwt.dyfiwildlifecentre.security.service.SecurityService;
 import uk.co.montwt.dyfiwildlifecentre.security.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -97,5 +98,15 @@ public class UserController {
     public RedirectView deleteUserByUsername(@RequestParam("username") String username) {
         userService.deleteByUsername(username);
         return new RedirectView("/admin/users");
+    }
+
+    @ResponseStatus(value=HttpStatus.CONFLICT,reason="Data Integrity Violation")
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ModelAndView conflict(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("error/409");
+        return mav;
     }
 }
