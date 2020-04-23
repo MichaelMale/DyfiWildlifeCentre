@@ -55,9 +55,9 @@
 
             <li class="collection-item" th:each="user : ${users}">
                 <div>
-                    <th:block th:text="${user}"></th:block>
+                    <th:block th:text="${user.username}"></th:block>
 
-                    <a th:href="@{/poi/delete(name=${user})}"
+                    <a th:href="@{/users/delete(id=${user.id})}"
                        onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
                         <i id="delete" class="material-icons">
                             delete_forever

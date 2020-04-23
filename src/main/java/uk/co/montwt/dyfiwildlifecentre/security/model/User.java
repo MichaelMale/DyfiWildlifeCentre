@@ -17,6 +17,8 @@
 
 package uk.co.montwt.dyfiwildlifecentre.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -53,6 +55,8 @@ public class User {
     @ManyToMany
     private Set<Role> roles;
 
+    public Long getId() { return id; }
+    
     public String getUsername() {
         return username;
     }
@@ -61,6 +65,7 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -69,6 +74,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
     public Set<Role> getRoles() {
         return roles;
     }

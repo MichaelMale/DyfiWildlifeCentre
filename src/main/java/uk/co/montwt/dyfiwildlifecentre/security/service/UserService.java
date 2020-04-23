@@ -18,6 +18,7 @@
 package uk.co.montwt.dyfiwildlifecentre.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.co.montwt.dyfiwildlifecentre.security.model.RoleRepository;
@@ -58,4 +59,14 @@ public class UserService {
     public void deleteByUsername(String username) {
         userRepository.deleteByUsername(username);
     }
+
+    public List<User> getAll() {
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC,
+                "username"));
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
 }

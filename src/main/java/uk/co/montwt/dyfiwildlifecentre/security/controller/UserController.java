@@ -90,13 +90,13 @@ public class UserController {
 
     @GetMapping("/admin/users")
     public String users(Model model) {
-        model.addAttribute("users", userService.getAllUsernames());
+        model.addAttribute("users", userService.getAll());
         return "admin/users";
     }
 
     @GetMapping("/users/delete")
-    public RedirectView deleteUserByUsername(@RequestParam("username") String username) {
-        userService.deleteByUsername(username);
+    public RedirectView deleteUserByUsername(@RequestParam("id") Long id) {
+        userService.delete(id);
         return new RedirectView("/admin/users");
     }
 
