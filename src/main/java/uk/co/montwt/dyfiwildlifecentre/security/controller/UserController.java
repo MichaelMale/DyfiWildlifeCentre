@@ -88,18 +88,38 @@ public class UserController {
         return "admin/home";
     }
 
+    /**
+     * Manages a GET request to return a list of all users..
+     *
+     * @param model Part of view payload
+     * @return  User list view
+     */
     @GetMapping("/admin/users")
     public String users(Model model) {
         model.addAttribute("users", userService.getAll());
         return "admin/users";
     }
 
+    /**
+     * Manages a request to delete a user from the database.
+     *
+     * @param id    Long containing the ID of the User to be deleted
+     * @return  A redirect to the user list
+     */
     @GetMapping("/users/delete")
     public RedirectView deleteUserByUsername(@RequestParam("id") Long id) {
         userService.delete(id);
         return new RedirectView("/admin/users");
     }
 
+    /**
+     * Manages a data integrity violation, by returning a page with details
+     * of the exception that has occurred.
+     *
+     * @param req   Contains the HTTP request
+     * @param ex    Contains the exception
+     * @return  The error view, along with the members of the method.
+     */
     @ResponseStatus(value=HttpStatus.CONFLICT,reason="Data Integrity Violation")
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ModelAndView conflict(HttpServletRequest req, Exception ex) {

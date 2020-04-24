@@ -25,16 +25,31 @@ import uk.co.montwt.dyfiwildlifecentre.security.service.UserService;
 
 import java.util.List;
 
+/**
+ * UserResourceController.java - This contains methods to perform RESTful API
+ * calls on the User entity.
+ *
+ * @author Michael Male
+ * @version 0.2 2020-04-24
+ */
 @RestController
 public class UserResourceController {
 
     private UserService userService;
 
+    /**
+     * Constructor for objects of type UserResourceController.
+     * @param userService   An autowired user service.
+     */
     @Autowired
     public UserResourceController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Manages a GET request to return all users in the database.
+     * @return  list of type User
+     */
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAll();

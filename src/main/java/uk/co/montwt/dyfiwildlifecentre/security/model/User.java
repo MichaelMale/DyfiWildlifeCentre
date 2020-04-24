@@ -55,30 +55,61 @@ public class User {
     @ManyToMany
     private Set<Role> roles;
 
+    /**
+     * Gets the ID of the user
+     * @return  Long containing the ID of the User
+     */
     public Long getId() { return id; }
-    
+
+    /**
+     * Gets the username of the user
+     * @return  String containing the username of the User
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username of the user
+     * @param username  String containing the username of the User
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets the password of the user, it is not included when this object is
+     * serialised as a JSON string
+     * @return  String containing the password
+     */
     @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the user's password
+     * @param password  String containing the user's password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Gets roles attached to the user, it is not included when this object
+     * is serialised as a JSON string
+     * @return  Set of type Role containing all roles attached to the User
+     */
     @JsonIgnore
     public Set<Role> getRoles() {
         return roles;
     }
 
+    /**
+     * Sets roles attached to the user.
+     * @param roles Set of type Role containing all roles to be attached to
+     *              the user
+     */
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }

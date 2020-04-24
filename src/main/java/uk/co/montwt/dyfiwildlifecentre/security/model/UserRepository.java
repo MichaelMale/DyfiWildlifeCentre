@@ -34,10 +34,4 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
-    @Query(value="SELECT u.username FROM User u")
-    List<String> findAllUsernames();
-
-    @Query("DELETE FROM User u WHERE u.username = :username")
-    void deleteByUsername(String username);
-
 }
