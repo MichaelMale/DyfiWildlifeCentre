@@ -32,16 +32,33 @@ import uk.co.montwt.dyfiwildlifecentre.security.model.UserRepository;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * UserDetailsServiceImpl.java - This is an implementation of the
+ * UserDetailsService interface, used to get details of users.
+ *
+ * @author Michael Male
+ * @version 1.0 2020-04-24
+ * @see UserDetailsService
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Constructor for objects of type UserDetailsServiceImpl.
+     * @param userRepository    Autowired object of type UserRepository
+     */
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Loads user details by its username
+     * @param username  String containing the username to be loaded
+     * @return  Object of type UserDetails, containing details for a given User.
+     */
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {

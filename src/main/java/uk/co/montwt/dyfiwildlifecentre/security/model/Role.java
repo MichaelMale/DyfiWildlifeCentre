@@ -40,26 +40,52 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
+    /**
+     * Gets the ID of the role
+     * @return  Long containing ID of the role
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets the ID of the role
+     * @param id    Long containing ID of the role
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets the name of the role
+     * @return  String containing the name of the role
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the role
+     * @param name  String containing the name of the role
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets users that are attached to the role
+     * @return  Set of type User containing all User objects attached to the
+     * role
+     */
     public Set<User> getUsers() {
         return users;
     }
 
+    /**
+     * Sets users that are attached to the role
+     * @param users Set of type User containing all User objects attached to
+     *              the role
+     */
     public void setUsers(Set<User> users) {
         this.users = users;
     }

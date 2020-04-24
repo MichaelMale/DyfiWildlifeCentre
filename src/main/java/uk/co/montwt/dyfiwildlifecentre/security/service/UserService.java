@@ -28,12 +28,25 @@ import uk.co.montwt.dyfiwildlifecentre.security.model.UserRepository;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * UserService.java - A class to manage the user service.
+ *
+ * @author Michael Male
+ * @version 0.2 2020-04-24
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Constructor for objects of type UserService
+     * @param userRepository    Autowired object of type UserRepository
+     * @param roleRepository    Autowired object of type RoleRepository
+     * @param bCryptPasswordEncoder Autowired object of type
+     *                              BCryptPasswordEncoder
+     */
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -42,29 +55,34 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * Saves a User to the database.
+     * @param user  User to be saved to the database
+     */
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        // Encodes the password using the BCrypt hashing algorithm
+        user.setRoles(new HashSet<>(roleRepository.findAll())); // Sets role
+        // to all roles available in the role repository. The current
+        // implementation allows for one role, ROLE_ADMIN, as general users
+        // don't need to be authenticated
         userRepository.save(user);
     }
 
-    private User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public List<String> getAllUsernames() {
-        return userRepository.findAllUsernames();
-    }
-
-    public void deleteByUsername(String username) {
-        userRepository.deleteByUsername(username);
-    }
-
+    /**
+     * Gets all users in the database, sorted in an ascending direction by
+     * username
+     * @return  List of type User, containing all users in the database
+     */
     public List<User> getAll() {
         return userRepository.findAll(Sort.by(Sort.Direction.ASC,
                 "username"));
     }
 
+    /**
+     * Deletes a user from the database
+     * @param id    Long containing the ID of the user to be deleted
+     */
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
