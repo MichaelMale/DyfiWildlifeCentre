@@ -53,12 +53,12 @@ public class PointOfInterest implements POI {
 
     private String description;
 
-    @Min(value = -180, message = "Error: Latitude cannot be lower than -180")
-    @Max(value = 180, message = "Error: Latitude cannot be greater than 180")
+    @Min(value = -90, message = "Error: Latitude cannot be lower than -90")
+    @Max(value = 90, message = "Error: Latitude cannot be greater than 90")
     private double latitude;
 
-    @Min(value = -90, message = "Error: Longitude cannot be lower than -90")
-    @Max(value = 90, message = "Error: Longitude cannot be greater than 90")
+    @Min(value = -180, message = "Error: Longitude cannot be lower than -180")
+    @Max(value = 180, message = "Error: Longitude cannot be greater than 180")
     private double longitude;
 
     /**

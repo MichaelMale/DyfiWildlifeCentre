@@ -20,6 +20,7 @@ package uk.co.montwt.dyfiwildlifecentre.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
+import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
 import java.net.URI;
 import java.util.List;
@@ -43,16 +45,12 @@ import java.util.List;
 @RestController
 public class PointOfInterestController{
 
-    private final PointOfInterestRepository repository;
+    private final PointOfInterestServiceImpl pointOfInterestService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * Constructor for objects of type PointOfInterestController, that uses
-     * the repository for POIs.
-     * @param repository    Object of type PointOfInterestRepository.
-     */
-    PointOfInterestController(PointOfInterestRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public PointOfInterestController(PointOfInterestServiceImpl pointOfInterestService) {
+        this.pointOfInterestService = pointOfInterestService;
     }
 
     /**
@@ -64,8 +62,7 @@ public class PointOfInterestController{
     @GetMapping("/poi/get/id/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new PointOfInterestNotFoundException(id));
+        return pointOfInterestService.findById(id);
     }
 
     /**
@@ -75,30 +72,7 @@ public class PointOfInterestController{
      */
     @GetMapping("/poi")
     public List<PointOfInterest> getAllPointsOfInterest() {
-        return repository.findAll();
-    }
-
-    /**
-     * Creates a Point of Interest and places it into the database.
-     *
-     * @param poi Point of Interest to be added into the database.
-     * @return POI that was added.
-     */
-    @Deprecated
-    @PostMapping(value = "/poi/create", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> createPointOfInterest(@RequestBody PointOfInterest poi) throws Exception {
-
-        int id = repository.findAll().size() + 1;
-        poi.setId(id);
-
-        repository.save(poi);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(poi.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+        return pointOfInterestService.findAll();
     }
 
     /**
@@ -110,12 +84,12 @@ public class PointOfInterestController{
      */
     @PostMapping("/poi/form_create")
     public RedirectView submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) {
-        logger.info("HTTP Post Request instantiated from form");
-        int id = repository.findAll().size() + 1;
-        pointOfInterest.setId(id);
-        logger.info("POI set to have ID " + id);
+//        logger.info("HTTP Post Request instantiated from form");
+//        int id = repository.findAll().size() + 1;
+//        pointOfInterest.setId(id);
+//        logger.info("POI set to have ID " + id);
 
-        repository.save(pointOfInterest);
+        pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
         return new RedirectView("/");
     }
@@ -129,7 +103,7 @@ public class PointOfInterestController{
     @GetMapping("poi/get/name/{name}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name) {
-        return repository.findAllPointsOfInterestByName(name);
+        return pointOfInterestService.findAllPointsOfInterestByName(name);
     }
 
     /**
@@ -140,7 +114,7 @@ public class PointOfInterestController{
      */
     @GetMapping("/poi/delete")
     public RedirectView deletePointOfInterestById(@RequestParam("id") long id) {
-        repository.deleteById(id);
+        pointOfInterestService.delete(id);
         return new RedirectView("/admin/list");
     }
 
@@ -154,7 +128,7 @@ public class PointOfInterestController{
     @PostMapping("/poi/update")
     public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi, @RequestParam("id") long id) {
         poi.setId(id);
-        repository.save(poi);
+        pointOfInterestService.save(poi);
         return new RedirectView("/");
     }
 
