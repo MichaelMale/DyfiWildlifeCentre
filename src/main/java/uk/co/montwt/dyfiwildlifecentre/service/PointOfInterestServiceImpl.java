@@ -18,6 +18,7 @@
 package uk.co.montwt.dyfiwildlifecentre.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
@@ -64,7 +65,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public List<PointOfInterest> findAll() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     /**

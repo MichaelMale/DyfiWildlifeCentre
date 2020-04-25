@@ -17,12 +17,14 @@
 
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
+import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
 import java.util.Optional;
 
@@ -37,15 +39,16 @@ import java.util.Optional;
 @Controller
 public class AdminController {
 
-    private final PointOfInterestRepository repository;
+    private final PointOfInterestServiceImpl pointOfInterestService;
 
     /**
-     * Constructor for objects of class AdminController.
-     * @param repository    The PointOfInterestRepository, an interface used
-     *                      to connect to the SQL server.
+     * Constructor for objects of type AdminController
+     * @param pointOfInterestService    Autowired object of type
+     *                                  PointOfInterestServiceImpl
      */
-    AdminController(PointOfInterestRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public AdminController(PointOfInterestServiceImpl pointOfInterestService) {
+        this.pointOfInterestService = pointOfInterestService;
     }
 
     /**
@@ -68,7 +71,7 @@ public class AdminController {
      */
     @GetMapping("/admin/list")
     public String adminList(Model model) {
-        model.addAttribute("pointsOfInterest", repository.findAll());
+        model.addAttribute("pointsOfInterest", pointOfInterestService.findAll());
         return "admin/list";
     }
 
@@ -84,8 +87,7 @@ public class AdminController {
     @GetMapping("/admin/edit_active")
     public String adminEditActive(@RequestParam("id") long id, Model model) {
         model.addAttribute("id", id);
-        var poi = repository.findById(id);
-        poi.ifPresent(pointOfInterest -> model.addAttribute("poi", pointOfInterest));
+        model.addAttribute("poi", pointOfInterestService.findById(id));
         return "admin/edit_active";
     }
 
