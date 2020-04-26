@@ -362,6 +362,18 @@ public class PointOfInterest implements POI {
     }
 
     /**
+     * Sets both latitude and longitude using a Point2D.Double object.
+     *
+     * @param coordinates Point2D.Double, where x is the latitude and y is
+     *                    the longitude.
+     */
+    @Override
+    public void setCoordinates(Point2D.Double coordinates) {
+        this.setLatitude(coordinates.getX());
+        this.setLongitude(coordinates.getY());
+    }
+
+    /**
      * Used to provide a String representation of a Point Of Interest.
      * @return  String containing a JSON representation of a POI.
      */

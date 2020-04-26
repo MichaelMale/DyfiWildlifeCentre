@@ -158,5 +158,12 @@ interface POI {
      */
     Point2D.Double calculateCoordinatesFromPostcode() throws IOException;
 
+    /**
+     * Sets both latitude and longitude using a Point2D.Double object.
+     * @param coordinates   Point2D.Double, where x is the latitude and y is
+     *                      the longitude.
+     */
+    void setCoordinates(Point2D.Double coordinates);
+
 
 }

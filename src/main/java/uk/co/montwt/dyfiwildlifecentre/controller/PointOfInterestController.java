@@ -31,6 +31,7 @@ import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -83,15 +84,16 @@ public class PointOfInterestController{
      * of interest.
      */
     @PostMapping("/poi/form_create")
-    public RedirectView submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) {
-//        logger.info("HTTP Post Request instantiated from form");
-//        int id = repository.findAll().size() + 1;
-//        pointOfInterest.setId(id);
-//        logger.info("POI set to have ID " + id);
+    public String submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
+        if (pointOfInterest.getLatitude() == 0 && pointOfInterest.getLongitude() == 0) {
+            if (!pointOfInterest.getPostcode().isEmpty()) {
+                pointOfInterest.setCoordinates(pointOfInterest.calculateCoordinatesFromPostcode());
+            }
+        }
         pointOfInterest.setDistanceFromCentre();
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
-        return new RedirectView("/");
+        return "/index";
     }
 
     /**
