@@ -29,49 +29,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 @SpringBootTest
 public class PointOfInterestTests {
 
-    private static List<PointOfInterest> poiList;
+    private static PointOfInterest test;
 
     @BeforeAll
     static void init() {
-        poiList = new ArrayList<>();
-        PointOfInterest poi = new PointOfInterest(
-                "Aberystwyth University",
-                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
-                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
-                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
-                        " faculties and 17 departments.",
-                52.41806,
-                -4.06576
-        );
-        poi.setId(0);
-        PointOfInterest secondPOI = new PointOfInterest(
-                "Aberystwyth University",
-                "Aberystwyth University (Welsh: Prifysgol Aberystwyth) is a public research university in " +
-                        "Aberystwyth, Wales. Aberystwyth was a founding member institution of the former federal" +
-                        " University of Wales. The university has over 8,000 students studying across 3 academic" +
-                        " faculties and 17 departments.",
-                52.41806,
-                -4.06576
-        );
-        secondPOI.setId(1);
-        PointOfInterest unequalPOI = new PointOfInterest("Title", "Description", 0, 0);
-        unequalPOI.setId(2);
-        poiList.add(poi);
-        poiList.add(secondPOI);
-        poiList.add(unequalPOI);
+        test = new PointOfInterest("Houses of Parliament", "The houses of " +
+                "parliament", 0, 0, "SW1A 0AA");
     }
 
     @Test
-    @DisplayName("All setters and getters should be able to set and return a given value.")
     public void validateSettersAndGetters() {
         PojoClass pointOfInterestPojo = PojoClassFactory.getPojoClass(PointOfInterest.class);
 
@@ -87,63 +62,10 @@ public class PointOfInterestTests {
     }
 
     @Test
-    @DisplayName("A Point of Interest with a latitude and longitude passed to it should be able to return a Point2D " +
-            "object containing both values.")
-    public void whenPOIIsInstantiated_MethodCanReturnAPoint2DRepresentation() {
-        Assertions.assertEquals(new Point2D.Double(52.41806, -4.06576), poiList.get(0).generateCoordinates());
+    public void confirmCoordinatesMethodReturnsCorrectCoordinates() throws IOException {
+        Point2D.Double expectedCoordinates = new Point2D.Double(51.49984,
+                -0.124663);
+        Assertions.assertEquals(expectedCoordinates,
+                test.calculateCoordinatesFromPostcode());
     }
-
-    @Test
-    @DisplayName("Confirm that a valid JSON representation is returned when calling method.")
-    public void whenJSONMethodIsCalled_MethodReturnsValidRepresentation() {
-        Assertions.assertEquals("{\"id\":0,\"name\":\"Aberystwyth University\",\"description\":\"Aberystwyth " +
-                        "University " +
-                        "(Welsh: Prifysgol Aberystwyth) is a public research university in Aberystwyth, Wales. " +
-                        "Aberystwyth was a founding member institution of the former federal University of Wales." +
-                        " The university has over 8,000 students studying across 3 academic faculties and 17" +
-                        " departments.\",\"latitude\":52.41806,\"longitude\":-4.06576}",
-                poiList.get(0).toJSON());
-    }
-
-    @Test
-    @DisplayName("POI should be equal with itself")
-    public void ifSameObjectIsEqualled_POIShouldReturnTrue() {
-        Assertions.assertEquals(poiList.get(0), poiList.get(0));
-        Assertions.assertEquals(poiList.get(0).hashCode(), poiList.get(0).hashCode());
-    }
-
-    @Test
-    @DisplayName("POI should not be equal with null")
-    public void ifObjectIsEqualledWithNull_POIShouldReturnFalse() {
-        Assertions.assertNotEquals(poiList.get(0), null);
-        Assertions.assertNotEquals((double) poiList.get(0).hashCode(), null);
-    }
-
-    @Test
-    @DisplayName("POI should not be equal with a different POI")
-    public void ifObjectIsEqualledWithDifferentObject_POIShouldReturnFalse() {
-        Assertions.assertNotEquals(poiList.get(0), poiList.get(2));
-        Assertions.assertNotEquals(poiList.get(0).hashCode(), poiList.get(2).hashCode());
-    }
-
-    @Test
-    @DisplayName("If POI is Wildlife Centre, distance from Wildlife Centre " +
-            "should be 0")
-    public void ifObjectIsDWC_DistanceFromDWCShouldBeZero() {
-        final PointOfInterest testCase = new PointOfInterest("Dyfi Wildlife " +
-                "Centre",
-                "Description", 52.568774, -3.918031);
-        Assertions.assertEquals(0, testCase.calculateDistanceFromCentre());
-    }
-
-    @Test
-    @DisplayName("If POI is at centre coordinates, distance from Wildlife " +
-            "Centre should be 3639")
-    public void ifObjectIsAtCentreCoordinates_DistanceFromCentreShouldBeValue() {
-        final PointOfInterest testCase = new PointOfInterest("Null Island",
-                "Description", 0, 0);
-        Assertions.assertEquals(3639, testCase.calculateDistanceFromCentre());
-    }
-
-
 }

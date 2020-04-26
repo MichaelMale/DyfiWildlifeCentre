@@ -18,6 +18,8 @@
 package uk.co.montwt.dyfiwildlifecentre.model;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * Interface for a POI, this is to be used to represent a Point of Interest that will be shown on the map.
@@ -135,6 +137,26 @@ interface POI {
      */
     @Override
     int hashCode();
+
+    /**
+     * Sets the postcode.
+     * @param postcode  String containing a postcode
+     */
+    void setPostcode(String postcode);
+
+    /**
+     * Gets the postcode.
+     * @return  String containing a postcode
+     */
+    String getPostcode();
+
+    /**
+     * Calculates the coordinates from a UK postcode, utilising the Postcode
+     * API.
+     * @return Point2D.Double containing the latitude and the longitude of
+     * the coordinates, calculated by its postcode.
+     */
+    Point2D.Double calculateCoordinatesFromPostcode() throws IOException;
 
 
 }
