@@ -61,6 +61,9 @@ public class PointOfInterest implements POI {
     @Max(value = 180, message = "Error: Longitude cannot be greater than 180")
     private double longitude;
 
+    @Column(nullable = true)
+    private String postcode;
+
     /**
      * Default Constructor for objects of type PointOfInterest.
      */
