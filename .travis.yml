@@ -1,9 +1,1 @@
-#language: java
-#services:
-#- postgresql
-#before_script:
-#- psql -c 'create database dyfi_wildlife_centre;' -U postgres
-#env:
-#  global:
-#    secure: G1hVdyTWFZclX88hXO7/zFRESyps7lbWkIXutRcoLSIc91W/HnmkaW92p7gX45ArUafhnx9VtlQXeF9iV5wzVi6IqPgtVK4865o1vzYsflZirXBmOKBTx8BmYiXNYMvo4myfYSQ9FGarXSnylssjIMHNq0l15rhwsA3rKOM101/EoL8OB+YjIxdMGOi26xQxxpW+QaHxL8x8nqbjzEKQ0CDomNl5vKMFrzUgWywmcxi+7EULSqhEiAFm8mpybiIeVMcGPu/zarXrUiAaSqW74IPxqe7bamTSSG0zT5w/bdPTcVob1BthADNDzBduKGw+QD6HOnyoafSvK3ueVNp+3n9s0U+LK9/AidW9kvHtW5hDcrzSgXNn15AAJT8ZpkI6qWYM8FMlCVeuZpzg9MZ2kmg/q6bTsyjYoid8UBFw6R1Qs6spDBaKEHZCrk9/PHPqLIXVZxrXho30aXjzJC2VR8bJrxr0b2SV3zxzUY2P1f+XmU51fxkkY0o95JP7B+mZW2oOJedZ5RoorEMTTOsJfU9s41ouz8kgxuCwapblOoj1U+uegVQYOWcSfyuaXzGKYWAanTyK6OO8+AYiq3kciXT3tuCbAmny3DXl5bRjV2KKczocl+LM1H9f4bjv/jGsxyz63zzlojRyW1U2b8EKfF3kARfoTAW/i6qJK7vEe1E=
-# Stopping Travis CI builds for now as I research how to build the pipeline.
+language: java
