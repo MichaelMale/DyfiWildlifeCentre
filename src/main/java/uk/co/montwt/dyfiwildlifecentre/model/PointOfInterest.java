@@ -75,6 +75,9 @@ public class PointOfInterest implements POI {
     @Column(nullable = true)
     private String postcode;
 
+    @Column(name = "distance_from_centre")
+    private double distanceFromCentre;
+
     /**
      * Default Constructor for objects of type PointOfInterest.
      */
@@ -96,6 +99,14 @@ public class PointOfInterest implements POI {
         this.latitude = latitude;
         this.longitude = longitude;
         this.postcode = postcode;
+    }
+
+    public double getDistanceFromCentre() {
+        return distanceFromCentre;
+    }
+
+    public void setDistanceFromCentre() {
+        this.distanceFromCentre = this.calculateDistanceFromCentre();
     }
 
     /**
@@ -321,9 +332,9 @@ public class PointOfInterest implements POI {
      */
     @Override
     public Point2D.Double calculateCoordinatesFromPostcode() throws IOException {
-        String encodedPostcode = URLEncoder.encode(this.getPostcode(),
+        final String encodedPostcode = URLEncoder.encode(this.getPostcode(),
                 StandardCharsets.UTF_8).replace("+", "%20");
-        String baseUrl = "https://api.postcodes.io/postcodes/";
+        final String baseUrl = "https://api.postcodes.io/postcodes/";
 
         URL obj = new URL(baseUrl + encodedPostcode);
 

@@ -88,7 +88,7 @@ public class PointOfInterestController{
 //        int id = repository.findAll().size() + 1;
 //        pointOfInterest.setId(id);
 //        logger.info("POI set to have ID " + id);
-
+        pointOfInterest.setDistanceFromCentre();
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
         return new RedirectView("/");

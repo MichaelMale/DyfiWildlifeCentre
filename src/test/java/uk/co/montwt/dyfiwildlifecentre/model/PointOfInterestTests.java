@@ -29,23 +29,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
 
-@SpringBootTest
+/**
+ * PointOfInterestTests.java - Tests to cover the PointOfInterest class.
+ *
+ * @author Michael Male
+ * @version 0.2
+ * @see PointOfInterest
+ */
 public class PointOfInterestTests {
 
-    private static PointOfInterest test;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @BeforeAll
-    static void init() {
-        test = new PointOfInterest("Houses of Parliament", "The houses of " +
-                "parliament", 0, 0, "SW1A 0AA");
-    }
-
+    /**
+     * Utilising the OpenPOJO package, this class test setters and getters.
+     *
+     * @see com.openpojo
+     */
     @Test
     public void validateSettersAndGetters() {
         PojoClass pointOfInterestPojo = PojoClassFactory.getPojoClass(PointOfInterest.class);
@@ -61,11 +68,47 @@ public class PointOfInterestTests {
         validator.validate(pointOfInterestPojo);
     }
 
+    /**
+     * Tests whether the coordinates method returns the correct coordinates,
+     * when cross-referencing a postcodes with the postcodes.io API.
+     * @throws IOException  If the client is unable to access the URL.
+     */
     @Test
     public void confirmCoordinatesMethodReturnsCorrectCoordinates() throws IOException {
+        PointOfInterest test = new PointOfInterest("Houses of Parliament",
+                "The " +
+                "houses of " +
+                "parliament", 0, 0, "SW1A 0AA");
+        logger.debug("New object created with a latitude of "
+                + test.getLatitude() + " and a longitude of " + test.getLongitude());
         Point2D.Double expectedCoordinates = new Point2D.Double(51.49984,
                 -0.124663);
+        Point2D.Double result = test.calculateCoordinatesFromPostcode();
+        logger.debug("The coordinates calculated from " +
+                test.getPostcode() + " was " + result.getX() + "," + result.getY());
         Assertions.assertEquals(expectedCoordinates,
-                test.calculateCoordinatesFromPostcode());
+                result);
+    }
+
+    @Test
+    public void confirmDistanceFromCentreIsZero_WhenQueryingDyfiWildlifeCentre() {
+        PointOfInterest dyfiWildlifeCentre = new PointOfInterest("Dyfi " +
+                "Wildlife Centre", "Dyfi Wildlife Centre", 52.568774,
+                -3.918031, null);
+        logger.debug("New object created with a latitude of " + dyfiWildlifeCentre.getLatitude() + " and a longitude of " + dyfiWildlifeCentre.getLongitude());
+        double result = dyfiWildlifeCentre.getDistanceFromCentre();
+        logger.debug("Distance from centre calculated is: " + result);
+        Assertions.assertEquals(0, result);
+    }
+
+    @Test
+    public void confirmDistanceFromCentreIsNotZero_WhenQueryingLocation() {
+        PointOfInterest test = new PointOfInterest("", "", 51.49984,
+                -0.124663, "SW1A 0AA");
+        logger.debug("New object created with a latitude of " + test.getLatitude()
+                + " and a longitude of " + test.getLongitude());
+        double distance = test.getDistanceFromCentre();
+        logger.debug("Distance from centre calculated is: " + distance);
+        Assertions.assertEquals(177.3, distance);
     }
 }

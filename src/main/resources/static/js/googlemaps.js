@@ -57,7 +57,8 @@ async function initMap() {
                 position: {lat: poi.latitude, lng: poi.longitude},
                 map: map,
                 title: poi.name,
-                description: poi.description
+                description: poi.description,
+                distanceFromCentre: poi.distanceFromCentre
             });
             markerCluster.addMarker(marker); // Iterative addition of a
             // marker to the cluster, that performs clustering automatically
@@ -65,6 +66,7 @@ async function initMap() {
                 const element = document.getElementById('poiCard');
                 element.querySelector('#poi_title').innerHTML = marker.title;
                 element.querySelector('#poi_description').innerHTML = marker.description;
+                element.querySelector('#poi_distance').innerHTML = marker.distanceFromCentre;
                 const instance = M.Modal.init(element, {
                     dismissible: true,
                     inDuration: 500,
