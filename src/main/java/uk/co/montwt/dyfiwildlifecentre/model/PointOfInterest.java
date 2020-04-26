@@ -38,8 +38,11 @@ import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * PointOfInterest.java - This class represents a Point of Interest. It will be used whenever an end user would like
@@ -332,6 +335,15 @@ public class PointOfInterest implements POI {
      */
     @Override
     public Point2D.Double calculateCoordinatesFromPostcode() throws IOException {
+        String postcodeRegex = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1," +
+                "2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
+        Pattern postcodePattern = Pattern.compile(postcodeRegex);
+        Matcher matcher = postcodePattern.matcher(this.getPostcode());
+
+        if (!matcher.matches()) {
+            throw new IOException("Invalid postcode");
+        }
+
         final String encodedPostcode = URLEncoder.encode(this.getPostcode(),
                 StandardCharsets.UTF_8).replace("+", "%20");
         final String baseUrl = "https://api.postcodes.io/postcodes/";

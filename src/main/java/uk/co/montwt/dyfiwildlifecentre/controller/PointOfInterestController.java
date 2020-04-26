@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
@@ -84,7 +86,7 @@ public class PointOfInterestController{
      * of interest.
      */
     @PostMapping("/poi/form_create")
-    public String submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
+    public View submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
         if (pointOfInterest.getLatitude() == 0 && pointOfInterest.getLongitude() == 0) {
             if (!pointOfInterest.getPostcode().isEmpty()) {
                 pointOfInterest.setCoordinates(pointOfInterest.calculateCoordinatesFromPostcode());
@@ -93,7 +95,7 @@ public class PointOfInterestController{
         pointOfInterest.setDistanceFromCentre();
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
-        return "/index";
+        return new RedirectView("/index");
     }
 
     /**
@@ -132,6 +134,12 @@ public class PointOfInterestController{
         poi.setId(id);
         pointOfInterestService.save(poi);
         return new RedirectView("/");
+    }
+
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="Invalid postcode")
+    @ExceptionHandler(IOException.class)
+    public RedirectView invalidPostcode() {
+        return new RedirectView("error/400");
     }
 
 
