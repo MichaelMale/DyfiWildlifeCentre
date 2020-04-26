@@ -15,22 +15,11 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre.controller;
+package uk.co.montwt.dyfiwildlifecentre.exception;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+public class PostcodeException extends RuntimeException {
 
-@SpringBootTest
-public class MvcConfigTests {
-
-    @Autowired
-    MvcConfig mvcConfig;
-
-    @Test
-    void contextLoads() throws Exception {
-        Assertions.assertThat(mvcConfig).isNotNull();
+    public PostcodeException(String postcode, String exception) {
+        super("Error while parsing postcode " + postcode + ". " + exception);
     }
 }

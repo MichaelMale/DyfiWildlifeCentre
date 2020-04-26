@@ -17,18 +17,33 @@
 
 package uk.co.montwt.dyfiwildlifecentre.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * PointOfInterest.java - This class represents a Point of Interest. It will be used whenever an end user would like
@@ -61,10 +76,20 @@ public class PointOfInterest implements POI {
     @Max(value = 180, message = "Error: Longitude cannot be greater than 180")
     private double longitude;
 
+    @Column(nullable = true)
+    private String postcode;
+
+    @Column(name = "distance_from_centre")
+    private double distanceFromCentre;
+
     /**
      * Default Constructor for objects of type PointOfInterest.
      */
     public PointOfInterest() {
+    }
+
+    public void setDistanceFromCentre(double distanceFromCentre) {
+        this.distanceFromCentre = distanceFromCentre;
     }
 
     /**
@@ -73,13 +98,22 @@ public class PointOfInterest implements POI {
      * @param description   The description of the Point Of Interest.
      * @param latitude  The latitude of the Point Of Interest.
      * @param longitude The longitude of the Point Of Interest.
+     * @param postcode  The postcode of the Point of Interest.
      */
-    public PointOfInterest(String name, String description, double latitude, double longitude) {
+    public PointOfInterest(String name, String description, double latitude,
+                           double longitude, String postcode) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.postcode = postcode;
     }
+
+    public double getDistanceFromCentre() {
+        return distanceFromCentre;
+    }
+
+
 
     /**
      * Gets the ID of the Point of Interest.
@@ -181,6 +215,7 @@ public class PointOfInterest implements POI {
         this.longitude = longitude;
     }
 
+
     /**
      * Gets both the latitude and longitude of the Point of Interest.
      *
@@ -225,7 +260,7 @@ public class PointOfInterest implements POI {
 
             double a =
                     Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLng / 2), 2)
-                    * Math.cos(dyfiLat) * Math.cos(currentLat);
+                            * Math.cos(dyfiLat) * Math.cos(currentLat);
             double c = 2 * Math.asin(Math.sqrt(a));
             double result = (EARTH_RADIUS_MILES * c);
             /* Converts result into a BigDecimal that is then rounded to 4
@@ -271,6 +306,86 @@ public class PointOfInterest implements POI {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    /**
+     * Sets the postcode.
+     *
+     * @param postcode String containing a postcode
+     */
+    @Override
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    /**
+     * Gets the postcode.
+     *
+     * @return String containing a postcode
+     */
+    @Override
+    public String getPostcode() {
+        return this.postcode;
+    }
+
+    /**
+     * Calculates the coordinates from a UK postcode, utilising the Postcode
+     * API.
+     *
+     * @return Point2D.Double containing the latitude and the longitude of
+     * the coordinates, calculated by its postcode.
+     * @see <a href="https://postcodes.io">postcodes.io</a>
+     */
+    @Override
+    public Point2D.Double calculateCoordinatesFromPostcode() throws IOException {
+        String postcodeRegex = "^([A-PR-UWYZa-pr-uwyz]([0-9]{1,2}|" +
+                "([A-HK-Ya-hk-y][0-9]|[A-HK-Ya-hk-y][0-9]([0-9]|[ABEHMNPRV-Yabehmnprv-y]))|[0-9][A-HJKS-UWa-hjks-uw])\\ {0,1}[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}|([Gg][Ii][Rr]\\ 0[Aa][Aa])|([Ss][Aa][Nn]\\ {0,1}[Tt][Aa]1)|([Bb][Ff][Pp][Oo]\\ {0,1}([Cc]\\/[Oo]\\ )?[0-9]{1,4})|(([Aa][Ss][Cc][Nn]|[Bb][Bb][Nn][Dd]|[BFSbfs][Ii][Qq][Qq]|[Pp][Cc][Rr][Nn]|[Ss][Tt][Hh][Ll]|[Tt][Dd][Cc][Uu]|[Tt][Kk][Cc][Aa])\\ {0,1}1[Zz][Zz]))$";
+        Pattern postcodePattern = Pattern.compile(postcodeRegex);
+        Matcher matcher = postcodePattern.matcher(this.getPostcode());
+
+        if (!matcher.matches()) {
+            throw new PostcodeException(postcode, "Invalid postcode");
+        }
+
+        final String encodedPostcode = URLEncoder.encode(this.getPostcode(),
+                StandardCharsets.UTF_8).replace("+", "%20");
+        final String baseUrl = "https://api.postcodes.io/postcodes/";
+
+        URL obj = new URL(baseUrl + encodedPostcode);
+
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        con.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        final ObjectNode node =
+                new ObjectMapper().readValue(response.toString(),
+                        ObjectNode.class);
+        final JsonNode result = node.get("result");
+
+        return new Point2D.Double(result.get("latitude").asDouble(),
+                result.get("longitude").asDouble());
+    }
+
+    /**
+     * Sets both latitude and longitude using a Point2D.Double object.
+     *
+     * @param coordinates Point2D.Double, where x is the latitude and y is
+     *                    the longitude.
+     */
+    @Override
+    public void setCoordinates(Point2D.Double coordinates) {
+        this.setLatitude(coordinates.getX());
+        this.setLongitude(coordinates.getY());
     }
 
     /**

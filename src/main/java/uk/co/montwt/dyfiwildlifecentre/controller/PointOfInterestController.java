@@ -18,20 +18,27 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
+import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
+import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.InputMismatchException;
 import java.util.List;
 
 /**
@@ -83,15 +90,20 @@ public class PointOfInterestController{
      * of interest.
      */
     @PostMapping("/poi/form_create")
-    public RedirectView submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) {
-//        logger.info("HTTP Post Request instantiated from form");
-//        int id = repository.findAll().size() + 1;
-//        pointOfInterest.setId(id);
-//        logger.info("POI set to have ID " + id);
+    public View submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
+        if (pointOfInterest.getLatitude() == 0 && pointOfInterest.getLongitude() == 0) {
+            if (!pointOfInterest.getPostcode().isEmpty()) {
+                pointOfInterest.setCoordinates(pointOfInterest.calculateCoordinatesFromPostcode());
+            }
+        } else if (!pointOfInterest.getPostcode().isEmpty()) {
+            throw new PostcodeException(pointOfInterest.getPostcode(),
+                    "Both postcode and coordinates were entered.");
+        }
 
+        pointOfInterest.setDistanceFromCentre(pointOfInterest.calculateDistanceFromCentre());
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
-        return new RedirectView("/");
+        return new RedirectView("/index");
     }
 
     /**
@@ -130,6 +142,21 @@ public class PointOfInterestController{
         poi.setId(id);
         pointOfInterestService.save(poi);
         return new RedirectView("/");
+    }
+
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PostcodeException.class)
+    public ModelAndView invalidPostcode(Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex.getMessage());
+        mav.setViewName("error/400");
+        return mav;
+    }
+
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ModelAndView dataIntegrityViolation(Exception ex) {
+        return this.invalidPostcode(ex);
     }
 
 
