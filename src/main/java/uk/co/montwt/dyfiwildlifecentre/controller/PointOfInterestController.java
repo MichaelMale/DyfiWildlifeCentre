@@ -100,7 +100,7 @@ public class PointOfInterestController{
                     "Both postcode and coordinates were entered.");
         }
 
-        pointOfInterest.setDistanceFromCentre();
+        pointOfInterest.setDistanceFromCentre(pointOfInterest.calculateDistanceFromCentre());
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
         return new RedirectView("/index");

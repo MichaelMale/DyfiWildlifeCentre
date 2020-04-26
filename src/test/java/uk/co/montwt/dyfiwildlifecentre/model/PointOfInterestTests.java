@@ -29,10 +29,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -107,8 +109,31 @@ public class PointOfInterestTests {
                 -0.124663, "SW1A 0AA");
         logger.debug("New object created with a latitude of " + test.getLatitude()
                 + " and a longitude of " + test.getLongitude());
-        double distance = test.getDistanceFromCentre();
+        double distance = test.calculateDistanceFromCentre();
         logger.debug("Distance from centre calculated is: " + distance);
         Assertions.assertEquals(177.3, distance);
     }
+
+    @Test
+    public void confirmExceptionIsThrownIfPOIHasAnInvalidPostcode() {
+        PointOfInterest test = new PointOfInterest("", "", 0, 0,
+                "NOT A POSTCODE");
+        logger.debug("New object created with a postcode of " + test.getPostcode());
+        PostcodeException thrown = Assertions.assertThrows(
+                PostcodeException.class,
+                test::calculateCoordinatesFromPostcode,
+                "Error while parsing postcode NOT A POSTCODE. Invalid postcode"
+        );
+        logger.debug("Exception thrown with message " + thrown.getMessage());
+    }
+
+    @Test
+    public void confirmExceptionIsNotThrownIfPOIHasAValidPostcode() {
+        PointOfInterest test = new PointOfInterest("","",0,0,"SY23 3DB");
+        logger.debug("New object created with a postcode of " + test.getPostcode());
+        Assertions.assertDoesNotThrow(test::calculateCoordinatesFromPostcode,
+                "Error while parsing postcode SY23 3DB. Invalid postcode");
+    }
+
+
 }

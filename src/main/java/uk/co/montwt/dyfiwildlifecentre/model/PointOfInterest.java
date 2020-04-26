@@ -88,6 +88,10 @@ public class PointOfInterest implements POI {
     public PointOfInterest() {
     }
 
+    public void setDistanceFromCentre(double distanceFromCentre) {
+        this.distanceFromCentre = distanceFromCentre;
+    }
+
     /**
      * Overloaded constructor for objects of type PointOfInterest.
      * @param name  The name of the Point Of Interest.
@@ -109,9 +113,7 @@ public class PointOfInterest implements POI {
         return distanceFromCentre;
     }
 
-    public void setDistanceFromCentre() {
-        this.distanceFromCentre = this.calculateDistanceFromCentre();
-    }
+
 
     /**
      * Gets the ID of the Point of Interest.
@@ -258,7 +260,7 @@ public class PointOfInterest implements POI {
 
             double a =
                     Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLng / 2), 2)
-                    * Math.cos(dyfiLat) * Math.cos(currentLat);
+                            * Math.cos(dyfiLat) * Math.cos(currentLat);
             double c = 2 * Math.asin(Math.sqrt(a));
             double result = (EARTH_RADIUS_MILES * c);
             /* Converts result into a BigDecimal that is then rounded to 4
