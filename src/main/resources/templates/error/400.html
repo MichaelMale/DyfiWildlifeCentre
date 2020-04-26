@@ -28,8 +28,9 @@
 
 <div class="container ui">
     <h1>400 - Bad Request</h1>
-    <div th:inline="text">Please ensure that the given postcode is in the
-        correct format.</div>
+    <div>There was an error.
+        Details below.
+    <p th:text="${exception}"></p></div>
     <p><a class="waves-effect waves-light btn-large"
           th:href="@{/admin/add}">
         <i class="material-icons left">arrow_back</i>

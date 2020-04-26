@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.persistence.*;
@@ -335,13 +336,13 @@ public class PointOfInterest implements POI {
      */
     @Override
     public Point2D.Double calculateCoordinatesFromPostcode() throws IOException {
-        String postcodeRegex = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1," +
-                "2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
+        String postcodeRegex = "^([A-PR-UWYZa-pr-uwyz]([0-9]{1,2}|" +
+                "([A-HK-Ya-hk-y][0-9]|[A-HK-Ya-hk-y][0-9]([0-9]|[ABEHMNPRV-Yabehmnprv-y]))|[0-9][A-HJKS-UWa-hjks-uw])\\ {0,1}[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}|([Gg][Ii][Rr]\\ 0[Aa][Aa])|([Ss][Aa][Nn]\\ {0,1}[Tt][Aa]1)|([Bb][Ff][Pp][Oo]\\ {0,1}([Cc]\\/[Oo]\\ )?[0-9]{1,4})|(([Aa][Ss][Cc][Nn]|[Bb][Bb][Nn][Dd]|[BFSbfs][Ii][Qq][Qq]|[Pp][Cc][Rr][Nn]|[Ss][Tt][Hh][Ll]|[Tt][Dd][Cc][Uu]|[Tt][Kk][Cc][Aa])\\ {0,1}1[Zz][Zz]))$";
         Pattern postcodePattern = Pattern.compile(postcodeRegex);
         Matcher matcher = postcodePattern.matcher(this.getPostcode());
 
         if (!matcher.matches()) {
-            throw new IOException("Invalid postcode");
+            throw new PostcodeException(postcode, "Invalid postcode");
         }
 
         final String encodedPostcode = URLEncoder.encode(this.getPostcode(),
