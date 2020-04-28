@@ -36,12 +36,11 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,11 +52,11 @@ import java.util.regex.Pattern;
  *
  * @author Michael Male
  * @version 0.2 2020-04-12
- * @see POI Interface that this class implements
+ * @see PointOfInterestInterface Interface that this class implements
  */
 @Entity
 @Table(name = "points_of_interest")
-public class PointOfInterest implements POI {
+public class PointOfInterest implements PointOfInterestInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -76,16 +75,49 @@ public class PointOfInterest implements POI {
     @Max(value = 180, message = "Error: Longitude cannot be greater than 180")
     private double longitude;
 
-    @Column(nullable = true)
     private String postcode;
 
     @Column(name = "distance_from_centre")
     private double distanceFromCentre;
 
+    @Column(name = "wildlife")
+    private boolean isWildlife;
+
+    @Column(name = "business")
+    private boolean isBusiness;
+
+    @Column(name = "transport")
+    private boolean isTransport;
+
+
     /**
      * Default Constructor for objects of type PointOfInterest.
      */
     public PointOfInterest() {
+    }
+
+    public boolean isWildlife() {
+        return isWildlife;
+    }
+
+    public void setWildlife(boolean wildlife) {
+        isWildlife = wildlife;
+    }
+
+    public boolean isBusiness() {
+        return isBusiness;
+    }
+
+    public void setBusiness(boolean business) {
+        isBusiness = business;
+    }
+
+    public boolean isTransport() {
+        return isTransport;
+    }
+
+    public void setTransport(boolean transport) {
+        isTransport = transport;
     }
 
     public void setDistanceFromCentre(double distanceFromCentre) {

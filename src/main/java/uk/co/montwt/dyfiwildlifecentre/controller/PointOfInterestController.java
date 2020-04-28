@@ -18,27 +18,20 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
-import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
-import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
-import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.InputMismatchException;
 import java.util.List;
 
 /**
@@ -91,16 +84,6 @@ public class PointOfInterestController{
      */
     @PostMapping("/poi/form_create")
     public View submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
-        if (pointOfInterest.getLatitude() == 0 && pointOfInterest.getLongitude() == 0) {
-            if (!pointOfInterest.getPostcode().isEmpty()) {
-                pointOfInterest.setCoordinates(pointOfInterest.calculateCoordinatesFromPostcode());
-            }
-        } else if (!pointOfInterest.getPostcode().isEmpty()) {
-            throw new PostcodeException(pointOfInterest.getPostcode(),
-                    "Both postcode and coordinates were entered.");
-        }
-
-        pointOfInterest.setDistanceFromCentre(pointOfInterest.calculateDistanceFromCentre());
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
         return new RedirectView("/index");
@@ -138,7 +121,8 @@ public class PointOfInterestController{
      * @return  A redirect that indicates the outcome of the method.
      */
     @PostMapping("/poi/update")
-    public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi, @RequestParam("id") long id) {
+    public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi,
+                                              @RequestParam("id") long id) throws IOException {
         poi.setId(id);
         pointOfInterestService.save(poi);
         return new RedirectView("/");

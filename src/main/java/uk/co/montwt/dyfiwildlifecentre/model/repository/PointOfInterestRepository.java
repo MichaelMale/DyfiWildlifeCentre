@@ -15,12 +15,13 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre.model;
+package uk.co.montwt.dyfiwildlifecentre.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 
 import javax.transaction.Transactional;
 import java.util.List;

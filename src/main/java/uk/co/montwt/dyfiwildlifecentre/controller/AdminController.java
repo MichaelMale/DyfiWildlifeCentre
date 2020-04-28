@@ -23,10 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
-import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
-
-import java.util.Optional;
 
 /**
  * AdminController.java - This class contains the methods required to perform

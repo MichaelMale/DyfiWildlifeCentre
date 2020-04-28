@@ -27,7 +27,7 @@ import java.net.MalformedURLException;
  * @author Michael Male
  * @version 0.1
  */
-interface POI {
+interface PointOfInterestInterface {
 
     /**
      * Gets the ID of the Point of Interest.

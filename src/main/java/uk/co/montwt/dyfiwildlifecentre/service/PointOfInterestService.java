@@ -20,6 +20,7 @@ package uk.co.montwt.dyfiwildlifecentre.service;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ interface PointOfInterestService {
      * @param poi   Object of type PointOfInterest containing the POI to be
      *              saved to the database
      */
-    void save(PointOfInterest poi);
+    void save(PointOfInterest poi) throws IOException;
 
     /**
      * Finds all Points of Interest that correspond to the name given.
@@ -64,4 +65,5 @@ interface PointOfInterestService {
      *              deleted.
      */
     void delete(Long id);
+
 }
