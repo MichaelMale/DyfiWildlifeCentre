@@ -36,11 +36,10 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,11 +52,11 @@ import java.util.regex.Pattern;
  *
  * @author Michael Male
  * @version 0.2 2020-04-12
- * @see POI Interface that this class implements
+ * @see PointOfInterestInterface Interface that this class implements
  */
 @Entity
 @Table(name = "points_of_interest")
-public class PointOfInterest implements POI {
+public class PointOfInterest implements PointOfInterestInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -76,11 +75,13 @@ public class PointOfInterest implements POI {
     @Max(value = 180, message = "Error: Longitude cannot be greater than 180")
     private double longitude;
 
-    @Column(nullable = true)
     private String postcode;
 
     @Column(name = "distance_from_centre")
     private double distanceFromCentre;
+
+    private String category;
+
 
     /**
      * Default Constructor for objects of type PointOfInterest.
@@ -88,17 +89,15 @@ public class PointOfInterest implements POI {
     public PointOfInterest() {
     }
 
-    public void setDistanceFromCentre(double distanceFromCentre) {
-        this.distanceFromCentre = distanceFromCentre;
-    }
 
     /**
      * Overloaded constructor for objects of type PointOfInterest.
-     * @param name  The name of the Point Of Interest.
-     * @param description   The description of the Point Of Interest.
-     * @param latitude  The latitude of the Point Of Interest.
-     * @param longitude The longitude of the Point Of Interest.
-     * @param postcode  The postcode of the Point of Interest.
+     *
+     * @param name        The name of the Point Of Interest.
+     * @param description The description of the Point Of Interest.
+     * @param latitude    The latitude of the Point Of Interest.
+     * @param longitude   The longitude of the Point Of Interest.
+     * @param postcode    The postcode of the Point of Interest.
      */
     public PointOfInterest(String name, String description, double latitude,
                            double longitude, String postcode) {
@@ -109,11 +108,21 @@ public class PointOfInterest implements POI {
         this.postcode = postcode;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public double getDistanceFromCentre() {
         return distanceFromCentre;
     }
 
-
+    public void setDistanceFromCentre(double distanceFromCentre) {
+        this.distanceFromCentre = distanceFromCentre;
+    }
 
     /**
      * Gets the ID of the Point of Interest.
@@ -230,7 +239,7 @@ public class PointOfInterest implements POI {
      * Calculates the distance between the given coordinates and the
      * coordinates of the Dyfi Wildlife Centre. This is calculated using the
      * Haversine formula.
-     *
+     * <p>
      * Code adapted from
      * <a href="https://rosettacode.org/wiki/Haversine_formula#Java">here</a>.
      *
@@ -309,16 +318,6 @@ public class PointOfInterest implements POI {
     }
 
     /**
-     * Sets the postcode.
-     *
-     * @param postcode String containing a postcode
-     */
-    @Override
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    /**
      * Gets the postcode.
      *
      * @return String containing a postcode
@@ -326,6 +325,16 @@ public class PointOfInterest implements POI {
     @Override
     public String getPostcode() {
         return this.postcode;
+    }
+
+    /**
+     * Sets the postcode.
+     *
+     * @param postcode String containing a postcode
+     */
+    @Override
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     /**
@@ -390,7 +399,8 @@ public class PointOfInterest implements POI {
 
     /**
      * Used to provide a String representation of a Point Of Interest.
-     * @return  String containing a JSON representation of a POI.
+     *
+     * @return String containing a JSON representation of a POI.
      */
     @Override
     public String toString() {

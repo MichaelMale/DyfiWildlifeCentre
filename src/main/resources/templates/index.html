@@ -20,10 +20,18 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre</title>
-    <link rel="stylesheet" th:href="@{/css/customIndexStyle.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/customIndexStyle.min.css}"
+          type="text/css"/>
     <script async="" th:src="@{/js/lazysizes.min.js}"></script>
     <script
             src="https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            $('.fixed-action-btn').floatingActionButton();
+            $('.tooltipped').tooltip();
+        });
+    </script>
 </head>
 <body>
 
@@ -31,10 +39,19 @@
 
 <div class="col s12 m6" id="map">
 </div>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red tooltipped" data-position="left" data-tooltip="Filters"><i class="large material-icons">filter_list</i></a>
+    <ul>
+        <li><a class="btn-floating orange tooltipped" onclick="filterMarkers()" data-position="left" data-tooltip="Everything"><i class="material-icons">all_inclusive</i></a></li>
+        <li><a class="btn-floating red tooltipped" onclick="filterMarkers('business')" data-position="left" data-tooltip="Businesses"><i class="material-icons">business</i></a></li>
+        <li><a class="btn-floating green tooltipped" onclick="filterMarkers('transport')" data-position="left" data-tooltip="Transportation"><i class="material-icons" >train</i></a></li>
+        <li><a class="btn-floating blue tooltipped" onclick="filterMarkers('wildlife')" data-position="left" data-tooltip="Wildlife"><i class="material-icons">emoji_nature</i></a></li>
+    </ul>
+</div>
 
 <fragment th:replace="fragments/poi_card :: poiCard"></fragment>
 
-<script async defer th:src="@{/js/googlemaps.js}">
+<script async defer th:src="@{/js/googlemaps.min.js}">
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>

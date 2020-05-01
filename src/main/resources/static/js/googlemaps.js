@@ -14,6 +14,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+let allMarkers = [];
+let markerCluster;
 /**
  * An asynchronous function, that uses the JavaScript Fetch API to perform an HTTP GET Request to an API containing
  * all Points Of Interest. The current utilisation of this is as a helper function to support initMap() in creating
@@ -50,7 +52,7 @@ async function initMap() {
     /* Creates a marker clusterer. Initial markers are null as they are
      added iteratively
      */
-    let markerCluster = new MarkerClusterer(map,null,{imagePath: 'images/clusters/m'});
+    markerCluster = new MarkerClusterer(map,null,{imagePath: 'images/clusters/m'});
     allPointsOfInterest.forEach(
         poi => {
             const marker = new google.maps.Marker({
@@ -58,8 +60,10 @@ async function initMap() {
                 map: map,
                 title: poi.name,
                 description: poi.description,
-                distanceFromCentre: poi.distanceFromCentre
+                distanceFromCentre: poi.distanceFromCentre,
+                category: poi.category
             });
+            allMarkers.push(marker);
             markerCluster.addMarker(marker); // Iterative addition of a
             // marker to the cluster, that performs clustering automatically
             marker.addListener('click', function () {
@@ -77,4 +81,29 @@ async function initMap() {
             });
         }
     );
+}
+
+/**
+ * Filters markers based upon a category.
+ * @param category  String containing the marker's category.
+ */
+function filterMarkers(category) {
+
+    markerCluster.clearMarkers();
+
+    // Iterates through all points of interest. If a point of interest
+    // matches the category, or has no category, then the marker is set
+    // to visible. Otherwise, the marker is set to invisible.
+    for (let i = 0; i < allMarkers.length; i ++) {
+        let marker = allMarkers[i];
+
+
+        if (category == null || marker.category === category) {
+            marker.setVisible(true);
+            markerCluster.addMarker(marker);
+        } else {
+            marker.setVisible(false);
+
+        }
+    }
 }

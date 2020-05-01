@@ -21,9 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uk.co.montwt.dyfiwildlifecentre.exception.PointOfInterestNotFoundException;
+import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
-import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterestRepository;
+import uk.co.montwt.dyfiwildlifecentre.model.repository.PointOfInterestRepository;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,17 +34,17 @@ import java.util.List;
  * provides a layer of abstraction between the controller and the repository.
  *
  * @author Michael Male
- * @version 0.1     2020-04-24
+ * @version 0.2     2020-04-28
  * @see PointOfInterestService
  */
 @Service
 public class PointOfInterestServiceImpl implements PointOfInterestService {
 
-    private final PointOfInterestRepository repository;
+    private final PointOfInterestRepository pointOfInterestRepository;
 
     @Autowired
-    public PointOfInterestServiceImpl(PointOfInterestRepository repository) {
-        this.repository = repository;
+    public PointOfInterestServiceImpl(PointOfInterestRepository pointOfInterestRepository) {
+        this.pointOfInterestRepository = pointOfInterestRepository;
     }
 
     /**
@@ -53,7 +56,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public PointOfInterest findById(Long id) throws PointOfInterestNotFoundException {
-        return repository.findById(id)
+        return pointOfInterestRepository.findById(id)
                 .orElseThrow(() -> new PointOfInterestNotFoundException(id));
     }
 
@@ -65,7 +68,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public List<PointOfInterest> findAll() {
-        return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return pointOfInterestRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     /**
@@ -75,8 +78,17 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      *            saved to the database
      */
     @Override
-    public void save(PointOfInterest poi) {
-        repository.save(poi);
+    public void save(PointOfInterest poi) throws IOException {
+        if (poi.getLatitude() == 0 && poi.getLongitude() == 0) {
+            if (!poi.getPostcode().isEmpty()) {
+                poi.setCoordinates(poi.calculateCoordinatesFromPostcode());
+            }
+        } else if (!poi.getPostcode().isEmpty()) {
+            throw new PostcodeException(poi.getPostcode(),
+                    "Both postcode and coordinates were entered.");
+        }
+        poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
+        pointOfInterestRepository.save(poi);
     }
 
     /**
@@ -88,7 +100,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public List<PointOfInterest> findAllPointsOfInterestByName(String name) {
-        return repository.findAllPointsOfInterestByName(name);
+        return pointOfInterestRepository.findAllPointsOfInterestByName(name);
     }
 
     /**
@@ -99,6 +111,19 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        pointOfInterestRepository.deleteById(id);
     }
+
+    /**
+     * Updates a Point of Interest from the database
+     *
+     * @param poi Point of Interest to be updated.
+     */
+    @Override
+    public void update(PointOfInterest poi) {
+        poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
+        pointOfInterestRepository.save(poi);
+    }
+
+
 }

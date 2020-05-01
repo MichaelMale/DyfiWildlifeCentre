@@ -20,6 +20,7 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Add a POI</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <style>
         /* Removes spinners from latitude and longitude as unnecessary */
 
@@ -64,7 +65,7 @@
                 <div class="input-field col s12 m6">
                     <input class="validate" id="name" placeholder="Name"
                            required th:field="*{name}" type="text">
-                    <label for="name">Name</label>
+                    <label for="name">Name<sup>*</sup></label>
                 </div>
 
             </div>
@@ -77,6 +78,26 @@
                     <label for="description">Description</label>
                 </div>
 
+            </div>
+            <div class="row">
+                <!-- Filter selector -->
+                <div class="input-field col s6 m3">
+                    <select th:field="*{category}">
+                        <option value="" selected>None</option>
+                        <option value="wildlife">Wildlife</option>
+                        <option value="business">Business</option>
+                        <option value="transport">Transport</option>
+                    </select>
+                    <label>Filter</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="container col s12 m6">
+                    <h4>Location</h4>
+                    <p>Type in a UK postcode <span
+                            style="font-weight: bold">OR</span> a pair of
+                        coordinates.</p>
+                </div>
             </div>
             <div class="row">
                 <!-- Postcode -->
@@ -106,9 +127,8 @@
                 </div>
 
             </div>
+
             <div class="row">
-
-
                 <!-- Add to the database -->
                 <div class="input-field col s6 m3">
                     <button id="addToDb" class="btn waves-effect waves-light">Add</button>
@@ -119,6 +139,10 @@
     </div>
 </div>
 <fragment th:replace="fragments/footer :: footer"></fragment>
-<fragment th:replace="fragments/admin_tab_script" :: adminTabScript></fragment>
+<script>
+    $(document).ready(function() {
+       $('select').formSelect();
+    });
+</script>
 </body>
 </html>
