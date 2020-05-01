@@ -124,7 +124,7 @@ public class PointOfInterestController{
     public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi,
                                               @RequestParam("id") long id) throws IOException {
         poi.setId(id);
-        pointOfInterestService.save(poi);
+        pointOfInterestService.update(poi);
         return new RedirectView("/");
     }
 

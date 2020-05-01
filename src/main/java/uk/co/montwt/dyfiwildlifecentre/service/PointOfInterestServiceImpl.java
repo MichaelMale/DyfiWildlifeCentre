@@ -113,4 +113,17 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
     public void delete(Long id) {
         pointOfInterestRepository.deleteById(id);
     }
+
+    /**
+     * Updates a Point of Interest from the database
+     *
+     * @param poi Point of Interest to be updated.
+     */
+    @Override
+    public void update(PointOfInterest poi) {
+        poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
+        pointOfInterestRepository.save(poi);
+    }
+
+
 }

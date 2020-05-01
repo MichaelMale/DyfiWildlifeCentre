@@ -21,6 +21,7 @@
 <head>
     <fragment th:replace="fragments/header :: header"></fragment>
     <title>Dyfi Wildlife Centre - Admin Panel</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <style>
         #promptUsername {
             margin-left: 30px !important;
@@ -70,6 +71,20 @@
 
             </div>
 
+            <!-- Filter selector -->
+            <div class="row">
+                <!-- Filter selector -->
+                <div class="input-field col s6 m3">
+                    <select th:field="*{category}" th:selected="*{category}">
+                        <option value="">None</option>
+                        <option value="wildlife">Wildlife</option>
+                        <option value="business">Business</option>
+                        <option value="transport">Transport</option>
+                    </select>
+                    <label>Filter</label>
+                </div>
+            </div>
+
             <!-- POI coordinates -->
             <div class="row">
 
@@ -112,6 +127,10 @@
 </div>
 
 <fragment th:replace="fragments/footer :: footer"></fragment>
-<fragment th:replace="fragments/admin_tab_script" :: adminTabScript></fragment>
+<script>
+    $(document).ready(function() {
+        $('select').formSelect();
+    });
+</script>
 </body>
 </html>

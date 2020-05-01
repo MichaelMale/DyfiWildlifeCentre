@@ -29,6 +29,7 @@
     <script>
         $(document).ready(function(){
             $('.fixed-action-btn').floatingActionButton();
+            $('.tooltipped').tooltip();
         });
     </script>
 </head>
@@ -39,23 +40,12 @@
 <div class="col s12 m6" id="map">
 </div>
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red">
-        <i class="large material-icons">filter_list</i>
-    </a>
+    <a class="btn-floating btn-large red tooltipped" data-position="left" data-tooltip="Filters"><i class="large material-icons">filter_list</i></a>
     <ul>
-        <li><a
-                class="btn-floating white" onclick="filterMarkers()"><i
-                class="material-icons">all_inclusive
-        </i></a></li>
-        <li><a class="btn-floating red" onclick="filterMarkers('business')"><i class="material-icons"
-                                           >business</i></a></li>
-        <li><a class="btn-floating green"
-               onclick="filterMarkers('transport')"><i
-                class="material-icons">
-            emoji_transportation</i></a></li>
-        <li><a class="btn-floating blue" onclick="filterMarkers('wildlife')"><i
-                class="material-icons">
-            emoji_nature</i></a></li>
+        <li><a class="btn-floating orange tooltipped" onclick="filterMarkers()" data-position="left" data-tooltip="Everything"><i class="material-icons">all_inclusive</i></a></li>
+        <li><a class="btn-floating red tooltipped" onclick="filterMarkers('business')" data-position="left" data-tooltip="Businesses"><i class="material-icons">business</i></a></li>
+        <li><a class="btn-floating green tooltipped" onclick="filterMarkers('transport')" data-position="left" data-tooltip="Transportation"><i class="material-icons" >train</i></a></li>
+        <li><a class="btn-floating blue tooltipped" onclick="filterMarkers('wildlife')" data-position="left" data-tooltip="Wildlife"><i class="material-icons">emoji_nature</i></a></li>
     </ul>
 </div>
 

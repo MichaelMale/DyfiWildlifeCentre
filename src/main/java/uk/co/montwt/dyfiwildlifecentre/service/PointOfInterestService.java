@@ -66,4 +66,9 @@ interface PointOfInterestService {
      */
     void delete(Long id);
 
+    /**
+     * Updates a Point of Interest from the database
+     * @param poi   Point of Interest to be updated.
+     */
+    void update(PointOfInterest poi);
 }
