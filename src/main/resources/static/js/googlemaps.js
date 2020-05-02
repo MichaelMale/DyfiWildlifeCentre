@@ -14,8 +14,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+/* GLOBAL VARIABLES */
+
 let allMarkers = [];
 let markerCluster;
+let map;
+
 /**
  * An asynchronous function, that uses the JavaScript Fetch API to perform an HTTP GET Request to an API containing
  * all Points Of Interest. The current utilisation of this is as a helper function to support initMap() in creating
@@ -42,7 +47,7 @@ async function initMap() {
     const allPointsOfInterest = await getPointsOfInterest('/poi');
     const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031}; // Co-ordinates for the Cors Dyfi Nature Reserve,
     // which should be located at the centre of the map.
-    const map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: dyfiWildlifeCentre,
         mapTypeId: 'hybrid',
@@ -106,4 +111,13 @@ function filterMarkers(category) {
 
         }
     }
+}
+
+/**
+ * A 'panic button' feature, that resets the map to its starting position.
+ */
+function panicButton() {
+    const latlng = new google.maps.LatLng(52.568774, -3.918031);
+    map.panTo(latlng);
+    map.setZoom(16);
 }
