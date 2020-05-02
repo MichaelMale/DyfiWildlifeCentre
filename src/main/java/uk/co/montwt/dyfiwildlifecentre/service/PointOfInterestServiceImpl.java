@@ -79,14 +79,20 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public void save(PointOfInterest poi) throws IOException {
+        // Error checking code. Checks firstly if latitude and longitude are
+        // zero, then checks if both were entered. Also checks if latitude
+        // but not longitude was entered and vice versa.
         if (poi.getLatitude() == 0 && poi.getLongitude() == 0) {
             if (!poi.getPostcode().isEmpty()) {
-                poi.setCoordinates(poi.calculateCoordinatesFromPostcode());
+                poi.setCoordinates(PostcodeService
+                        .getCoordinatesFromPostcode(poi.getPostcode()));
             }
         } else if (!poi.getPostcode().isEmpty()) {
             throw new PostcodeException(poi.getPostcode(),
                     "Both postcode and coordinates were entered.");
         }
+
+
         poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
         pointOfInterestRepository.save(poi);
     }

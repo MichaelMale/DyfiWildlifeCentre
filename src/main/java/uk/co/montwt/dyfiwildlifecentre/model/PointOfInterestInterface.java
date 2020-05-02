@@ -151,14 +151,6 @@ interface PointOfInterestInterface {
     String getPostcode();
 
     /**
-     * Calculates the coordinates from a UK postcode, utilising the Postcode
-     * API.
-     * @return Point2D.Double containing the latitude and the longitude of
-     * the coordinates, calculated by its postcode.
-     */
-    Point2D.Double calculateCoordinatesFromPostcode() throws IOException;
-
-    /**
      * Sets both latitude and longitude using a Point2D.Double object.
      * @param coordinates   Point2D.Double, where x is the latitude and y is
      *                      the longitude.
