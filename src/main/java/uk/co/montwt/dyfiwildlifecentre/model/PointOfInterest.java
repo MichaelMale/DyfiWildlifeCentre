@@ -82,6 +82,11 @@ public class PointOfInterest implements PointOfInterestInterface {
 
     private String category;
 
+    @ManyToOne
+    @JoinColumn(name="id_image")
+    private Image image;
+
+
 
     /**
      * Default Constructor for objects of type PointOfInterest.
@@ -100,13 +105,16 @@ public class PointOfInterest implements PointOfInterestInterface {
      * @param postcode    The postcode of the Point of Interest.
      */
     public PointOfInterest(String name, String description, double latitude,
-                           double longitude, String postcode) {
+                           double longitude, String postcode, Image image) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.postcode = postcode;
+        this.image = image;
     }
+
+
 
     public String getCategory() {
         return category;
@@ -224,6 +232,13 @@ public class PointOfInterest implements PointOfInterestInterface {
         this.longitude = longitude;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     /**
      * Gets both the latitude and longitude of the Point of Interest.
