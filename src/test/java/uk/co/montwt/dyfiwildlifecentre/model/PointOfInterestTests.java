@@ -17,5 +17,63 @@
 
 package uk.co.montwt.dyfiwildlifecentre.model;
 
+import com.openpojo.reflection.PojoClass;
+import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.validation.Validator;
+import com.openpojo.validation.ValidatorBuilder;
+import com.openpojo.validation.rule.impl.GetterMustExistRule;
+import com.openpojo.validation.rule.impl.SetterMustExistRule;
+import com.openpojo.validation.test.impl.GetterTester;
+import com.openpojo.validation.test.impl.SetterTester;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.geom.Point2D;
+
 public class PointOfInterestTests {
+
+    private final static Logger logger =
+            LoggerFactory.getLogger(PointOfInterestTests.class);
+
+    @Test
+    public void validateSettersAndGetters() {
+        PojoClass pointOfInterestPojo =
+                PojoClassFactory.getPojoClass(PointOfInterest.class);
+        Validator validator = ValidatorBuilder.create()
+        // checks that setter and getter is present for
+        // every field
+                .with(new GetterMustExistRule())
+                .with(new SetterMustExistRule())
+        // Validate that setters and getters are behaving as expected
+                .with(new SetterTester())
+                .with(new GetterTester())
+                .build();
+
+        // Start test
+        validator.validate(pointOfInterestPojo);
+    }
+
+    @Test
+    public void validateCorrectDistanceFromCentre() {
+        PointOfInterest pointOfInterest = new PointOfInterest();
+        pointOfInterest.setCoordinates(new Point2D.Double(52.568774,-3.918031));
+        logger.debug("New POI created with coordinates " +
+                pointOfInterest.generateCoordinates().toString());
+        Assertions.assertEquals(0,pointOfInterest.getDistanceFromCentre());
+    }
+
+    @Test
+    public void validateNonZeroDistanceFromCentre() {
+        PointOfInterest pointOfInterest = new PointOfInterest();
+        pointOfInterest.setCoordinates(new Point2D.Double(0,0));
+        logger.debug("New POI created with coordinates " +
+                pointOfInterest.generateCoordinates().toString());
+        Assertions.assertEquals(3639.0,
+                pointOfInterest.calculateDistanceFromCentre());
+    }
+
+
+
 }

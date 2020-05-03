@@ -17,5 +17,31 @@
 
 package uk.co.montwt.dyfiwildlifecentre.security.model;
 
+import com.openpojo.reflection.PojoClass;
+import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.validation.Validator;
+import com.openpojo.validation.ValidatorBuilder;
+import com.openpojo.validation.rule.impl.GetterMustExistRule;
+import com.openpojo.validation.rule.impl.SetterMustExistRule;
+import com.openpojo.validation.test.impl.GetterTester;
+import com.openpojo.validation.test.impl.SetterTester;
+import org.junit.jupiter.api.Test;
+
 public class RoleTests {
+
+    @Test
+    public void validateSettersAndGetters() {
+        PojoClass rolePojo = PojoClassFactory.getPojoClass(Role.class);
+        Validator validator = ValidatorBuilder.create()
+                // checks that setter and getter is present for
+                // every field
+                .with(new GetterMustExistRule())
+                .with(new SetterMustExistRule())
+                // Validate that setters and getters are behaving as expected
+                .with(new SetterTester())
+                .with(new GetterTester())
+                .build();
+        // Start test
+        validator.validate(rolePojo);
+    }
 }
