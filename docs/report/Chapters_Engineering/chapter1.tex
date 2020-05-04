@@ -4,13 +4,13 @@
 
 A number of key considerations were taken into place during the background planning stages of this project.
 
-The application was intended to be run as a local web application, therefore research had to be put into various technology stacks, and which web framework would work best for this kind of application. Research into this would have to take into account how much time needs to be allocated to performing spike work; ensuring a comprehensive understanding of the framework was achieved before work on the project began.
+An initial meeting took place in February 2020 with the customer, the Montgomeryshire Wildlife Trust. The hardware implementation was discussed and it was understood that the customer would want to run the web application on an 86-inch touch screen monitor. They also expressed a preference for the web application to be run locally, and not published to a cloud service or the World Wide Web. Therefore, an important consideration of the project was enabling the web application to work using touch gestures, and use a responsive layout that would scale to a high resolution.
+
+With the intention being that the application runs locally, therefore research had to be put into various technology stacks, and which web framework would work best for this kind of application. Research into this would have to take into account how much time needs to be allocated to performing spike work; ensuring a comprehensive understanding of the framework was achieved before work on the project began.
 
 Another key consideration was the vendor for the maps API. A number of APIs were assessed for their usability as well as their licensing conditions.
 
-A final consideration was the planning methodology for the project. Research had to be carried out into the suitability of the various agile methodologies, as well as waterfall methodologies, and their suitability for a project with a single contributor. Tools to complement the chosen methodology also had to be considered, to ensure a well-managed work-flow throughout the project's life-cycle.
-
-In this chapter, each key consideration, and the conclusion of background research into each one, will be discussed.
+In this section, the early investigative work into the project will be discussed, with an analysis of the steps taken to achieve a conclusion as to which technology stack to use. 
 
 \subsection{Web Development Frameworks and Tools}
 
@@ -24,7 +24,7 @@ Three primary web frameworks were assessed, through the use of research, prior r
 \item	The Spring Framework, a Java-based model-view-controller framework.
 \end{itemize}
 
-Further research took place into the CSS frameworks, as well an appropriate database management system. Discussion into these are expanded upon in their relevant sections.
+Further research took place into the CSS frameworks, as well as an appropriate database management system. Discussion into these are expanded upon in their relevant sections.
 
 \subsubsection{JavaScript Frameworks}
 
@@ -58,11 +58,11 @@ The Spring Framework is an open-source framework, where its web application feat
 Spring provides many of the benefits that Django also provides, and the two are often compared against eachother. Similar to Django, Spring utilises a model-view-controller framework, and relies upon high cohesion. As Spring uses Java, it takes advantage of the object-oriented programming paradigm, and it is standard for classes to be written in such a way that they follow this concept. Spring is optimised to work with the Thymeleaf template engine, that provides server-side scripting and an interface between the controller and view layers.
 % Citation: https://www.thymeleaf.org/
 
-Ultimately, a proficiency in Java from previous academic study and personal use made Spring an ideal choice for this project. Spring Boot, an addition to the platform that allows for automatic configuration of core dependencies, was also used, to reduce the amount of time spent studying elements of Spring that Spring Boot renders redundant. Spring also utilises Maven, a Java package manager, to provide a large number of dependencies; Spring Security was deemed a useful tool for an authentication layer, for example.
+Ultimately, a proficiency in Java from previous academic study and personal use made Spring an ideal choice for this project. Spring Boot, an addition to the platform that allows for automatic configuration of core dependencies, was also used, to reduce the amount of time spent studying elements of Spring that Spring Boot renders redundant. Spring also utilises Maven, a Java package manager, to provide a large number of dependencies; Spring Security was deemed a useful tool for an authentication layer, for example. An added benefit to Spring is its embedded Apache Tomcat server, that allows for the provision of an HTTP web server environment from opening the application, rather than having to take steps to deploy it into an existing web server environment.
 
 \subsubsection{CSS frameworks}
 
-It was decided in the planning stages of the project that it would be beneficial to use a CSS framework, rather than build a template ourselves. CSS frameworks provide a large number of pre-built elements, many that are rather familiar to users, due to their prevalence in front-end web design. A review into three different CSS framework was performed.
+It was decided in the planning stages of the project that it would be beneficial to use a CSS framework, rather than build a template with 'vanilla' implementations of HTML and CSS. CSS frameworks provide a large number of pre-built elements, many that are rather familiar to users, due to their prevalence in front-end web design. A review into three different CSS frameworks were performed.
 
 Bootstrap, a framework initially developed for use with Twitter, provides elements that have been crafted with the User Experience at their forefront. It is used by a large variety of web applications and websites, with the developers claiming it is 'the world's most popular front-end component libary.' Whilst this would have been a good choice for a familiar user interface, the framework was assessed to have less customisability, which posed an issue with a unique implementation where the main aspect is a single-page application. Bootstrap is also intended to be mobile-first, a feature that is not required, as the application is designed to run on a desktop computer.
 %Citation: http://51.255.68.3:8011/143.95.72.211/error404/twitter_bootstrap_web_development_how-to.pdf
@@ -76,13 +76,51 @@ The chosen CSS framework for the application was Materialize, a variation upon G
 
 \subsubsection{Database Management System}
 
+A database management system was a key component of this project. Points of Interest had to be persistent, and, in later iterations, a database for users had to be created. Whilst an in-memory database management system, H2, was used during the early stages of the project, it was quickly settled upon that a server independent from the application should be created. The investigation into this settled on either using PostgreSQL, an SQL-compliant system written in C, or MongoDB, a NoSQL document-oriented database that takes a JSON-like approach to storage of data.
+
+It was decided on to utilise PostgreSQL. Whilst there were various arguments for using MongoDB - a more readable schema, for example, studies have shown that PostgreSQL is generally faster in response times, and it is a popular implementation of SQL that sees good compatibility with Spring. A solid amount of background experience with PostgreSQL also contributed to the decision; whilst MongoDB has been described by its developers as similar to an object-oriented paradigm, the performance benefits of PostgreSQL negated any benefits of learning a new system.
+% Citation: https://www.mongodb.com/
+% Citation: https://www.researchgate.net/profile/Antonios_Makris3/publication/331522759_Performance_Evaluation_of_MongoDB_and_PostgreSQL_for_spatio-temporal_data/links/5c7e387b299bf1268d3954b6/Performance-Evaluation-of-MongoDB-and-PostgreSQL-for-spatio-temporal-data.pdf
+
+
 \subsubsection{Programming Tools}
+
+After the technology stack was decided, a decision had to be made as to the best programming tools for the task at hand. The Spring Framework has widespread support within IDEs. An extension, called Spring Tools 4, had been created by the developers, which provided Spring-related functionality to Eclipse, Microsoft Visual Studio Tools, and Eclipse Theia. A large number of PostgreSQL clients existed, with some example being pgAdmin 4 and HeidiSQL. PostgreSQL could also be administrated via a command-line interface.
+% Citation: https://spring.io/tools, https://wiki.postgresql.org/wiki/PostgreSQL_Clients
+
+However, it was decided upon that the JetBrains' suite of software was to be used for development. JetBrains provides a free license to people with a University e-mail address, and its IntelliJ IDEA Java IDE has in-built support for Spring Boot projects, and also includes plugins for web development. DataGrip, a database IDE, was also used, as this allowed for a graphical representation of the database that resulted in the schema being easier to quickly understand. Various browsers, including Microsoft Edge, Google Chrome, and Mozilla Firefox, were used in order to test the web application on varying browsers. Mozilla's Firefox Browser Developer Edition was useful when debugging the web app, as it included useful tools pertinent to CSS and JavaScript debugging.
+% Citation: https://www.jetbrains.com/community/education/#students
+% Citation: https://www.mozilla.org/en-GB/firefox/developer/
 
 \subsection{Mapping API}
 
+A crucial part of the application was the ability to present geographic data and information in a graphical format. A video had been provided by the customer, showing a map implementation on a similar nature reserve in Dorset. This used a satellite map with markers placed on the screen, and the intention was to take a similar approach.
+% Citation: https://www.youtube.com/watch?v=XYIwcAfgFkA
+
+As this application is web-based, a view towards a JavaScript API was adopted when assessing potential mapping solutions. The map must also take clickable markers and allow for quick downloading of satellite images. Two potential candidates were assessed:
+
+\begin{itemize}
+\item	\textbf{OpenStreetMap} - A free and open-source map that allowed for users to request changes to be made, which has the potential to provide a more up-to-date map based on changes in geography. OpenStreetMap does not have an inbuilt satellite implementation or an API, however various free and paid sources are available and were assessed during this stage of the project.
+\item	\textbf{Google Maps Platform} - Google provides a JavaScript API with a wide array of features attached to it, that uses data and imagery from Google Maps, hosted on Google's infrastructure. A potential hurdle in using Google Maps Platform, however, was its use of API keys and its pricing structure, an issue that is further discussed below.
+\end{itemize}
+
 \subsubsection{OpenStreetMap}
 
+OpenStreetMap is defined as a community-driven repository of map data, that can be contributed towards in a 'wiki-like' manner. It did not, however, appear to provide a JavaScript API, but many implementations of OpenStreetMap have been realised in JavaScript, with Leaflet being one of them.
+% Citation: https://leafletjs.com
+% Citation: https://www.openstreetmap.org/about
+
+OpenStreetMap did not appear to host aerial imagery, and freeware JavaScript APIs only appear to have implemented a standard map interface. It was considered that this is not what the customer had wanted, and, whilst Mapbox, a closed-source implementation of OpenStreetMap with aerial imagery and a free tier, was briefly assessed, a lack of customisability and the low-quality resolution of the aerial imagery were deciding factors in not going ahead with this approach.
+% Citation: https://www.mapbox.com/maps/
+
 \subsubsection{Google Maps Platform}
+
+Google Maps Platform is one of the features offered with Google Cloud; a suite of cloud-based applications and APIs hosted centrally by Google. Google Maps is of course a popular mapping interface, and regular input from various countries' national mapping agencies allows it to be reasonably up-to-date. Google Maps Platform's main offering for non-mobile applications is the Maps JavaScript API, and a thorough amount of documentation has been provided for this.
+% Citation: https://cloud.google.com/maps-platform
+% Citation: https://developers.google.com/maps/documentation/javascript/
+
+Ultimately, a decision was made as to go ahead with using Google Maps Platform. The platform's high-resolution aerial imagery was key to this decision, along with the general reliability and uptime of Google's Cloud infrastructure. Unlike OpenStreetMap, the platform was not free, however includes a free tier that permits for up to USD \$200 of free usage a month. After reviewing their pricing scheme it was decided that this would be enough for a locally-hosted application; the geo-coding API was not being used and a levy of USD \$2 was placed on every one thousand static map requests, meaning that one hundred thousand requests a month would have to be made to exceed the free tier, which is not likely.
+% Citation: https://cloud.google.com/maps-platform/pricing
 
 \section{Software Development Process}
 
