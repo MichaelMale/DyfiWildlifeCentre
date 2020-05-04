@@ -78,14 +78,14 @@ The chosen CSS framework for the application was Materialize, a variation upon G
 
 A database management system was a key component of this project. Points of Interest had to be persistent, and, in later iterations, a database for users had to be created. Whilst an in-memory database management system, H2, was used during the early stages of the project, it was quickly settled upon that a server independent from the application should be created. The investigation into this settled on either using PostgreSQL, an SQL-compliant system written in C, or MongoDB, a NoSQL document-oriented database that takes a JSON-like approach to storage of data.
 
-It was decided on to utilise PostgreSQL. Whilst there were various arguments for using MongoDB - a more readable schema, for example, studies have shown that PostgreSQL is generally faster in response times, and it is a popular implementation of SQL that sees good compatibility with Spring. A solid amount of background experience with PostgreSQL also contributed to the decision; whilst MongoDB has been described by its developers as similar to an object-oriented paradigm, the performance benefits of PostgreSQL negated any benefits of learning a new system.
+It was decided upon to utilise PostgreSQL. Whilst there were various arguments for using MongoDB - a more readable schema, for example, studies have shown that PostgreSQL is generally faster in response times, and it is a popular implementation of SQL that sees good compatibility with Spring. A solid amount of background experience with PostgreSQL also contributed to the decision; whilst MongoDB has been described by its developers as similar to an object-oriented paradigm, the performance benefits of PostgreSQL negated any benefits of learning a new system.
 % Citation: https://www.mongodb.com/
 % Citation: https://www.researchgate.net/profile/Antonios_Makris3/publication/331522759_Performance_Evaluation_of_MongoDB_and_PostgreSQL_for_spatio-temporal_data/links/5c7e387b299bf1268d3954b6/Performance-Evaluation-of-MongoDB-and-PostgreSQL-for-spatio-temporal-data.pdf
 
 
 \subsubsection{Programming Tools}
 
-After the technology stack was decided, a decision had to be made as to the best programming tools for the task at hand. The Spring Framework has widespread support within IDEs. An extension, called Spring Tools 4, had been created by the developers, which provided Spring-related functionality to Eclipse, Microsoft Visual Studio Tools, and Eclipse Theia. A large number of PostgreSQL clients existed, with some example being pgAdmin 4 and HeidiSQL. PostgreSQL could also be administrated via a command-line interface.
+After the technology stack was decided, a decision had to be made as to the best programming tools for the task at hand. The Spring Framework has widespread support within IDEs. An extension, called Spring Tools 4, had been created by the developers, which provided Spring-related functionality to Eclipse, Microsoft Visual Studio Tools, and Eclipse Theia. A large number of PostgreSQL clients existed, with some examples being pgAdmin 4 and HeidiSQL. PostgreSQL could also be administrated via a command-line interface.
 % Citation: https://spring.io/tools, https://wiki.postgresql.org/wiki/PostgreSQL_Clients
 
 However, it was decided upon that the JetBrains' suite of software was to be used for development. JetBrains provides a free license to people with a University e-mail address, and its IntelliJ IDEA Java IDE has in-built support for Spring Boot projects, and also includes plugins for web development. DataGrip, a database IDE, was also used, as this allowed for a graphical representation of the database that resulted in the schema being easier to quickly understand. Various browsers, including Microsoft Edge, Google Chrome, and Mozilla Firefox, were used in order to test the web application on varying browsers. Mozilla's Firefox Browser Developer Edition was useful when debugging the web app, as it included useful tools pertinent to CSS and JavaScript debugging.
@@ -115,30 +115,53 @@ OpenStreetMap did not appear to host aerial imagery, and freeware JavaScript API
 
 \subsubsection{Google Maps Platform}
 
-Google Maps Platform is one of the features offered with Google Cloud; a suite of cloud-based applications and APIs hosted centrally by Google. Google Maps is of course a popular mapping interface, and regular input from various countries' national mapping agencies allows it to be reasonably up-to-date. Google Maps Platform's main offering for non-mobile applications is the Maps JavaScript API, and a thorough amount of documentation has been provided for this.
+Google Maps Platform is one of the features offered with Google Cloud; a suite of cloud-based applications and APIs hosted centrally by Google. Google Maps is a popular mapping interface, and regular input from various countries' national mapping agencies allows it to be reasonably up-to-date. Google Maps Platform's main offering for non-mobile applications is the Maps JavaScript API, and a thorough amount of documentation has been provided for this.
 % Citation: https://cloud.google.com/maps-platform
 % Citation: https://developers.google.com/maps/documentation/javascript/
 
-Ultimately, a decision was made as to go ahead with using Google Maps Platform. The platform's high-resolution aerial imagery was key to this decision, along with the general reliability and uptime of Google's Cloud infrastructure. Unlike OpenStreetMap, the platform was not free, however includes a free tier that permits for up to USD \$200 of free usage a month. After reviewing their pricing scheme it was decided that this would be enough for a locally-hosted application; the geo-coding API was not being used and a levy of USD \$2 was placed on every one thousand static map requests, meaning that one hundred thousand requests a month would have to be made to exceed the free tier, which is not likely.
+Ultimately, a decision was made as to go ahead with using Google Maps Platform. The platform's high-resolution aerial imagery was key to this decision, along with the general reliability and uptime of Google's Cloud infrastructure. Unlike OpenStreetMap, the platform was not free, however includes a free tier that permits for up to USD \$200 of free usage a month. After reviewing their pricing scheme it was decided that this would be enough for a locally-hosted application; the geo-coding API was not being used and a levy of USD \$2 is placed on every one thousand static map requests, meaning that one hundred thousand requests a month would have to be made to exceed the free tier, which is not likely.
 % Citation: https://cloud.google.com/maps-platform/pricing
+
+\subsection{Version Control}
+
+An effective Version Control System was imperative for the successful completion of the project. The use of branches, and rollback features, were key to ensuring that each part of the project was clearly indicated. An external version control host, GitHub, was used, which uses the Git version control system. This was mainly due to personal experience with both Git and GitHub, the added features that GitHub offers, and the benefit of an externally-hosted backup location, should data loss occur at any point on a local development machine.
 
 \section{Software Development Process}
 
+An important part of the planning for development of this software centred around having a meaningful development process, so as to ensure that the project remained on track and all deliverables could be met. A number of different approaches to software development were researched, including the Waterfall model, a linear, sequential approach that focuses on a series of categories and tasks towards the completed product. It was, however, decided to take an agile approach to software development. An agile approach would allow for changes and improvements to be made to the product as the development process continued and ensure there was more freedom attributed to the implementation of the product.
+
 \subsection{Agile Development}
 
-\subsubsection{Kanban}
+An important aspect into choosing an agile methodology was the ability to easily adapt it to a one-person project. Most agile methodologies are tailored towards small team projects, and many of the principles behind the Agile Manifesto - conveying information to and within a development team through face-to-face conversation, for example - are rendered irrelevant. Ultimately, I decided upon an adapted version of the core tenets of eXtreme Programming for the brunt of the development process, which I have detailed below. I also decided upon the use of Kanban as a workflow management tool. A few tools for this were assessed, including Trello and Jira, however, as the project was being hosted on the GitHub , GitHub Projects was instead used. 
 
-\subsubsection{eXtreme Programming}
+\subsubsection{Adapted XP principles}
 
-\subsection{Waterfall Model}
+A number of studies focused on adapting XP and Agile for one person were consulted when deciding upon its implementation. Implementing a fully-compliant XP approach would have been difficult. It is a complicated framework, and requires multiple roles. Instead, a relaxed version of XP, that loosely followed the twelve core practices, was adopted.
+% Citation: https://www.researchgate.net/publication/220996614_Extreme_programming_for_a_single_person_team
+% Citation: A. Nystrom, "Agile Solo: Defining and Evaluating an Agile Software Development Process for a Single Software Developer", Masters' thesis, Chalmers University of Technology, 2011
 
+\begin{enumerate}
+\item \textbf{The Planning Game} - This was adapted from the initial meeting of a customer, where a series of notes on the type of features the customer wants in the product was compiled. Planning took an approach of user epics and stories, the epics being:
+	\begin{itemize}
+		\item	As a volunteer, I want to have a web interface where I can show people information about the nature reserve on a map.
+		\item	As an administrator, I want to be able to add and edit information about the nature reserve, and change anything that I want to change.
+	\end{itemize}
+	
+The system metaphor became \textit{'A web application that uses a map to show interesting things around the Dyfi Wildlife Centre'}. Appendix A of this report provides the copy of the document used to design user stories, define the technology stack, and prioritise each user story.
+\item	\textbf{Small Releases} - An iterative approach was taken to the development of this project. Releases, each including more features than the last, were tied into the tasks created in the planning game.
+\item	\textbf{Metaphors} - This practice was realised through the aforementioned system metaphor and user stories.
+\item	\textbf{Simple Design} - Attention was placed on the design of the application not becoming too complex, with this being assessed in every release.
+\item	\textbf{Testing} - As will be discussed later in this chapter, test-driven development was used throughout the project. This often involved verification of an interface before its implementation.
+\item	\textbf{Refactoring} - It was ensured this was the last task, after all tests passed, so as to provide as clean, readable and efficient code as possible.
+\item	\textbf{Pair Programming} - For obvious reasons, it was not possible to replicate this practice. However, a benefit of pair programming is being able to have a 'birds' eye' view of the code, and find bugs early. This was achieved through use of the Pomodoro Technique, a time management technique similar to timeboxing, where work is broken down into 25-minute intervals. After three intervals, all code that had been written was tested and reviewed, to see if there were any bugs. %Citation: http://success.gatech.edu/sites/default/files/images/pomodory_study_technique_fullpage_0.pdf
+\item	\textbf{Collective Code Ownership} - As the project had a single developer there was no need to find an adaptation to this, as the entire codebase is owned by the developer.
+\item	\textbf{Continuous Integration} - Use of the Travis CI tool was prevalent throughout the project. Whilst conflicts between different branches were not likely, it ensured that testing was being carried out repeatedly, and did not have to be performed manually.
+%Citation: https://travis-ci.org/
+\item	\textbf{40-Hour Week} - It was ensured that too much work over one period did not occur, as this may have caused more buggy code due to stress and fatigue.
+\item	\textbf{On-site customer} - This wasn't possible with this project, particularly during the second half. Therefore, any communication with the customer tended to be carried out via e-mail and telephone.
+\item	\textbf{Coding standard} - A coding standard was self-imposed, and kept consistent throughout each iteration of the project.
+\end{enumerate}
 \subsection{Test-driven development}
 
-\section{Analysis of key areas}
-
-\subsection{Hosting}
-
-\subsection{Authentication}
-
-\subsection{Customer Requirements}
+While researching testing strategies, it was decided that the concept of test-driven development should be incorporated into this project. The main benefit of such an approach was the ability to create a detailed specification for the code, and ensure that thought took place into what was really required from it. It also ensured that feedback was quick, a useful tool in a single-person project where you are not easily able to request constant feedback from your code. Errors and problems become identified more quickly. Overall, this was to be implemented through the use of Java interfaces, with an outline of a class written and tests to achieve what was wanted from each class. Testing suites were created for each class which required them, and the use of technologies such as Selenium was crucial to testing the front-end.
 
