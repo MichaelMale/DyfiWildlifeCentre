@@ -1,28 +1,106 @@
 \chapter{Background \& Objectives}
 
-This section should discuss your preparation for the project, including background reading, your analysis of the problem and the process or method you have followed to help structure your work.  It is likely that you will reuse part of your outline project specification, but as you write this report at the end of the project you should have more to discuss. 
+\section{Background}
 
-\textbf{Note}: 
+A number of key considerations were taken into place during the background planning stages of this project.
+
+The application was intended to be run as a local web application, therefore research had to be put into various technology stacks, and which web framework would work best for this kind of application. Research into this would have to take into account how much time needs to be allocated to performing spike work; ensuring a comprehensive understanding of the framework was achieved before work on the project began.
+
+Another key consideration was the vendor for the maps API. A number of APIs were assessed for their usability as well as their licensing conditions.
+
+A final consideration was the planning methodology for the project. Research had to be carried out into the suitability of the various agile methodologies, as well as waterfall methodologies, and their suitability for a project with a single contributor. Tools to complement the chosen methodology also had to be considered, to ensure a well-managed work-flow throughout the project's life-cycle.
+
+In this chapter, each key consideration, and the conclusion of background research into each one, will be discussed.
+
+\subsection{Web Development Frameworks and Tools}
+
+Early on in the project it was decided that the use of a comprehensive web framework would be beneficial to the usability and production quality of the web application. This was opposed to a simple HTML 5, CSS, and JavaScript stack. Whilst it was inevitable that portions of each language had to be used, a more robust framework provided specific advantages, such as a package manager and cleaner code.
+
+Three primary web frameworks were assessed, through the use of research, prior reading, and spike work, these being the following:
 
 \begin{itemize}
-   \item All of the sections and text in this example are for illustration purposes. The main Chapters are a good starting point, but the content and actual sections that you include are likely to be different.
-   
-   \item Look at the document MMP\_SO8 Project Report and Technical Work \cite{ProjectReportTechicalWork} for additional guidance. 
-   
-\end {itemize}
+\item	A JavaScript-based framework, utilising the Node.js and Express backend frameworks and either Vue.js or React as the frontend.
+\item	Django, a Python-based model-template-view framework.
+\item	The Spring Framework, a Java-based model-view-controller framework.
+\end{itemize}
 
-\section{Background}
-What was your background preparation for the project? What similar systems did you assess? What was your motivation and interest in this project?
+Further research took place into the CSS frameworks, as well an appropriate database management system. Discussion into these are expanded upon in their relevant sections.
 
-\section{Analysis}
-Taking into account the problem and what you learned from the background work, what was your analysis of the problem? How did your analysis help to decompose the problem into the main tasks that you would undertake? Were there alternative approaches? Why did you choose one approach compared to the alternatives? 
+\subsubsection{JavaScript Frameworks}
 
-There should be a clear statement of the objectives of the work, which you will evaluate at the end of the work. 
+A full-stack JavaScript framework allowed for the benefit of the software being written in one programming language, which could reduce issues with the code's readability and maintenance. It would have also allowed for a single testing framework, such as Jest, a testing framework maintained by Facebook.
+% Citation: https://link.springer.com/chapter/10.1007/978-1-4842-1260-8_9,https://jestjs.io/ 
+The use of a runtime environment would be standard fare for a JavaScript framework, allowing sever-side scripting and dynamic web pages to be run outside of the usual web browser environment that JavaScript runs on. A popular JavaScript runtime is Node.js, which has been touted as a resource-efficient framework, a benefit for a project that is designed to run on a local computer.
+% Citation: https://link.springer.com/article/10.1007/s00607-014-0394-9
 
-In most cases, the agreed objectives or requirements will be the result of a compromise between what would ideally have been produced and what was determined to be possible in the time available. A discussion of the process of arriving at the final list is usually appropriate.
 
-As mentioned in the lectures, think about possible security issues for the project topic. Whilst these might not be relevant for all projects, do consider if there are relevant for your project. Where there are relevant security issues, discuss how they will this affect the work that you are doing. Carry forward this discussion into relevant areas for design, implementation and testing.
+Frontend frameworks were also looked at, with varying levels of spike work being put into them. React, a Facebook-maintained JavaScript library, and Vue.js, were both considered. The two frameworks are rather similar, such that they rely on sending data directly to the browser's Document Object Model, however Vue.js takes a declarative approach to HTML scripting, whilst React uses JSX, an HTML syntax extension to JavaScript.
+% Citation: https://vuejs.org/v2/guide/comparison.html 
 
-\section{Process}
-You need to describe briefly the life cycle model or research method that you used. You do not need to write about all of the different process models that you are aware of. Focus on the process model that you have used. It is possible that you needed to adapt an existing process model to suit your project; clearly identify what you used and how you adapted it for your needs.
+
+Ultimately, a lack of familiarity with JavaScript, as well as the relative complexities of the frameworks, proved to be a deciding factor in not going ahead with a JavaScript-driven application. During research, it was deemed that a large amount of time would have to be dedicated to following tutorials and learning JavaScript, and ECMAScript 6, from scratch, and this would have taken too much time and risked a less complete final product.
+
+\subsubsection{Django}
+
+Django is an open-source framework based on the Python programming language. Its creators set the framework's primary philosophies as a quick approach to development, a view to not repeating the design and execution of concepts, and loose coupling - in this context being that the framework layers shouldn't be able to interface with eachother unless necessary.
+% Citation: https://docs.djangoproject.com/en/3.0/misc/design-philosophies/
+
+Django utilises the object-oriented programming paradigm with Python, and utilises a model-template-view approach. In short, these are three distinct layers of a web application: the model consists of a data structure, the view consists of a representation of information on a web browser, and a controller allows access to this data with meaningful requests.
+% Citation: https://ieeexplore.ieee.org/abstract/document/950428
+
+Whilst Django appeared to be a good choice due to its highly cohesive pattern, testing of the setup proved to be difficult on occasion, with design patterns that were particularly unique to Django. Whilst Python is a language that is known to utilise concepts that are simple to understand for users with greater knowledge in other programming languages, utilisation of Python at this level required a higher level of expertise than was had at the time. It was decided that there would be a greater chance of success with the project if attention was placed more towards frameworks with a more familiar language, to avoid an inordinate amount of time being spent on the intricacies of specific programming languages and frameworks.
+ 
+\subsubsection{Spring Framework}
+
+The Spring Framework is an open-source framework, where its web application features are based upon Java Enterprise Edition, an enterprise specification of the Java programming language that has modules specifically tailored towards web services.
+% Citation: https://www.oracle.com/java/technologies/java-ee-glance.html
+
+Spring provides many of the benefits that Django also provides, and the two are often compared against eachother. Similar to Django, Spring utilises a model-view-controller framework, and relies upon high cohesion. As Spring uses Java, it takes advantage of the object-oriented programming paradigm, and it is standard for classes to be written in such a way that they follow this concept. Spring is optimised to work with the Thymeleaf template engine, that provides server-side scripting and an interface between the controller and view layers.
+% Citation: https://www.thymeleaf.org/
+
+Ultimately, a proficiency in Java from previous academic study and personal use made Spring an ideal choice for this project. Spring Boot, an addition to the platform that allows for automatic configuration of core dependencies, was also used, to reduce the amount of time spent studying elements of Spring that Spring Boot renders redundant. Spring also utilises Maven, a Java package manager, to provide a large number of dependencies; Spring Security was deemed a useful tool for an authentication layer, for example.
+
+\subsubsection{CSS frameworks}
+
+It was decided in the planning stages of the project that it would be beneficial to use a CSS framework, rather than build a template ourselves. CSS frameworks provide a large number of pre-built elements, many that are rather familiar to users, due to their prevalence in front-end web design. A review into three different CSS framework was performed.
+
+Bootstrap, a framework initially developed for use with Twitter, provides elements that have been crafted with the User Experience at their forefront. It is used by a large variety of web applications and websites, with the developers claiming it is 'the world's most popular front-end component libary.' Whilst this would have been a good choice for a familiar user interface, the framework was assessed to have less customisability, which posed an issue with a unique implementation where the main aspect is a single-page application. Bootstrap is also intended to be mobile-first, a feature that is not required, as the application is designed to run on a desktop computer.
+%Citation: http://51.255.68.3:8011/143.95.72.211/error404/twitter_bootstrap_web_development_how-to.pdf
+%Citation: https://getbootstrap.com/
+
+Fomantic UI, a community fork of Semantic UI, which had seen a lull in development, is a framework that defines itself as using 'human-friendly HTML.' Classes within Fomantic use syntax from the English language, for example, a user interface with three buttons could be classed simply as \texttt{<div class="ui three buttons">}. While Semantic is quite an elegant interface, different frameworks were deemed more familiar to a user, and the User Experience aspect of this project was tailored towards people who may not have a great amount of technical knowledge.
+% Citation: https://semantic-ui.com/
+
+The chosen CSS framework for the application was Materialize, a variation upon Google's Material Design language. Material Design is used in a large number of Android mobile phone applications, and on Google's services themselves. Similar to Fomantic, Materialize utilised the concept of human-friendly HTML, and was easy to integrate with Thymeleaf and Spring. Materialize utilises a twelve-column responsive grid system, which made it simple to create components that would scale with screen size. As the customer intends to run the application on a large monitor, this is an important design consideration.
+% Citation: https://materializecss.com/
+
+\subsubsection{Database Management System}
+
+\subsubsection{Programming Tools}
+
+\subsection{Mapping API}
+
+\subsubsection{OpenStreetMap}
+
+\subsubsection{Google Maps Platform}
+
+\section{Software Development Process}
+
+\subsection{Agile Development}
+
+\subsubsection{Kanban}
+
+\subsubsection{eXtreme Programming}
+
+\subsection{Waterfall Model}
+
+\subsection{Test-driven development}
+
+\section{Analysis of key areas}
+
+\subsection{Hosting}
+
+\subsection{Authentication}
+
+\subsection{Customer Requirements}
 

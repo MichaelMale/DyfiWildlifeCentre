@@ -17,5 +17,14 @@
 
 package uk.co.montwt.dyfiwildlifecentre.service;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+
+import java.io.IOException;
+
+@SpringBootTest
 public class PointOfInterestServiceTests {
+    
 }

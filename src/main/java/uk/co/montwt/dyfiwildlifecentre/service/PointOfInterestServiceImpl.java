@@ -47,6 +47,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
         this.pointOfInterestRepository = pointOfInterestRepository;
     }
 
+
     /**
      * Finds a Point Of Interest by its ID.
      *

@@ -15,17 +15,24 @@
  * under the License.
  */
 
-package uk.co.montwt.dyfiwildlifecentre.security.model;
+package uk.co.montwt.dyfiwildlifecentre.security.model.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import uk.co.montwt.dyfiwildlifecentre.security.model.User;
+
+import java.util.List;
 
 /**
- * RoleRepository.java - Interfaces with the DBMS to access and update the
- * roles relation.
+ * UserRepository.java - This implements a repository that interfaces with
+ * the DBMS for the User object.
  *
  * @author Michael Male
  * @version 1.0 2020-04-20
- * @see org.springframework.data.jpa.repository.JpaRepository
+ * @see  org.springframework.data.jpa.repository.JpaRepository
  */
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+
 }

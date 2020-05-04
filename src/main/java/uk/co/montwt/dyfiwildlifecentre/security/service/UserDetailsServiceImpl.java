@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.co.montwt.dyfiwildlifecentre.security.model.Role;
 import uk.co.montwt.dyfiwildlifecentre.security.model.User;
-import uk.co.montwt.dyfiwildlifecentre.security.model.UserRepository;
+import uk.co.montwt.dyfiwildlifecentre.security.model.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.Set;
