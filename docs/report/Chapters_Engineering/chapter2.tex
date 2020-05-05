@@ -1,15 +1,70 @@
 %\addcontentsline{toc}{chapter}{Development Process}
 \chapter{Design}
 
+Once an idea of which technologies to use in the software became prevalent, a design and structure of the application had to be created, based upon the requirements and user stories outlined in Appendix A. This involves a 'big picture' overview of each component of the application, where it is judged as to how to split the components. Later on in the design stages, planning, including through the use of entity-relationship modelling, and class diagrams for object-oriented components, was carried out on each specific component of the software.
+
+This chapter will discuss the design choices made, and link them to the software's requirements. It will include any diagrams that were completed as part of this.
+\newpage
 \section{Overview}
 
 \subsection{Architecture}
+\begin{figure}[!ht]
+	\caption{Architecture diagram for the Dyfi Wildlife Centre Web App}
+	\includegraphics[scale=0.5]{diagrams/architecture_diagram}
+\end{figure}	
+
+Developing an architecture diagram ensured that there was a definition to the technology stack that the application is going to use. It also allowed for some prior thought to how different components interact with eachother.
+
+For example, the database management system being used is PostgreSQL. Unlike systems such as SQLite, which is generally provided as a standalone file, PostgreSQL requires its own server instance. Therefore, research had to take place as to how the backend, running on Spring, would interface with the SQL Server. As evidenced in Figure 2.1, this was through Hibernate, an implementation of the standard Java persistence API for Spring's enterprise-level dialect. This was marked as something to research when planning the design for the model and controller layers of the backend.
+
+The architecture diagram also identifies the relationships between each component hosted on the web server, in a downwards fashion. The Spring Framework interfaces with Thymeleaf, through Spring passing parameters to Thymeleaf templates, for them to be rendered. The frontend and User Experience components of the application are clearly defined - with Materialize being used for the CSS layout, and the Google Maps Cloud Platform's JavaScript API being used for displaying the map and its markers. On the left-hand side, the user's system is explicitly mentioned, as User Experience is an important consideration in this project. The user will also be interacting directly with the system and its various components that are locally hosted on the web server.
 
 \section{Database}
 
+Parts of the database model were able to be generated automatically using the Spring Data JPA, however it was decided that a pre-built implementation of the database model would be easier to implement, as this would ensure adherence to an entity-relationship diagram, as well as any constraints that had been identified.
+
+The initial iteration of the database, to fulfil the first two tasks that had been defined, was to have a single relation containing details about a Point of Interest. It was decided to initially plan the database in un-normalised form. This was to ensure that the Java object that was to be created in the back-end was readable and easy to maintain, rather than having to create multiple Java objects that represent a large number of relations in the database.
+
+The database was to be iterated upon. To allow for authentication, separate tables for users and roles were to be created. While the consideration with regards to authentication was that every user should be automatically granted admin permissions, the role database allows for further addition of new roles, should this become a concern in a later version of the project.
+
 \subsection{Entity-Relationship Modelling}
+\begin{figure}[!ht]
+	\caption{Second iteration of the Dyfi Wildlife Centre schema}
+	\includegraphics[scale=0.5]{diagrams/er_diagram}
+\end{figure}	
+
+Ultimately, the database design was uncomplicated, as there were only three objects to consider. As the majority of database handling was intended to be carried out through the Spring Data JPA, the nuances that that brings were added into the database at time of design. One example would be the ID primary key on each relation. In a standard PostgreSQL database implementation, the data type of the ID is not likely to be of type \textit{bigint}. This is a type that is, as the name implies, intended for large integers. An ID attribute that is being utilised as a primary key would generally take the type of \textit{serial} - an auto-incrementing column. This is, however, handled within the backend by the JPA, through an automatically-generated sequence stored within the database, therefore there is no need to use the serial type.
+
+A many-to-many relationship between both users and roles is achieved through the use of a junction able, \textit{users\_roles}. This allows for multiple roles to be added into the database at a later date, which can then be attributed to users through the frontend. As each user is only permitted to have one role, the primary key has been set as the user in the junction table, with a role ID being set with each user.
 
 \subsection{Constraints}
+
+A various number of constraints had to be created in order to validate the data that was being entered into the table, this is described below, with the definition in a pseudocode format:
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Constraint Name}                   & \textbf{Definition}                                    \\ \hline
+\textbf{latitude\_chk}                     & CHECK latitude IS \textgreater -90 AND \textless 90    \\ \hline
+\textbf{longitude\_chk}                    & CHECK longitude IS \textgreater -180 AND \textless 180 \\ \hline
+\textbf{latitude\_not\_null\_island\_chk}  & CHECK latitude NOT EQUAL TO 0                        \\ \hline
+\textbf{longitude\_not\_null\_island\_chk} & CHECK longitude NOT EQUAL TO 0                        \\ \hline
+\textbf{chk\_name}                         & CHECK name IS NOT EMPTY                                \\ \hline
+\textbf{postcode\_chk}                     & CHECK postcode MATCHES UK postcode regex               \\ \hline
+\end{tabular}%
+}
+\caption{A list of constraints in the points\_of\_interest relation}
+\label{poi_constraints}
+\end{table}
+
+These constraints tend to perform sanity checks on the input that is being entered, once it reaches the database layer. A regular expression, sought from an open data source that provides APIs dealing with UK postcodes\cite{PostcodeRegex}, was used to confirm that the postcode was in the correct shape, with validation of the legitimacy of the postcode taking place within the backend layer of the application.
+% 860 words
+
+
 
 \section{Backend}
 
