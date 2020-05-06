@@ -360,4 +360,5 @@ public class PointOfInterest implements PointOfInterestInterface {
 
         return gson.toJson(this);
     }
+    
 }

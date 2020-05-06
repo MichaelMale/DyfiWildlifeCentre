@@ -1,7 +1,7 @@
 %\addcontentsline{toc}{chapter}{Development Process}
 \chapter{Design}
 
-Once an idea of which technologies to use in the software became prevalent, a design and structure of the application had to be created, based upon the requirements and user stories outlined in Appendix A. This involves a 'big picture' overview of each component of the application, where it is judged as to how to split the components. Later on in the design stages, planning, including through the use of entity-relationship modelling, and class diagrams for object-oriented components, was carried out on each specific component of the software.
+Once an idea of which technologies to use in the software became prevalent, a design and structure of the application had to be created, based upon the requirements and user stories outlined in Appendix A, section~\ref{user_stories}. This involves a 'big picture' overview of each component of the application, where it is judged as to how to split the components. Later on in the design stages, planning, including through the use of entity-relationship modelling, and class diagrams for object-oriented components, was carried out on each specific component of the software.
 
 This chapter will discuss the design choices made, and link them to the software's requirements. It will include any diagrams that were completed as part of this.
 \newpage
@@ -9,8 +9,8 @@ This chapter will discuss the design choices made, and link them to the software
 
 \subsection{Architecture}
 \begin{figure}[!ht]
-	\caption{Architecture diagram for the Dyfi Wildlife Centre Web App}
 	\includegraphics[scale=0.5]{diagrams/architecture_diagram}
+	\caption{Architecture diagram for the Dyfi Wildlife Centre Web App}
 \end{figure}	
 
 Developing an architecture diagram ensured that there was a definition to the technology stack that the application is going to use. It also allowed for some prior thought to how different components interact with eachother.
@@ -39,7 +39,7 @@ A many-to-many relationship between both users and roles is achieved through the
 
 \subsection{Constraints}
 
-A various number of constraints had to be created in order to validate the data that was being entered into the table, this is described below, with the definition in a pseudocode format:
+Constraints had to be created in order to validate the data that was being entered into the table, this is described below, with the definition in a pseudo-code format:
 
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
@@ -61,27 +61,44 @@ A various number of constraints had to be created in order to validate the data 
 \label{poi_constraints}
 \end{table}
 
-These constraints tend to perform sanity checks on the input that is being entered, once it reaches the database layer. A regular expression, sought from an open data source that provides APIs dealing with UK postcodes\cite{PostcodeRegex}, was used to confirm that the postcode was in the correct shape, with validation of the legitimacy of the postcode taking place within the backend layer of the application.
-% 860 words
+These constraints tend to perform sanity checks on the input that is being entered, once it reaches the database layer. The constraints on the coordinates are based upon the natural constraints based upon latitude and longitude, and ensures that a user cannot apply an incorrect coordinate to a point of interest, that would likely cause an error at the frontend layer of the application.
 
+The two ``not null island" checks make sure that a user cannot simply enter 0 as the latitude and 0 as the longitude, as this could potentially cause issues when parsing the postcode in the backend layer. The primary issue with a check like this would be that 0,0 is a valid coordinate pair. However, the customer has specified that points of interest would primarily be in the United Kingdom, which is far from this coordinate range. It is not likely that any potential coordinate pairs entered for points of interest outside the UK would be equal to these coordinates.
+
+A regular expression, sought from an open data source that provides APIs dealing with UK postcodes\cite{PostcodeRegex}, was, again, a sanity check. It performs basic error-checking that checks the general shape of the postcode; checking it has a letter at the beginning and ends in a letter, for example. Whilst stricter regular expressions were available, these were often rather complex expressions that were computationally intensive, and still did not cover every edge case, often making their implementation futile. The design accounts for error-checking of postcodes through the use of the aforementioned API, which is further explained in section~\ref{sec:backend}. 
 
 
 \section{Backend}
+\label{sec:backend}
+
+\begin{figure}[!ht]
+	\includegraphics[scale=0.5]{diagrams/parent_uml}
+	\caption{Parent UML diagram, showing each package that the software breaks down into}
+\end{figure}	
+
+Spring, the framework that is utilised in this backend, follows a model-view-controller design pattern. This allows for a clear distinction between each area of the application, with its functionalities and design being defined as follows:
+
+\begin{itemize}
+	\item	\textbf{Model} - The application's data structure and logic processing, containing the objects representing a user, a role, and a point of interest. It also includes a repository layer, that interfaces with the PostgreSQL server, and a service layer, that provides a layer of abstraction between the database and the controller.
+	\item	\textbf{View} - The presentation of data in the application. This is generally further discussed in Section~\ref{sec:frontend}, but there are a number of classes and configurations that directly affect the management of the view layer.
+	\item	\textbf{Controller} - Classes that accept user and computer input, converting it to commands that affect either the model or the view. In this application, the controller consists of a RESTful API for managing users and points of interest.
+\end{itemize}
+
+Class diagrams were created to be adhered to during the production of this application, and were split by layer. The intention was for Java packages to be used, to aid in code navigability and ease of maintenance. %1245 words
 
 \subsection{Model layer}
 
-\subsubsection{Class Diagram}
 
 \subsection{View Layer}
 
-\subsubsection{Class Diagram}
 
 \subsection{Controller Layer}
 
-\subsubsection{Class Diagram}
 
+\subsection{Security}
 
 \section{Frontend}
+\label{sec:frontend}
 
 \subsection{Design considerations}
 
