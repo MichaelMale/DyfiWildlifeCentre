@@ -57,22 +57,6 @@ public class SecurityService {
     }
 
     /**
-     * A methods that finds the user that is currently logged in.
-     * @return  String containing the username of the user that's currently
-     * logged in.
-     */
-    public String findUsernameLoggedIn() {
-        var userDetails = SecurityContextHolder.getContext().getAuthentication()
-                .getDetails();
-
-        if (userDetails instanceof UserDetails) {
-            return ((UserDetails) userDetails).getUsername();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Automatically logs in a user after they have been registered.
      * @param username  Username to use for the login
      * @param password  Password to use for the login

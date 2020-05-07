@@ -165,29 +165,82 @@ An example of a threat affecting the authentication of the application, once imp
 
 To combat these security concerns, Spring Security, an authentication framework designed for use with Spring, was implemented, through the contents of the security package. Users were stored in an SQL database, along with their roles. The default authentication method for users was plain-text, and users passwords could be easily found in the database. This was modified to use ``bcrypt", a password hashing function based upon the Blowfish cipher\cite{bcrypt}. bcrypt hashes the password that the user has been registered with, and then stores that hash in the password field of the relation. When a user logs in, the password that has been provided is matched against the hash, rather than the hash being decrypted, resulting in it not being reasonably possible to crack a password from the hash. 
 
-
-
 \subsubsection{Model layer}
+\begin{figure}[!htbp]
+	\includegraphics[scale=0.4]{diagrams/security/model}
+	\caption{Class diagram of the \texttt{uk.co.montwt.dyfiwildlifecentre.security.model} package}
+\end{figure}
+
+The model layer of the security package implements the database. There are no special methods and the purpose is simply to represent the database as Java objects.
+
+\begin{figure}[!htbp]
+	\includegraphics[scale=0.4]{diagrams/security/service}
+	\caption{Class diagram of the \texttt{uk.co.montwt.dyfiwildlifecentre.security.service} package}
+\end{figure}
+
+The security layer contains implementations for an interface from the Spring Security package, as well as instantiating Spring Security's authentication manager. In the \texttt{save(User user)} method in \texttt{UserService.java}, the BCrypt encoder is called, and the password is encrypted. As discussed above, the password is sent to the service in plain text, however this would be difficult to encrypt without HTTPS, and data transfer is being carried out solely on the local host due to the nature of the locally hosted database.
 
 \subsubsection{Controller layer}
+\begin{figure}[!htbp]
+\includegraphics[scale=0.55]{diagrams/security/controller}
+\caption{Class diagram of the \texttt{uk.co.montwt.dyfiwildlifecentre.security.controller} package}
+\end{figure}
+
+The controller layer of the security package includes a RESTful controller as well as a controller for the User object itself, that, as with the PointOfInterestController, interfaces with the service and the database. \texttt{UserRestController} implements a GET request, that returns all users, in order for them to be displayed in a list. \texttt{UserController} manages the registration and deletion of users, containing method calls to the relevant services. It also includes an exception handler, that reports a conflict message to the user, should they attempt to register a user with the same username as one that has already been registered.
 
 \section{Frontend}
 \label{sec:frontend}
 
 \subsection{Design considerations}
 
+The frontend is a crucial part of this application, as this will be what the end user will be viewing. There were some key considerations that had to take place when making decisions regarding how to design the User Experience.
+
+Familiarity was an important consideration to make, as users may not have a large amount of technical training, and a layout that they would be used to from different applications may be beneficial. This was part of the reasoning behind choosing Material Design as the design language for this software - with most Android, and some iOS apps, using Material Design, as well as popular web services such as Google Maps, there would not be a large number of potentially confusing prompts and dialogues.
+
+An aspect of minimalism was required with the design of the software, particularly on the homepage. The core function of the software was to show points of interest on a map, and having too many other UI components on the front page could potentially result in the page being too bloated. There was not too much of a need for a change from this in the admin panel, with clear instructions as to what the purpose of the view was.
 \subsection{Prototyping}
 
+Prototyping and mockups were created as part of the planning and design process. These mockups were based on Semantic UI, which was changed to Materialize after the mockups were created. As there were quite a few similarities, it was decided to not redesign the mockups.
+
 \subsubsection{Home Screen}
-% Figure of home screen
+\begin{figure}[!htbp]
+\includegraphics[scale=0.2]{mockups/Home Screen}
+\caption{Home Screen mockup}
+\end{figure}
 
-% Figure of home screen with hamburger menu
-
+The initial representation of the home screen showed a menu bar, at the top of the page, along with a hamburger menu. The main component of the home screen was the Google Maps component, with filter and reset buttons on either side of it. The general shape of this mockup was carried over to the final build, however a floating action button was used in place of two distinct buttons.
+\newpage
 \subsubsection{Marker information}
-% POI card
+\begin{figure}[!htbp]
+\includegraphics[scale=0.2]{mockups/POI card}
+\caption{Mockup of the POI card}
+\end{figure}
+
+The `POI card` was designed such that it would contain easily-readable information, including a title, a description, and a relevant image. The POI card appears should a user click on a marker, with the JavaScript function for the Maps API being used to populate these fields. The scripts used to show the POI card are available in Appendix C.
 
 \subsubsection{Admin Panel - Login Screen}
-% Admin Login
-\subsubsection{Admin Panel - POI editing}
+\begin{figure}[!htbp]
+\includegraphics[scale=0.2]{mockups/Admin login screen}
+\caption{Mockup of the admin login screen}
+\end{figure}
 
+As explained above, the admin login screen was designed to be as minimalistic as possible. It simply includes a username and password, as well as a brief piece of information describing how one would go about requesting a login for the admin panel. Spring Security is used to facilitate the login.
+
+\subsubsection{Admin Panel - POI editing}
+\begin{figure}[!htbp]
+\includegraphics[scale=0.2]{mockups/Admin Panel - POIs (not filled, English)}
+\caption{Mockup of the POI editing prompt}
+\end{figure}
+
+The initial logic behind the POI editing screen allowed for an entire address to be added, and a coordinate pair if it was deemed necessary by the user. Ultimately, this was considered an overcomplicated solution, and, as explained above, either a postcode or a coordinate pair were required.
+\newpage
 \subsubsection{Admin Panel - User management}
+\begin{figure}[!htbp]
+\includegraphics[scale=0.2]{mockups/Admin Panel - Add User}
+\caption{Mockup of the 'Add a user' screen}
+\end{figure}
+
+Similarly, adding a user with various details was later decided as relatively redundant, as a simple username and password would suffice for security purposes. Changes in decisions made will be discussed in Chapter 3.
+
+%Chapter 2: 3244 words
+%Total: 6567 words
