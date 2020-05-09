@@ -2,11 +2,11 @@
 
 \section{Background Planning \& Analysis}
 
-A number of key considerations were taken into place during the background planning stages of this project.
+A number of key considerations were taken into account during the background planning stages of this project.
 
-An initial meeting took place in February 2020 with the customer, the Montgomeryshire Wildlife Trust. The hardware implementation was discussed and it was understood that the customer would want to run the web application on an 86-inch touch screen monitor. They also expressed a preference for the web application to be run locally, and not published to a cloud service or the World Wide Web. Therefore, an important consideration of the project was enabling the web application to work using touch gestures, and use a responsive layout that would scale to a high resolution.
+An initial meeting took place in February 2020 with the customer, the Montgomeryshire Wildlife Trust. The hardware implementation was discussed and it was understood that the customer would want to run the web application on an 86-inch touch screen monitor. They also expressed a preference for the web application to be run locally, and not published to a cloud service or the World Wide Web. Therefore, an important consideration for the project was enabling the web application to work using touch gestures, and use a responsive layout which would scale to a high resolution.
 
-With the intention being that the application runs locally, therefore research had to be put into various technology stacks, and which web framework would work best for this kind of application. Research into this would have to take into account how much time needs to be allocated to performing spike work; ensuring a comprehensive understanding of the framework was achieved before work on the project began.
+With the intention being that the application runs locally, therefore research had to be put into various technology stacks, and which web framework would work best for this kind of application. Research into this would have to take into account how much time needed to be allocated to perform spike work; ensuring a comprehensive understanding of the framework was achieved before work on the project began.
 
 Another key consideration was the vendor for the maps API. A number of APIs were assessed for their usability as well as their licensing conditions.
 
@@ -39,9 +39,9 @@ Ultimately, a lack of familiarity with JavaScript, as well as the relative compl
 
 \subsubsection{Django}
 
-Django is an open-source framework based on the Python programming language. Its creators set the framework's primary philosophies as a quick approach to development, a view to not repeating the design and execution of concepts, and loose coupling - in this context being that the framework layers shouldn't be able to interface with eachother unless necessary\cite{DjangoPhilo}.
+Django is an open-source framework based on the Python programming language. Its creators set the framework's primary philosophies as a quick approach to development, a view to not repeating the design and execution of concepts, and loose coupling - in this context being that the framework layers shouldn't be able to interface with each other unless necessary\cite{DjangoPhilo}.
 
-Django utilises the object-oriented programming paradigm with Python, and utilises a model-template-view approach. In short, these are three distinct layers of a web application: the model consists of a data structure, the view consists of a representation of information on a web browser, and a controller allows access to this data with meaningful requests\cite{LeffA2001Wdut}.
+Django utilises the object-oriented programming paradigm with Python, and utilises a model-template-view approach. In short, these are three distinct layers of a web application: the model consists of a data structure, the view consists of a representation of information in a web browser, and a controller allows access to this data with meaningful requests\cite{LeffA2001Wdut}.
 
 Whilst Django appeared to be a good choice due to its highly cohesive pattern, testing of the setup proved to be difficult on occasion, with design patterns that were particularly unique to Django. Python is a language that is known to utilise concepts that are simple to understand for users with greater knowledge in other programming languages, utilisation of Python at this level required a higher level of expertise than was had at the time. It was decided that there would be a greater chance of success with the project if attention was placed more towards frameworks with a more familiar language, to avoid an inordinate amount of time being spent on the intricacies of specific programming languages and frameworks.
  
@@ -50,10 +50,10 @@ Whilst Django appeared to be a good choice due to its highly cohesive pattern, t
 The Spring Framework is an open-source framework, where its web application features are based upon Java Enterprise Edition, an enterprise specification of the Java programming language that has modules specifically tailored towards web services\cite{JavaEE}.
 % Citation: https://www.oracle.com/java/technologies/java-ee-glance.html
 
-Spring provides many of the benefits that Django also provides, and the two are often compared against eachother. Similar to Django, Spring utilises a model-view-controller framework, and relies upon high cohesion. As Spring uses Java, it takes advantage of the object-oriented programming paradigm, and it is standard for classes to be written in such a way that they follow this concept. Spring is optimised to work with the Thymeleaf template engine, that provides server-side scripting and an interface between the controller and view layers\cite{Thymeleaf}.
+Spring provides many of the benefits that Django also provides, and the two are often compared against each other. Similar to Django, Spring utilises a model-view-controller framework, and relies upon high cohesion. As Spring uses Java, it takes advantage of the object-oriented programming paradigm, and it is standard for classes to be written in such a way that they follow this concept. Spring is optimised to work with the Thymeleaf template engine, that provides server-side scripting and an interface between the controller and view layers\cite{Thymeleaf}.
 % Citation: https://www.thymeleaf.org/
 
-Ultimately, a proficiency in Java from previous academic study and personal use made Spring an ideal choice for this project. Spring Boot, an addition to the platform that allows for automatic configuration of core dependencies, was also used, to reduce the amount of time spent studying elements of Spring that Spring Boot renders redundant. Spring also utilises Maven, a Java package manager, to provide a large number of dependencies; Spring Security was deemed a useful tool for an authentication layer, for example. An added benefit to Spring is its embedded Apache Tomcat server, that allows for the provision of an HTTP web server environment from opening the application, rather than having to take steps to deploy it into an existing web server environment.
+Ultimately, proficiency in Java from previous academic study and personal use made Spring an ideal choice for this project. Spring Boot, an addition to the platform that allows for automatic configuration of core dependencies, was also used, to reduce the amount of time spent studying elements of Spring that Spring Boot renders redundant. Spring also utilises Maven, a Java package manager, to provide a large number of dependencies; Spring Security was deemed a useful tool for an authentication layer, for example. An added benefit to Spring is its embedded Apache Tomcat server, that allows for the provision of an HTTP web server environment from opening the application, rather than having to take steps to deploy it into an existing web server environment.
 
 \subsubsection{CSS frameworks}
 
@@ -89,7 +89,7 @@ However, it was decided upon that the JetBrains' suite of software was to be use
 
 \subsection{Mapping API}
 
-A crucial part of the application was the ability to present geographic data and information in a graphical format. A video had been provided by the customer, showing a map implementation on a similar nature reserve in Dorset. This used a satellite map with markers placed on the screen, and the intention was to take a similar approach\cite{OspreyVideo}.
+A crucial part of the application was the ability to present geographical data and information in a graphical format. A video had been provided by the customer, showing a map implementation on a similar nature reserve in Dorset. This used a satellite map with markers placed on the screen, and the intention was to take a similar approach\cite{OspreyVideo}.
 % Citation: https://www.youtube.com/watch?v=XYIwcAfgFkA
 
 As this application is web-based, a view towards a JavaScript API was adopted when assessing potential mapping solutions. The map must also take clickable markers and allow for quick downloading of satellite images. Two potential candidates were assessed:
@@ -149,11 +149,11 @@ The system metaphor became \textit{'A web application that uses a map to show in
 \item	\textbf{Simple Design} - Attention was placed on the design of the application not becoming too complex, with this being assessed in every release.
 \item	\textbf{Testing} - As will be discussed later in this chapter, test-driven development was used throughout the project. This often involved verification of an interface before its implementation.
 \item	\textbf{Refactoring} - It was ensured this was the last task, after all tests passed, so as to provide as clean, readable and efficient code as possible.
-\item	\textbf{Pair Programming} - For obvious reasons, it was not possible to replicate this practice. However, a benefit of pair programming is being able to have a 'birds' eye' view of the code, and find bugs early. This was achieved through use of the Pomodoro Technique, a time management technique similar to timeboxing, where work is broken down into 25-minute intervals\cite{GavettGretchen2018Yvtc}. After three intervals, all code that had been written was tested and reviewed, to see if there were any bugs.
+\item	\textbf{Pair Programming} - For obvious reasons, it was not possible to replicate this practice. However, a benefit of pair programming is being able to have a 'bird's eye' view of the code, and find bugs early. This was achieved through use of the Pomodoro Technique, a time management technique similar to timeboxing, where work is broken down into 25-minute intervals\cite{GavettGretchen2018Yvtc}. After three intervals, all code that had been written was tested and reviewed, to see if there were any bugs.
 \item	\textbf{Collective Code Ownership} - As the project had a single developer there was no need to find an adaptation to this, as the entire codebase is owned by the developer.
 \item	\textbf{Continuous Integration} - Use of the Travis CI tool was prevalent throughout the project. Whilst conflicts between different branches were not likely, it ensured that testing was being carried out repeatedly, and did not have to be performed manually\cite{TravisCI}.
 %Citation: https://travis-ci.org/
-\item	\textbf{40-Hour Week} - It was ensured that too much work over one period did not occur, as this may have caused more buggy code due to stress and fatigue.
+\item	\textbf{40-Hour Week} - It was ensured that too much work over one period did not occur, as this may have caused code of less quality due to stress and fatigue.
 \item	\textbf{On-site customer} - This wasn't possible with this project, particularly during the second half. Therefore, any communication with the customer tended to be carried out via e-mail and telephone.
 \item	\textbf{Coding standard} - A coding standard was self-imposed, and kept consistent throughout each iteration of the project.
 \end{enumerate}
@@ -161,4 +161,4 @@ The system metaphor became \textit{'A web application that uses a map to show in
 
 While researching testing strategies, it was decided that the concept of test-driven development should be incorporated into this project. The main benefit of such an approach was the ability to create a detailed specification for the code, and ensure that thought took place into what was really required from it. It also ensured that feedback was quick, a useful tool in a single-person project where you are not easily able to request constant feedback from your code. Errors and problems become identified more quickly. Overall, this was to be implemented through the use of Java interfaces, with an outline of a class written and tests to achieve what was wanted from each class. Testing suites were created for each class which required them, and the use of technologies such as Selenium was crucial to testing the front-end.
 
-%3320 words
+% Word count: 3325

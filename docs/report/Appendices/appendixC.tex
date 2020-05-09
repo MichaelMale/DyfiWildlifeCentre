@@ -143,3 +143,44 @@ This is a card containing Point of Interest information, that is populated using
     </div>
 </div>
 \end{verbatim}
+
+\section{Security configuration}
+\label{securitymethod}
+
+This is the method used to configure Spring Security across all parts of the web application.
+
+\begin{verbatim}
+ /**
+     * Configures the security parameters for the application. Further
+     * details are included within inline comments in the source code.
+     *
+     * @param http  An instance of HttpSecurity
+     * @throws Exception    if there is an issue with the security
+     * configuration.
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/index").permitAll() // Permits all
+                // requests to the single-page user-end application
+                .antMatchers("/poi").permitAll() // Permits a GET Request to
+                // the getAllPointsOfInterest() method, used only to update
+                // the map
+                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                // Permits all request to static resources
+                .antMatchers("/admin/**").hasRole("ADMIN") // Only
+                // permits
+                // authenticated users with the 'ADMIN' role to access the
+                // admin panel
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()// Sets authenticated requests to be routed via
+                // the login page
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
+    }
+\end{verbatim}
