@@ -61,6 +61,8 @@ public class User {
      */
     public Long getId() { return id; }
 
+    public void setId(Long id) { this.id = id; }
+
     /**
      * Gets the username of the user
      * @return  String containing the username of the User

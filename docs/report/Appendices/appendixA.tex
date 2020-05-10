@@ -1,0 +1,69 @@
+\chapter{User Stories}
+
+
+\section{Purpose of this file}
+
+This file is intended to provide user stories as part of a modified XP approach to this project. It will be modified into tasks and sub-tasks that will be created through GitHub's issue tracker.
+
+\section{System metaphor}
+
+\textbf{A web application that uses a map to show interesting things around the Dyfi Wildlife Centre}
+
+\section{Epics}
+
+\begin{enumerate}
+	\item As a volunteer, I want to have a web interface where I can show people information about the nature reserve on a map.
+	\item As an administrator, I want to be able to add and edit information about the nature reserve, and change anything I want to change.
+\end{enumerate}
+
+\section{Priorities}
+
+\subsection{Legend}
+
+Using MoSCoW analysis.
+
+\begin{itemize}
+	\item \textbf{M: Must} - Non-negotiable, must be satisfied for the project to be considered a success.
+	\item \textbf{S: Should have} - High priority, a critcal requirement that should be included if at all possible. However, it can be implemented in other ways if necessary.
+	\item \textbf{C: Could have} - A desirable requirement but not necessary, will be included if there's enough time.
+	\item \textbf{W: Won't} - A requirement identified as not necessary to be implemented at this stage in planning, but may be considered during future stages.
+\end{itemize}
+
+Each story in the following section is marked with it's priority by a letter corresponding to each priority.
+
+\section{Stories}
+\label{user_stories}
+
+\begin{enumerate}
+	\item As a volunteer, I want to be able to view points of interest on a map, so that I'll be able to tell visitors what is around the centre. (M)
+	\item As an administrator, I want to be able to login to an authenticated administration panel, so that I can ensure that only authorised people can change information about the points of interest. (S)
+	\item As an administrator, I want to be able to add and edit information about points of interest, so that I can ensure that there is up-to-date information about the wildlife centre. (M)
+	\item As a volunteer, I want the ability to showcase the information in both the medium of English and of Welsh, so that I can accommodate for all people who visit the centre, regardless of their preferred language. (C)
+	\item As an administrator, I want to be able to add images to different points of interest, so that I'll be able to show a visual representation of the point of interest. (C)
+	\item As a visitor, I want to be able to find directions to and from the centre using the application, so that I'll be able to find out how to get back home, and find out how to get to the centre by another form of transport if I want to visit again. (C)
+	\item As a visitor, I want to be able to find out about local businesses that are featured in the application, so that I can get more a feel for what is around the wildlife centre, and potentially visit some interesting businesses. (S)
+	\item As a visitor, I want to be able to be told about what the wildlife centre is doing, so that I can get more of a feel and be able to appreciate the area around me. (M)
+	\item As a visitor, I want to be able to look at webcams of the Ospreys that live at the wildlife centre. (W - This has been implemented separately by the project manager on the Dyfi Wildlife Centre's side)
+	\item As a volunteer, I want to be able to filter the map by different defining features, and also press a button in case I go too far from the centre. (S)
+\end{enumerate}
+
+\section{Tasks}
+
+Tasks will be stored as GitHub issues which will be broken down into further subtasks. Each subtask will have its own branch that will merge onto the task branch. Tasks will be carried out sequentially. Each story has a task attached to it, but it is broken down and interpreted in a software engineering sense.
+
+\begin{enumerate}
+	\item	Create an interface that includes a map, which has markers that can be added to it. The markers should link to a popup containing information about the point of interest. At this stage, the POIs can be hard-coded.
+	\item	Create an API that allows for information about points of interest to be stored in a database. Program this API to automatically update the Google Maps API with markers and create a page to allow for this to be edited in a textbox and posted to the database. Focus on not having to 'hack' through the HTML or database, similar to a CMS. Worst case: use something like WordPress headless.
+	\item	Re-visit the interface created in task 1 to ensure that the information popup is easy to present to someone. Ensure that the interface is easily-readable, for example by having marker clusters. Consider performing user surveys and informal user testing with friends, and even the customer if possible.
+	\item	Re-visit the interface created in task 2 and use a simple authentication algorithm, such as OAuth 2.0. This should include some sort of user/password table and the ability to create new users. It does not necessarily have to have enterprise-grade encryption but should be taken seriously enough to disallow any simple attacks on the web server.
+	\item Create a list of filters that can be selected by the volunteer on the main screen. This will filter out some markers based upon specific boolean values. Will require some further spike work through online tutorials.
+	\item In the admin panel, allow for addresses to be entered and geocoded into coordinates, so that local businesses and places such as educational institutions can be added.
+	\item Enable I18N internationalisation, creating a basic Welsh version of the web page. Ensure that the admin panel accepts name and description information in both English and Welsh. Don't worry about the accuracy of Welsh as this can be corrected by the customer or by Welsh-speaking staff in the University.
+	\item Include the ability to upload images to the web server, or, failing that, hotlink images. Have them show up with each POI. A card component could be useful for this.
+	\item Ensure that forms of public transport are clearly marked on the map, if they haven't been already. Potentially import the directions API and allow visitors to ask the volunteer for driving and public transport directions back to wherever they live to be displayed on the screen.
+		\begin{itemize}
+			\item Potential task to implement bus and train times through an open source transport tims API. Examples include the NextBuses API. Transport API and Darwin, but this is of C priority.
+		\end{itemize}
+	\item  Get the links for video feeds for the customer and implement them as buttons that open up an HTML5 video component.
+\end{enumerate}
+

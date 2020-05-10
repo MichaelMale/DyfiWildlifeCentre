@@ -23,9 +23,9 @@
     </parent>
     <groupId>uk.co.montwt</groupId>
     <artifactId>dyfiwildlifecentre</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Dyfi Wildlife Centre</name>
-    <description>A full-stack web application for the Dyfi Wildlife Centre</description>
+    <description>A web application for the Dyfi Wildlife Centre in Powys, Wales.</description>
 
     <properties>
         <java.version>11</java.version>
@@ -137,7 +137,6 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>3.0.2</version>
         </dependency>
-
 
 
     </dependencies>

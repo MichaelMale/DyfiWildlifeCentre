@@ -338,54 +338,6 @@ public class PointOfInterest implements PointOfInterestInterface {
     }
 
     /**
-     * Calculates the coordinates from a UK postcode, utilising the Postcode
-     * API.
-     *
-     * @return Point2D.Double containing the latitude and the longitude of
-     * the coordinates, calculated by its postcode.
-     * @see <a href="https://postcodes.io">postcodes.io</a>
-     */
-    @Override
-    public Point2D.Double calculateCoordinatesFromPostcode() throws IOException {
-        String postcodeRegex = "^([A-PR-UWYZa-pr-uwyz]([0-9]{1,2}|" +
-                "([A-HK-Ya-hk-y][0-9]|[A-HK-Ya-hk-y][0-9]([0-9]|[ABEHMNPRV-Yabehmnprv-y]))|[0-9][A-HJKS-UWa-hjks-uw])\\ {0,1}[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}|([Gg][Ii][Rr]\\ 0[Aa][Aa])|([Ss][Aa][Nn]\\ {0,1}[Tt][Aa]1)|([Bb][Ff][Pp][Oo]\\ {0,1}([Cc]\\/[Oo]\\ )?[0-9]{1,4})|(([Aa][Ss][Cc][Nn]|[Bb][Bb][Nn][Dd]|[BFSbfs][Ii][Qq][Qq]|[Pp][Cc][Rr][Nn]|[Ss][Tt][Hh][Ll]|[Tt][Dd][Cc][Uu]|[Tt][Kk][Cc][Aa])\\ {0,1}1[Zz][Zz]))$";
-        Pattern postcodePattern = Pattern.compile(postcodeRegex);
-        Matcher matcher = postcodePattern.matcher(this.getPostcode());
-
-        if (!matcher.matches()) {
-            throw new PostcodeException(postcode, "Invalid postcode");
-        }
-
-        final String encodedPostcode = URLEncoder.encode(this.getPostcode(),
-                StandardCharsets.UTF_8).replace("+", "%20");
-        final String baseUrl = "https://api.postcodes.io/postcodes/";
-
-        URL obj = new URL(baseUrl + encodedPostcode);
-
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
-        con.setRequestMethod("GET");
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        final ObjectNode node =
-                new ObjectMapper().readValue(response.toString(),
-                        ObjectNode.class);
-        final JsonNode result = node.get("result");
-
-        return new Point2D.Double(result.get("latitude").asDouble(),
-                result.get("longitude").asDouble());
-    }
-
-    /**
      * Sets both latitude and longitude using a Point2D.Double object.
      *
      * @param coordinates Point2D.Double, where x is the latitude and y is
@@ -408,4 +360,5 @@ public class PointOfInterest implements PointOfInterestInterface {
 
         return gson.toJson(this);
     }
+    
 }

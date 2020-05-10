@@ -1,0 +1,186 @@
+\chapter{Code Examples}
+
+
+
+\section{Distance between two coordinates}
+\label{haversine}
+Th Haversine Formula calculates the great circle distance between two given points on a sphere, the Earth, in this instance. It utilises spherical trigonometry, which allows it to calculate the distance between two points by using a spherical function and calculating the result from it, utilising a measure of the Earth's radius. For the purposes of the project, this is used to calculate the distance between the Dyfi Wildlife Centre and a second coordinate pair.
+
+\begin{verbatim}
+    /**
+     * Calculates the distance between the given coordinates and the
+     * coordinates of the Dyfi Wildlife Centre. This is calculated using the
+     * Haversine formula.
+     * <p>
+     * Code adapted from
+     * <a href="https://rosettacode.org/wiki/Haversine_formula#Java">here</a>.
+     *
+     * @return double containing the distance in miles to 4 significant
+     * figures.
+     */
+    @Override
+    public double calculateDistanceFromCentre() {
+        final double EARTH_RADIUS_MILES = 3958.8; // Approximate radius of
+        // Earth in miles, used to calculate the distance.
+
+        /* Local variables used for cleaner code */
+        double dyfiLat = 52.568774;
+        double dyfiLng = -3.918031;
+
+        double currentLat = this.getLatitude();
+        double currentLng = this.getLongitude();
+
+        if ((dyfiLat == currentLat) && (dyfiLng == currentLng)) {
+            return 0; // If there is no difference between both coordinates,
+            // distance of 0 is returned, to avoid unnecessary calculation.
+        } else {
+            double dLat = Math.toRadians(currentLat - dyfiLat);
+            double dLng = Math.toRadians(currentLng - dyfiLng);
+            dyfiLat = Math.toRadians(dyfiLat);
+            currentLat = Math.toRadians(currentLat);
+
+            double a =
+                    Math.pow(Math.sin(dLat / 2), 2) + Math.pow(
+                    Math.sin(dLng / 2), 2)
+                    * Math.cos(dyfiLat)
+                    * Math.cos(currentLat);
+            double c = 2 * Math.asin(Math.sqrt(a));
+            double result = (EARTH_RADIUS_MILES * c);
+            /* Converts result into a BigDecimal that is then rounded to 4
+            significant figures.
+             */
+            MathContext mathContext = new MathContext(4, RoundingMode.DOWN);
+            BigDecimal bigDecimal = new BigDecimal(result, mathContext);
+            return bigDecimal.doubleValue();
+        }
+
+    }
+\end{verbatim}    
+
+\section{Google Maps callback function}
+
+This is a JavaScript function that performs clustering and adding of markers, it is loaded when the index page is loaded.
+
+\begin{verbatim}
+async function initMap() {
+    const allPointsOfInterest = await getPointsOfInterest('/poi');
+    const dyfiWildlifeCentre = {lat: 52.568774, lng: -3.918031};
+     // Co-ordinates for the Cors Dyfi Nature Reserve,
+    // which should be located at the centre of the map.
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: dyfiWildlifeCentre,
+        mapTypeId: 'hybrid',
+        disableDefaultUI: true,
+        clickableIcons: false
+    });
+    /* Creates a marker clusterer. Initial markers are null as they are
+     added iteratively
+     */
+    markerCluster = new MarkerClusterer(map,null,
+    {imagePath: 'images/clusters/m'});
+    allPointsOfInterest.forEach(
+        poi => {
+            const marker = new google.maps.Marker({
+                position: {lat: poi.latitude, lng: poi.longitude},
+                map: map,
+                title: poi.name,
+                description: poi.description,
+                distanceFromCentre: poi.distanceFromCentre,
+                category: poi.category
+            });
+            allMarkers.push(marker);
+            markerCluster.addMarker(marker); // Iterative addition of a
+            // marker to the cluster, that performs clustering automatically
+            marker.addListener('click', function () {
+                const element = document.getElementById('poiCard');
+                element.querySelector('#poi_title')
+                	.innerHTML = marker.title;
+                element.querySelector('#poi_description')
+                	.innerHTML = marker.description;
+                element.querySelector('#poi_distance')
+                	.innerHTML = marker.distanceFromCentre;
+                const instance = M.Modal.init(element, {
+                    dismissible: true,
+                    inDuration: 500,
+                    outDuration: 500
+                });
+
+                instance.open();
+            });
+        }
+    );
+}
+\end{verbatim}
+
+\section{POI card}
+
+This is a card containing Point of Interest information, that is populated using the aforementioned function.
+
+\begin{verbatim}
+<div class="modal" id="poiCard" th:fragment="poiCard">
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="card large z-depth-0">
+                <div class="card-image">
+                    <img alt="An example image" class="lazyload"
+                         data-src="images/osprey.jpeg">
+                    <span class="card-title black-text" id="poi_title"></span>
+                </div>
+                <div class="card-content grey lighten-4">
+                    <p>This place is
+                        <span id="poi_distance"
+                              style="font-weight:bold"></span>
+                        miles from the
+                        Dyfi
+                        Wildlife Centre</p>
+                </div>
+                <div class="card-content" id="scrollable">
+                    <p id="poi_description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+\end{verbatim}
+
+\section{Security configuration}
+\label{securitymethod}
+
+This is the method used to configure Spring Security across all parts of the web application.
+
+\begin{verbatim}
+ /**
+     * Configures the security parameters for the application. Further
+     * details are included within inline comments in the source code.
+     *
+     * @param http  An instance of HttpSecurity
+     * @throws Exception    if there is an issue with the security
+     * configuration.
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/index").permitAll() // Permits all
+                // requests to the single-page user-end application
+                .antMatchers("/poi").permitAll() // Permits a GET Request to
+                // the getAllPointsOfInterest() method, used only to update
+                // the map
+                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                // Permits all request to static resources
+                .antMatchers("/admin/**").hasRole("ADMIN") // Only
+                // permits
+                // authenticated users with the 'ADMIN' role to access the
+                // admin panel
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()// Sets authenticated requests to be routed via
+                // the login page
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
+    }
+\end{verbatim}

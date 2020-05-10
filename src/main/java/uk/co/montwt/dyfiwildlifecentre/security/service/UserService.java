@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import uk.co.montwt.dyfiwildlifecentre.security.model.RoleRepository;
+import uk.co.montwt.dyfiwildlifecentre.security.model.repository.RoleRepository;
 import uk.co.montwt.dyfiwildlifecentre.security.model.User;
-import uk.co.montwt.dyfiwildlifecentre.security.model.UserRepository;
+import uk.co.montwt.dyfiwildlifecentre.security.model.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
