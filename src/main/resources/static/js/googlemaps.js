@@ -74,7 +74,7 @@ async function initMap() {
             marker.addListener('click', function () {
                 const element = document.getElementById('poiCard');
                 element.querySelector('#poi_title').innerHTML = marker.title;
-                element.querySelector('#poi_description').innerHTML = marker.description;
+                element.querySelector('#poi_description').innerHTML = escapeHtml(marker.description);
                 element.querySelector('#poi_distance').innerHTML = marker.distanceFromCentre;
                 const instance = M.Modal.init(element, {
                     dismissible: true,
@@ -120,4 +120,18 @@ function panicButton() {
     const latlng = new google.maps.LatLng(52.568774, -3.918031);
     map.panTo(latlng);
     map.setZoom(16);
+}
+
+/**
+ * Escapes HTML characters to reduce threat of cross-site scripting.
+ * @param unsafe    The string to be escaped.
+ * @returns {string}    A string with HTML characters escaped.
+ */
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }

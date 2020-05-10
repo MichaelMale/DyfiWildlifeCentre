@@ -44,9 +44,9 @@ The second folder contains the HTML for pages that are to be rendered onto the b
 Correct placement of the map seemed to pose an issue when creating the homepage. The container for the Maps JavaScript appeared to overflow the page's default view height, requiring a user to scroll down to be able to view it. This was not a reasonable expectation for the user, particularly as it was intended to be used in a web browser set to full-screen. A workaround for this was implemented, by creating a custom CSS file. This CSS file overrode Materialize's grid system by having the height be declared manually, with the line being \texttt{height: calc(99vh - 56px);}. The height of the menu bar, at the top of the screen, measured at fifty-six pixels, according to the CSS file. With a view height of 100 still appearing to overflow the page, decrementing this by one appeared to resolve the issue, and showed an aesthetically pleasing home screen.
 
 The `admin panel', at this stage, had two forms, one to add a point of interest, and one to edit a point of interest. Research had to take place in how to correctly manage a POST request within an HTML form when using Thymeleaf. The Thymeleaf XML namespace allowed you to call the backend from the view. Therefore, in the 'add' form, Thymeleaf calls the HTTP POST method in the controller, and instantiates an empty POI with \texttt{th:object="\$\{pointOfInterest\}"}. Each field within the HTML form also included a Thymeleaf attribute, \texttt{th:field}, that included the member of the POI object that the field relates to. This was similar in the edit form, with a duplicate form being used that is instead populated with members from the point of interest provided in the model of the view.
-\newpage
-\begin{figure}[!ht]
-	\includegraphics[scale=0.6]{diagrams/listPOI}
+
+\begin{figure}[H]
+	\includegraphics[scale=1.0]{diagrams/listPOI}
 	\caption{An example of a point of interest list in the view layer.}
 \end{figure}	
 
@@ -192,6 +192,39 @@ This iteration completed the final build and implemented the design as described
 
 \texttt{googlemaps.js}, the implementation of the Google Maps API for this application, was edited to include the MarkerClustererPlus library. This is parts of Google's Maps Utility Library, and is accessed via a Content Delivery Network. Theoretically, it was possible to implement this library locally, however Google's recommended method of installation was via npm, a JavaScript package manager. As the JavaScript file was using a vanilla implementation of JavaScript, rather than taking a modular approach, common with ECMAScript 6 applications, it was difficult to download and include locally without major edits having to be made.
 
+Marker clustering was relatively simple to implement. A group of marker images for various zoom levels was downloaded from Google's tutorial on the library, and the marker clusterer was instantiated at the beginning of the script. Markers were added to the cluster within the for-each loop that added information to each point of interest's information window.
 
+The strategy for filtering markers involved creating a new function, and changing the marker and cluster arrays to global variables. When the user clicked on a filter, a function with the given category was called, and an iterative loop would be instigated. The loop would create a new array of markers, through checking each marker's category property within the array and setting the marker's visibility dependent on it matching the category given. User-level testing of these methods was successful, with options also added to clear any filtering and show all markers again. A function for a 'reset' button was also created. When the reset button was clicked, the map would pan back to the original location; centring on the Dyfi Wildlife Centre. Again, user testing proved that this works.
+
+\subsection{Backend}
+
+Changes had to be made to the backend to accommodate for a category to be added to each marker. Initially, this was to take the form of three booleans, \texttt{isWildlife}, \texttt{isBusiness}, and \texttt{isTransport}. Difficulties with this approach appeared centred on difficulties with Thymeleaf passing booleans from the view layer to the model; appearing to either return a string containing the value or not being able to discern the type of the field. An incompatibility between Thymeleaf and Materialize was also discovered - this is expanded upon further within the frontend subsection.
+
+The workaround solution was to have the category hold a string, with a maximum length of the longest category. This was not a perfect solution, as it could have potentially allowed for any string to be entered if the HTTP request was edited in any way other than through the form. However, this was deemed a low risk - any object with a category that is not wildlife, business, or transport would appear if the filtering was set to all. It was already possible for a point of interest to have no category; this was a deliberate design to account for any point of interest that didn't fit with any of the defined categories. The time that would have been required to research an alternative solution outweighed the potential benefits of a more robust solution for filtering and categorisation.
+
+\subsection{Frontend}
+\begin{figure}[H]
+	\includegraphics[scale=1.0]{diagrams/submittedForm}
+	\caption{The 'Add a POI' form that is present in the final build of the application.}
+\end{figure}	
+
+Initially, errors were thrown when filtering was introduced to the frontend. The initial solution to modification of the add and edit point of interest forms was to include three checkboxes, one for each possible category. With the preliminary design for categorisation focusing upon the addition of three booleans to the PointOfInterest object, each checkbox would be able to toggle between true and false, and be labelled with the category.
+
+However, when implementing this solution, Thymeleaf had modified the behaviour of Materialize checkboxes, resulting in them not being rendered in the view. Certain workaround were explored, including adding custom CSS to the \texttt{materialize.css} file, however this did not work, and it was difficult to change this facet without breaking the CSS file in its entirety. Therefore, an alternative solution was proposed, involving a String object, where the form passes the text of the category selected in a dropdown menu. This interfaced well with the backend, and remained as the final implementation.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.5]{diagrams/finalFrontPage}
+	\caption{The front page that is present in the final build of the application.}
+\end{figure}
+
+Changes to the index page were also made to allow for filters to be selected, and for the reset button to be selected. This made use of Materialize's Floating Action Button component - a button that overlayed the map and was fixed at the bottom right of the browser's viewport. This button expanded to include five other buttons - four of these were filters, with a relevant icon, and the fifth was a reset button, which reset any movement to what the application was at the beginning. Whilst refreshing the page would have achieved the same result, given the client-side behaviour of JavaScript, the transition looks more aesthetically pleasing through a simple pan of the map.
 
 \subsection{Requirements not implemented}
+
+The main requirements that were not implemented were the inclusion of internationalisation for Welsh speakers, and the inclusion of a mechanism to upload images.
+
+During the planning stages of this project, it was proposed that Spring's I18N internationalisation libraries would be used to include a version of the web application that was in English, and one that was in Welsh. The location of the Dyfi Wildlife Centre was in a rural part of the country, where Welsh is more widely-spoken, and would have more readily adhered to legislation surrounding bilingual services in Wales. However, this appeared to be more difficult to implement than was originally thought. An unfamiliarity with the Welsh language would have required translations of each part of the application to be provided by an external translation service, or a fluent Welsh speaker, which could have taken a considerable length of time. It was also noted that the description and names of points of interest could easily be provided in both English and Welsh, without any considerable complexities.
+
+Uploading of custom images was also attempted, however, similarly, it appeared to be more complex than originally thought. There were difficulties with provision of a persistent storage location for images. It was briefly considered to allow hotlinking of URLs from other locations, however it was unlikely that most of the images that users would want to add to points of interest would have not been photographed by themselves. It was decided to keep a placeholder image with each point of interest, and ensure that textual information was as visible as possible.
+
+% Word count: 5483
