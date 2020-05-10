@@ -1,13 +1,311 @@
 \chapter{Testing}
 
+As discussed in chapter 1, test-driven development was used during testing of various elements of the project. Primarily, this was in the model and service layer, where logic was tested and test-driven development was of use.
+
+The view and controller layers of the application were generally tested through a strategy of acceptance testing, using a test table and noting results. This has been included in this chapter. Whilst initially, the plan was for development of these layers to also be driven by test-driven development, testing facilities such as HTMLUnit were difficult to assess, particularly in an application where dynamic elements were loaded at runtime. A recorded test, through a testing suite such as Selenium, was also considered. However, it was difficult to model this without defeating the purpose of agile development. This chapter will discuss the automated tests that had been generated, and provide a test table for layers that weren't covered by this. It was also discuss discussion with the customer, considered for the purposes of this chapter a form of acceptance testing.
+
 \section{Automated Testing}
 
-\subsection{Backend}
+The automated tests that were carried out as part of this application were created using JUnit, a Java testing framework. The testing sets utilised focused on the logical aspects of the application; ensuring that constraints had been added correctly and the interfaces created for the model view were logically sound.
 
-\subsection{Frontend}
+During the development of the logical parts of the application, the concept of test-driven development was utilised. Interfaces and empty methods were taken advantage of to implement the planned design, as well as create unit tests for the desired behaviour from each part of the application. Development followed TDD's approach of ``red, green, refactor" - thinking about what needs to be developed by writing a test that would fail, writing the code to make the test case pass, and improving the code's efficiency and readability.
 
-\section{User Testing}
+The model layer tests focused on PointOfInterest, User, and Role. Many of the methods that were being tested were setters and getters - to write a single test case for each of these would have proved time-consuming, and inefficient. Therefore, \textit{OpenPOJO}\cite{OpenPOJO}, a third-party library, was used. OpenPOJO allows for setter and getter tests to be wrapped into one method, that uses randomly-generated values to test that the variables in a class can successfully be input, and the input can successfully be retrieved.
 
-\subsection{Feedback}
+\texttt{PointOfInterestTests} continues to test that the method implementing Haversine's Formula. The first tests confirms that the calculation is not made should it be queried on an object with the same coordinates as the Dyfi Wildlife Centre, as a conditional within the method checks for this. The second method confirms that the correct distance is returned between the Dyfi Wildlife Centre and a different coordinate pair. These test cases passed - \texttt{UserTests} and \texttt{RoleTests} did not have any helper methods or otherwise that required robust testing of its logic - for these classes the setter and getter validation is carried out.
+
+\texttt{PostcodeServiceTests} tests the connection and validity of the Postcodes.io API, and that the methods perform what they are intended to perform. Tests perform checking of whether a valid postcode is accepted by the API and vice versa. 
+
+The test cases are available within the technical submission. They are available in the test folder and can be run through Maven with the \texttt{mvn test} command.
 
 \section{Test Tables}
+
+The strategy for testing of layers not mentioned in the aforementioned section followed that of a manual test table. Whilst this is not strictly TDD, particularly as the tests do not involve automation, test cases were written prior to implementation which ensured that there was forethought of the desired functionality of each part of the application.
+
+This section will be split into subsections for each test case. The subsection will detail the steps required to reproduce the test, and the expected outcome of reproducing these steps. The tests will also be correlated with the requirements, laid out in Appendix A.
+
+\subsection{TC1 - Confirm map can be reset}
+
+\subsubsection{Reference}
+
+Tasks 1 and 5
+
+\subsubsection{Steps}
+
+\begin{enumerate}
+	\item From the main page, zoom out from the map, and pan in a random direction.
+	\item Hover over the filters floating action button, and click on the Reset button.
+\end{enumerate}
+
+\subsubsection{Input}
+
+N/A
+
+\subsubsection{Expected Output}
+
+The map is panned to the original coordinates of the Dyfi Wildlife Centre, and zoomed in to its original zoom level.
+
+\subsection{TC2 - Confirm adding a new point of interest}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+
+\begin{enumerate}
+	\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+\end{enumerate}
+
+\subsubsection{Input}
+
+\begin{itemize}
+	\item \textbf{Name: } Aberystwyth University
+	\item \textbf{Description: } A University located in west Wales.
+	\item \textbf{Filter: } Business
+	\item \textbf{UK Postcode: } SY23 3DB
+\end{itemize}
+
+\subsubsection{Expected Output}
+
+The application will redirect you to the main page, and a marker at Aberystwyth University will be displayed. When clicking the marker, a popup window with the description will be shown, and it will be noted that it is 12.23 miles from the Dyfi Wildlife Centre.
+
+\subsection{TC3 - Confirm adding a new point of interest with no location fails}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+
+\begin{enumerate}
+	\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+\end{enumerate}	
+
+\subsubsection{Input}
+
+\begin{itemize}
+	\item \textbf{Name: } Aberystwyth University
+	\item \textbf{Description: } A University located in west Wales.
+	\item \textbf{Filter: } Business
+\end{itemize}
+
+\subsubsection{Expected Output}
+
+An error will be displayed indicating that no location was entered.
+
+\subsection{TC4 - Confirm adding a new point of interest with both a postcode and a coordinate pair fails}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+
+\begin{enumerate}
+	\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+\end{enumerate}	
+
+\subsubsection{Input}
+
+\begin{itemize}
+	\item \textbf{Name: } Aberystwyth University
+	\item \textbf{Description: } A University located in west Wales.
+	\item \textbf{Filter: } Business
+	\item \textbf{UK Postcode: } SY23 3DB
+	\item \textbf{Latitude: } 50
+	\item \textbf{Longitude: } 50
+\end{itemize}	
+\subsubsection{Expected Output}
+
+An error will be displayed indicating that both a postcode and coordinates were entered.
+
+\subsection{TC5 - Confirm duplicate points of interest in the same location cannot be entered}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+
+\begin{enumerate}
+		\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+	\item Repeat steps 1 to 4.
+\end{enumerate}	
+\subsubsection{Input}
+\begin{itemize}
+	\item \textbf{Name: } Aberystwyth University
+	\item \textbf{Description: } A University located in west Wales.
+	\item \textbf{Filter: } Business
+	\item \textbf{UK Postcode: } SY23 3DB
+\end{itemize}
+\subsubsection{Expected Output}
+The first point of interest will be accepted, however an error will appear when trying to add the point of interest a second time, stating that it already exists.
+\subsection{TC6 - Confirm adding a new point of interest with only one half of the coordinate pair fails}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+\begin{enumerate}
+		\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+\end{enumerate}	
+
+\subsubsection{Input}
+\begin{itemize}
+	\item \textbf{Name: } Senedd Cymru
+	\item \textbf{Description: } The Welsh Parliament building
+	\item \textbf{Filter: } Business
+	\item \textbf{Latitude: } 51.4635262
+\end{itemize}
+\subsubsection{Expected Output}
+An error will appear stating that an invalid location was entered.
+\subsection{TC7 - Confirm adding a new point of interest with no name fails}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+\begin{enumerate}
+		\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Add tab.
+	\item Enter data and click on the Add button.
+\end{enumerate}	
+\subsubsection{Input}
+\begin{itemize}
+	\item \textbf{Description: } A University located in west Wales.
+	\item \textbf{Filter: } Business
+	\item \textbf{UK Postcode: } SY23 3DB
+\end{itemize}
+\subsubsection{Expected Output}
+A tooltip will appear on the name field stating that it is a required field.
+\subsection{TC8 - Confirm editing a point of interest}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+\begin{enumerate}
+		\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item If no points of interest are available to edit, add a point of interest.
+	\item Click on the List tab, and click on a point of interest's edit button.
+	\item Enter data and click Update.
+\end{enumerate}	
+\subsubsection{Input}
+\begin{itemize}
+\item \textbf{Description: } This description has been changed.
+\end{itemize}
+\subsubsection{Expected Output}
+The application will redirect you to the main page. When clicking on the edited point of interest's marker, the description will have changed.
+\subsection{TC9 - Confirm deleting a point of interest}
+
+\subsubsection{Reference}
+
+Task 2
+
+\subsubsection{Steps}
+\begin{enumerate}
+		\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item If no points of interest are available to delete, add a point of interest.
+	\item Click on the List tab, and click on a point of interest's delete button.
+	\end{enumerate}
+\subsubsection{Input}
+N/A
+\subsubsection{Expected Output}
+After confirming, the point of interest will be deleted, and no longer visible on the map.
+\subsection{TC10 - Confirm filtering a point of interest}
+
+\subsubsection{Reference}
+
+Task 5
+
+\subsubsection{Steps}
+\begin{enumerate}
+\item If not already done, add multiple points of interest with at least one having a wildlife or a transport filter.
+\item On the main page, hover over the filters tab, and click Transportation.
+\end{enumerate}
+\subsubsection{Input}
+N/A
+\subsubsection{Expected Output}
+The only markers that are visible should be the ones where the category is transport.
+\subsection{TC11 - Confirm registering a new user}
+
+\subsubsection{Reference}
+
+Task 4
+
+\subsubsection{Steps}
+\begin{enumerate}
+			\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Users tab, and click on the link to register a user.
+	\item Enter data and click register.
+	\item Log out and log in to registered account.
+	\end{enumerate}
+\subsubsection{Input}
+\begin{itemize}
+\item \textbf{Username: } test\_user
+\item \textbf{Password: } test\_user	
+\end{itemize}
+\subsubsection{Expected Output}
+The newly added user should be able to be logged into.
+\subsection{TC12 - Confirm adding a duplicate user is not possible}
+\subsubsection{Reference}
+
+Task 4
+
+\subsubsection{Steps}
+\begin{enumerate}
+			\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Click on the Users tab, and click on the link to register a user.
+	\item Enter data and click register.
+	\item Log in to an administrator account.
+	\item Repeat steps 3 and 4.
+\end{enumerate}	
+\subsubsection{Input}
+\begin{itemize}
+\item \textbf{Username: } test\_user
+\item \textbf{Password: } test\_user	
+\end{itemize}
+\subsubsection{Expected Output}
+An error page named \textbf{409 - Conflict} should appear.
+\subsection{TC12 - Confirm deleting a user}
+
+\subsubsection{Reference}
+
+Task 4
+
+\subsubsection{Steps}
+\begin{enumerate}
+			\item From the main page, click on the Admin Panel link in the top-right of the application.
+	\item Log in as an administrator.
+	\item Add a user, if no users are registered that can be delete.
+	\item Click on Users, then click the delete icon next to the user to be deleted.
+\end{enumerate}	
+\subsubsection{Input}
+N/A
+\subsubsection{Expected Output}
+The user should be deleted after a confirmation dialogue box.
+% 1543

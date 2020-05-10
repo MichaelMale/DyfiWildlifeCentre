@@ -18,6 +18,7 @@
 package uk.co.montwt.dyfiwildlifecentre.controller;
 
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +129,12 @@ public class PointOfInterestController{
         return new RedirectView("/");
     }
 
+    /**
+     * Handles a postcode exception.
+     * @param ex    Exception that is thrown when there is a postcode error.
+     * @return  Model containing an error message and view containing an
+     * Error 400 template.
+     */
     @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PostcodeException.class)
     public ModelAndView invalidPostcode(Exception ex) {
@@ -137,10 +144,37 @@ public class PointOfInterestController{
         return mav;
     }
 
+    /**
+     * Handles a data integrity violation.
+     * @param ex    Exception that is thrown when there is a data integrity
+     *              violation.
+     * @return  Model containing an error message and view containing an
+     * Error 400 template.
+     */
     @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ModelAndView dataIntegrityViolation(Exception ex) {
-        return this.invalidPostcode(ex);
+    public ModelAndView dataIntegrityViolation(DataIntegrityViolationException ex) {
+        ModelAndView mav = new ModelAndView();
+        String nameOfViolatedConstraint =
+                ((ConstraintViolationException)ex.getCause()).getConstraintName();
+        String errorMessage;
+        // Checks if a localised error message can be provided, based upon
+        // the violated constraint.
+        switch (nameOfViolatedConstraint) {
+            case "points_of_interest_latitude_longitude_key":
+                errorMessage = "There is already a POI with this location.";
+                break;
+            case "latitude_not_null_island_chk":
+            case "longitude_not_null_island_chk":
+                errorMessage = "No location or an invalid location has been " +
+                        "entered, please try again";
+                break;
+            default:
+                errorMessage = ex.getMostSpecificCause().getMessage();
+        }
+        mav.addObject("exception", errorMessage);
+        mav.setViewName("error/400");
+        return mav;
     }
 
 
