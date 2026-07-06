@@ -8,7 +8,7 @@ The view and controller layers of the application were generally tested through 
 
 The automated tests that were carried out as part of this application were created using JUnit, a Java testing framework. The testing sets utilised focused on the logical aspects of the application; ensuring that constraints had been added correctly and the interfaces created for the model view were logically sound.
 
-During the development of the logical parts of the application, the concept of test-driven development was utilised. Interfaces and empty methods were taken advantage of to implement the planned design, as well as create unit tests for the desired behaviour from each part of the application. Development followed TDD's approach of ``red, green, refactor" - thinking about what needs to be developed by writing a test that would fail, writing the code to make the test case pass, and improving the code's efficiency and readability.
+During the development of the logical parts of the application, the concept of test-driven development was utilised. Interfaces and empty methods were taken advantage of to implement the planned design, as well as create unit tests for the desired behaviour from each part of the application. Development followed TDD's approach of ``red, green, refactor'' - thinking about what needs to be developed by writing a test that would fail, writing the code to make the test case pass, and improving the code's efficiency and readability.
 
 The model layer tests focused on PointOfInterest, User, and Role. Many of the methods that were being tested were setters and getters - to write a single test case for each of these would have proved time-consuming, and inefficient. Therefore, \textit{OpenPOJO}\cite{OpenPOJO}, a third-party library, was used. OpenPOJO allows for setter and getter tests to be wrapped into one method, that uses randomly-generated values to test that the variables in a class can successfully be input, and the input can successfully be retrieved.
 
@@ -291,7 +291,7 @@ Task 4
 \end{itemize}
 \subsubsection{Expected Output}
 An error page named \textbf{409 - Conflict} should appear.
-\subsection{TC12 - Confirm deleting a user}
+\subsection{TC13 - Confirm deleting a user}
 
 \subsubsection{Reference}
 

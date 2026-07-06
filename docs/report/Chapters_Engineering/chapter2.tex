@@ -65,7 +65,7 @@ Constraints had to be created in order to validate the data that was being enter
 
 These constraints tend to perform sanity checks on the input that is being entered, once it reaches the database layer. The constraints on the coordinates are based upon the natural constraints based upon latitude and longitude, and ensures that a user cannot apply an incorrect coordinate to a point of interest, that would likely cause an error at the frontend layer of the application.
 
-The two ``not null island" checks make sure that a user cannot simply enter 0 as the latitude and 0 as the longitude, as this could potentially cause issues when parsing the postcode in the backend layer. The primary issue with a check like this would be that 0,0 is a valid coordinate pair. However, the customer has specified that points of interest would primarily be in the United Kingdom, which is far from this coordinate range. It is not likely that any potential coordinate pairs entered for points of interest outside the UK would be equal to these coordinates.
+The two ``not null island'' checks make sure that a user cannot simply enter 0 as the latitude and 0 as the longitude, as this could potentially cause issues when parsing the postcode in the backend layer. The primary issue with a check like this would be that 0,0 is a valid coordinate pair. However, the customer has specified that points of interest would primarily be in the United Kingdom, which is far from this coordinate range. It is not likely that any potential coordinate pairs entered for points of interest outside the UK would be equal to these coordinates.
 
 A regular expression, sought from an open data source that provides APIs dealing with UK postcodes\cite{PostcodeRegex}, was, again, a sanity check. It performs basic error-checking that checks the general shape of the postcode; checking it has a letter at the beginning and ends in a letter, for example. Stricter regular expressions were available, however improvements were marginal and an API to confirm the postcode was valid was still required, due to the inability for a regular expression to rule out false positives. The design accounts for error-checking of postcodes through the use of the aforementioned API, which is further explained in section~\ref{sec:backend}. 
 
@@ -165,7 +165,7 @@ Various information security considerations had to be taken into account whilst 
 
 An example of a threat affecting the authentication of the application, once implemented, could be an SQL injection. A successful attack could expose user passwords and tamper with existing data stored in the database. If an attacker was able to gain access to the wireless network that the customer will be connecting the system to, they may be able to connect to the database remotely, resulting in physical limitations on access to hardware becoming futile. A suggestion could be made to the customer to secure their wireless network, perhaps having one SSID for public use and one for private use, however there is no way to enforce this in the application. With the application being hosted locally, it would be difficult to encrypt requests via HTTPS without creating a standalone server.
 
-To combat these security concerns, Spring Security, an authentication framework designed for use with Spring, was implemented, through the contents of the security package. Users were stored in an SQL database, along with their roles. The default authentication method for users was plain-text, and users passwords could be easily found in the database. This was modified to use ``bcrypt", a password hashing function based upon the Blowfish cipher\cite{bcrypt}. bcrypt hashes the password that the user has been registered with, and then stores that hash in the password field of the relation. When a user logs in, the password that has been provided is matched against the hash, rather than the hash being decrypted, resulting in it not being reasonably possible to crack a password from the hash. 
+To combat these security concerns, Spring Security, an authentication framework designed for use with Spring, was implemented, through the contents of the security package. Users were stored in an SQL database, along with their roles. The default authentication method for users was plain-text, and users passwords could be easily found in the database. This was modified to use ``bcrypt'', a password hashing function based upon the Blowfish cipher\cite{bcrypt}. bcrypt hashes the password that the user has been registered with, and then stores that hash in the password field of the relation. When a user logs in, the password that has been provided is matched against the hash, rather than the hash being decrypted, resulting in it not being reasonably possible to crack a password from the hash. 
 
 \subsubsection{Model layer}
 \begin{figure}[H]
@@ -211,7 +211,7 @@ Prototyping and mockups were created as part of the planning and design process.
 
 \subsubsection{Home Screen}
 \begin{figure}[H]
-\includegraphics[scale=0.2]{mockups/Home Screen}
+\includegraphics[scale=0.2]{mockups/Home screen}
 \caption{Home Screen mockup}
 \end{figure}
 
