@@ -70,5 +70,5 @@ interface PointOfInterestService {
      * Updates a Point of Interest from the database
      * @param poi   Point of Interest to be updated.
      */
-    void update(PointOfInterest poi);
+    void update(PointOfInterest poi) throws IOException;
 }

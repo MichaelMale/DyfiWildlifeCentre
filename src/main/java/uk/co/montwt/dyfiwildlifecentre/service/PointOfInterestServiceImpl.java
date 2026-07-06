@@ -80,22 +80,35 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public void save(PointOfInterest poi) throws IOException {
-        // Error checking code. Checks firstly if latitude and longitude are
-        // zero, then checks if both were entered. Also checks if latitude
-        // but not longitude was entered and vice versa.
+        resolveCoordinates(poi);
+        poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
+        pointOfInterestRepository.save(poi);
+    }
+
+    /**
+     * Resolves the coordinates for a Point of Interest. If only a postcode
+     * was entered, it is geocoded into a coordinate pair. If both a
+     * postcode and coordinates were entered, a PostcodeException is thrown,
+     * as it would be ambiguous which location should be used.
+     *
+     * @param poi Point of Interest whose coordinates are to be resolved
+     * @throws IOException if there is an error when querying the geocoding
+     *                     API
+     */
+    private void resolveCoordinates(PointOfInterest poi) throws IOException {
+        // The postcode is nullable: requests made directly to the API, or
+        // forms without a postcode field, may omit it entirely.
+        boolean hasPostcode =
+                poi.getPostcode() != null && !poi.getPostcode().isBlank();
         if (poi.getLatitude() == 0 && poi.getLongitude() == 0) {
-            if (!poi.getPostcode().isEmpty()) {
+            if (hasPostcode) {
                 poi.setCoordinates(PostcodeService
                         .getCoordinatesFromPostcode(poi.getPostcode()));
             }
-        } else if (!poi.getPostcode().isEmpty()) {
+        } else if (hasPostcode) {
             throw new PostcodeException(poi.getPostcode(),
                     "Both postcode and coordinates were entered.");
         }
-
-
-        poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
-        pointOfInterestRepository.save(poi);
     }
 
     /**
@@ -127,7 +140,8 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      * @param poi Point of Interest to be updated.
      */
     @Override
-    public void update(PointOfInterest poi) {
+    public void update(PointOfInterest poi) throws IOException {
+        resolveCoordinates(poi);
         poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
         pointOfInterestRepository.save(poi);
     }

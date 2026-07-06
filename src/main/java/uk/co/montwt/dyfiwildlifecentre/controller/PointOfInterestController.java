@@ -61,7 +61,6 @@ public class PointOfInterestController{
      * @return POI that relates to this ID, null if not found.
      */
     @GetMapping("/poi/get/id/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
     public PointOfInterest getPointOfInterestById(@PathVariable("id") long id) {
         return pointOfInterestService.findById(id);
     }
@@ -96,8 +95,7 @@ public class PointOfInterestController{
      * @param name Name of the Point of Interest.
      * @return POI if found, null if not.
      */
-    @GetMapping("poi/get/name/{name}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @GetMapping("/poi/get/name/{name}")
     public List<PointOfInterest> getPointOfInterestsByName(@PathVariable("name") String name) {
         return pointOfInterestService.findAllPointsOfInterestByName(name);
     }
