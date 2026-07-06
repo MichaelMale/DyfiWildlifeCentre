@@ -22,14 +22,17 @@
     <title>Dyfi Wildlife Centre</title>
     <link rel="stylesheet" th:href="@{/css/customIndexStyle.min.css}"
           type="text/css"/>
+    <!-- Leaflet, an open-source JavaScript mapping library, with the
+         Leaflet.markercluster plugin for marker clustering. Both are
+         served locally so that the map works without third-party CDNs. -->
+    <link rel="stylesheet" th:href="@{/css/leaflet.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/MarkerCluster.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/MarkerCluster.Default.css}" type="text/css"/>
     <script async="" th:src="@{/js/lazysizes.min.js}"></script>
-    <script
-            src="https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function(){
-            $('.fixed-action-btn').floatingActionButton();
-            $('.tooltipped').tooltip();
+        document.addEventListener('DOMContentLoaded', function () {
+            M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'));
+            M.Tooltip.init(document.querySelectorAll('.tooltipped'));
         });
     </script>
 </head>
@@ -52,10 +55,12 @@
 
 <fragment th:replace="fragments/poi_card :: poiCard"></fragment>
 
-<script th:src="@{/js/googlemaps.js}">
+<script th:src="@{/js/leaflet.js}"></script>
+<script th:src="@{/js/leaflet.markercluster.js}"></script>
+<script th:src="@{/js/map.js}"></script>
+<script>
+    initMap();
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
 <fragment th:replace="fragments/footer :: footer"></fragment>
 </body>
 
