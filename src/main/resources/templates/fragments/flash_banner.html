@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><title></title></head>
+<body>
+<div th:fragment="flashBanner" th:remove="tag">
+    <div class="dyfi-alert dyfi-alert--success" th:if="${flashSuccessKey != null}">
+        <i class="material-icons" aria-hidden="true">check_circle_outline</i>
+        <span th:text="${flashSuccessArg != null} ? ${#messages.msg(flashSuccessKey, flashSuccessArg)} : ${#messages.msg(flashSuccessKey)}"></span>
+    </div>
+    <div class="dyfi-alert dyfi-alert--error" th:if="${flashErrorKey != null}">
+        <i class="material-icons" aria-hidden="true">error_outline</i>
+        <span th:text="${#messages.msg(flashErrorKey)}"></span>
+    </div>
+</div>
+</body>
+</html>

@@ -17,17 +17,15 @@
 
 package uk.co.montwt.dyfiwildlifecentre.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * WebSecurityConfig.java - This class manages the instance of the Spring
@@ -36,24 +34,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * be seen by visitors, and which are authenticated.
  *
  * @author Michael Male
- * @version 0.1 2020-04-20
- * @see WebSecurityConfigurerAdapter
+ * @version 0.2 2026-11-14
  */
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
-
-    /**
-     * Constructor for objects of type WebSecurityConfig. Autowired to
-     * include a UserDetailsService
-     * @param userDetailsService Autowired class
-     * @see uk.co.montwt.dyfiwildlifecentre.security.service.UserDetailsServiceImpl
-     */
-    @Autowired
-    public WebSecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+public class WebSecurityConfig {
 
     /**
      * Calls a bean to instantiate a BCryptPassword encoder, that hashes
@@ -71,60 +56,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * details are included within inline comments in the source code.
      *
      * @param http  An instance of HttpSecurity
+     * @return      The configured SecurityFilterChain
      * @throws Exception    if there is an issue with the security
      * configuration.
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/", "/index").permitAll() // Permits all
-                // requests to the single-page user-end application
-                .antMatchers("/poi").permitAll() // Permits a GET Request to
-                // the getAllPointsOfInterest() method, used only to update
-                // the map
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                // Permits all request to static resources
-                .antMatchers("/admin/**").hasRole("ADMIN") // Only
-                // permits
-                // authenticated users with the 'ADMIN' role to access the
-                // admin panel
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()// Sets authenticated requests to be routed via
-                // the login page
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+                .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers("/", "/index", "/poi", "/directions", "/webcams", "/sightings", "/error", "/403").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/info", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/videos/**", "/data/**", "/uploads/**").permitAll()
+                        .requestMatchers("/admin/**", "/poi/form_create", "/poi/update", "/poi/delete", "/poi/get/**", "/users", "/users/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .permitAll()
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/403")
+                );
+        return http.build();
     }
 
     /**
      * Calls a bean to instantiate an AuthenticationManager.
+     * @param authenticationConfiguration Spring Security's AuthenticationConfiguration
      * @return  Object of type AuthenticationManager
      * @throws Exception    If there is an issue with the authentication.
      */
     @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
-
-    /**
-     * Configures the user details service by adding the BCrypt encoder to it
-     * . This is then used to hash the password that is eventually saved into
-     * the database.
-     * @param auth  Object of type AuthenticationManagerBuilder that builds
-     *              an object of type AuthenticationManager.
-     * @throws Exception    if there is an issue with authentication or
-     * configuration.
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
-    }
-
-
-
 }

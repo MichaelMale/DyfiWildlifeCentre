@@ -17,27 +17,35 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="en_GB">
+      xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Error</title>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{error.title}">Dyfi Wildlife Centre - Error</title>
 </head>
 
 <body>
-<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+<fragment th:replace="~{fragments/primary_navbar :: primaryNavbar}"></fragment>
 
-<div class="container ui">
-    <h1>409 - Conflict</h1>
-    <div>A database conflict has been detected. This is
-        generally caused by creating a user whose username already exists.
-    Please try using a different username.
-
-    <p><a class="waves-effect waves-light btn-large"
-          th:href="@{/admin/registration_user}">
-        <i class="material-icons left">arrow_back</i>
-        Return</a>
+<main class="container">
+    <div class="dyfi-error-card">
+        <h1>
+            <i class="material-icons orange-text text-darken-3" aria-hidden="true">warning</i>
+            <span th:text="#{error.409.heading}">409 - Conflict</span>
+        </h1>
+        <p th:text="#{error.409.body}">A database conflict has been detected. This is
+            generally caused by creating a user whose username already exists.
+            Please try using a different username.</p>
+        <div class="dyfi-error-actions">
+            <a class="waves-effect waves-light btn dyfi-btn-primary" th:href="@{/admin/registration_user}">
+                <i class="material-icons left">arrow_back</i>
+                <span th:text="#{error.return}">Return</span>
+            </a>
+            <a class="waves-effect btn-flat" th:href="@{/admin}">
+                <span th:text="#{error.admin}">Admin Home</span>
+            </a>
+        </div>
     </div>
-</div>
+</main>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
-
 </html>

@@ -1,28 +1,360 @@
 /*
- * Copyright (C) 2020 Michael Male
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Copyright (C) 2020-2026 Michael Male / Dyfi Wildlife Centre
+ * Licensed under the Apache License, Version 2.0
  */
-#map {
-    height: calc(99vh - 56px);
+
+body.dyfi-map-page {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+.dyfi-map-stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
     width: 100%;
 }
 
-.modal {
-    max-height: 100%;
+#map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-#scrollable {
-    overflow: auto;
+/* Floating search & category filter bar */
+.dyfi-map-controls {
+    position: absolute;
+    top: 12px;
+    left: 56px;
+    right: 68px;
+    z-index: 995;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.dyfi-map-search-wrap {
+    position: relative;
+    flex: 1 1 260px;
+    max-width: 360px;
+    pointer-events: auto;
+}
+
+.dyfi-map-search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border: 1px solid #d5e0dd;
+    border-radius: 28px;
+    padding: 0 12px;
+    box-shadow: 0 4px 16px rgba(0, 35, 30, 0.16);
+    height: 42px;
+}
+
+.dyfi-map-search-box i.material-icons {
+    color: #4f6662;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.dyfi-map-search-box input#mapSearchInput {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 6px !important;
+    height: 38px !important;
+    font-size: 0.94rem;
+    background: transparent;
+    color: #1b2a28;
+}
+
+.dyfi-search-clear-btn {
+    background: transparent;
+    border: 0;
+    padding: 2px;
+    cursor: pointer;
+    color: #5f726e;
+    display: inline-flex;
+    align-items: center;
+}
+
+.dyfi-search-results {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    max-height: 290px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #d5e0dd;
+    border-radius: 10px;
+    box-shadow: 0 10px 28px rgba(0, 35, 30, 0.22);
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    display: none;
+}
+
+.dyfi-search-result-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #1b2a28;
+    font-size: 0.92rem;
+}
+
+.dyfi-search-result-btn:hover,
+.dyfi-search-result-btn:focus {
+    background: #eef5f3;
+}
+
+.dyfi-search-result-meta {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: #5a6e6a;
+    white-space: nowrap;
+}
+
+.dyfi-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    pointer-events: auto;
+}
+
+.dyfi-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #d5e0dd;
+    background: rgba(255, 255, 255, 0.96);
+    color: #1f3330;
+    border-radius: 22px;
+    padding: 0 14px;
+    height: 38px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0, 35, 30, 0.12);
+    transition: transform 0.12s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.dyfi-filter-pill:hover {
+    transform: translateY(-1px);
+    background: #ffffff;
+}
+
+.dyfi-filter-pill i.material-icons {
+    font-size: 18px;
+}
+
+.dyfi-filter-pill.active {
+    background: #005b4f;
+    border-color: #005b4f;
+    color: #ffffff;
+}
+
+.dyfi-filter-pill--wildlife.active {
+    background: #1565c0;
+    border-color: #1565c0;
+}
+
+.dyfi-filter-pill--transport.active {
+    background: #2e7d32;
+    border-color: #2e7d32;
+}
+
+.dyfi-filter-pill--business.active {
+    background: #6a1b9a;
+    border-color: #6a1b9a;
+}
+
+.dyfi-filter-pill--reset {
+    background: #ffffff;
+    color: #005b4f;
+}
+
+/* Bottom quick actions dock */
+.dyfi-quick-actions {
+    position: absolute;
+    left: 16px;
+    bottom: 22px;
+    z-index: 995;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: calc(100vw - 32px);
+}
+
+.dyfi-quick-actions .btn {
+    border-radius: 24px;
+    text-transform: none;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+}
+
+.dyfi-quick-actions #quickWebcamButtons {
+    display: contents;
+}
+
+/* POI Modal Card */
+#poiCard {
+    max-width: 620px;
+}
+
+.dyfi-poi-hero {
+    position: relative;
+    height: 230px;
+    background: #dfe7e5;
+    overflow: hidden;
+}
+
+.dyfi-poi-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.dyfi-poi-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8, 28, 25, 0.85) 0%, rgba(8, 28, 25, 0.15) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px 22px;
+}
+
+.dyfi-poi-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.dyfi-poi-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.92);
+    color: #004239;
+}
+
+.dyfi-poi-hero__title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.dyfi-poi-distance-bar {
+    background: #eef5f3;
+    border-bottom: 1px solid #d9e3e0;
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #203834;
+}
+
+.dyfi-poi-distance-bar i.material-icons {
+    color: #005b4f;
+    font-size: 20px;
+}
+
+.dyfi-poi-description-wrap {
+    padding: 18px 22px;
+    max-height: 210px;
+    overflow-y: auto;
+    line-height: 1.6;
+    color: #263835;
+}
+
+.dyfi-poi-description-wrap p {
+    margin: 0;
+}
+
+/* Custom Leaflet markers */
+.dyfi-marker-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+}
+
+.dyfi-marker-pin i.material-icons {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.dyfi-marker-pin--transport {
+    background-color: #2e7d32;
+}
+
+.dyfi-marker-pin--wildlife {
+    background-color: #1565c0;
+}
+
+.dyfi-marker-pin--business {
+    background-color: #6a1b9a;
+}
+
+.dyfi-marker-pin--default {
+    background-color: #d84315;
+}
+
+@media only screen and (max-width: 720px) {
+    .dyfi-map-controls {
+        left: 12px;
+        right: 62px;
+        top: 10px;
+    }
+
+    .leaflet-top.leaflet-left {
+        top: auto;
+        bottom: 84px;
+    }
+
+    .dyfi-map-search-wrap {
+        max-width: none;
+        flex-basis: 100%;
+    }
+
+    .dyfi-filter-pill {
+        height: 34px;
+        padding: 0 11px;
+        font-size: 0.82rem;
+    }
+
+    .dyfi-poi-hero {
+        height: 180px;
+    }
 }

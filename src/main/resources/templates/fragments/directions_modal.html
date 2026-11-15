@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><title></title></head>
+<body>
+
+<div class="modal dyfi-modal" id="directionsModal" th:fragment="directionsModal">
+    <div class="modal-content">
+        <h5 style="display:flex; align-items:center; gap:8px; margin-top:0;">
+            <i class="material-icons teal-text text-darken-3" aria-hidden="true">directions</i>
+            <span th:text="#{directions.title}">Directions from Dyfi Wildlife Centre</span>
+        </h5>
+        <p class="grey-text text-darken-1" th:text="#{directions.subtitle}">
+            Enter a UK postcode, town, or address to view driving or public transport routes.
+        </p>
+
+        <form id="directionsForm" onsubmit="return submitDirectionsForm(event);">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col s12" style="display:flex; flex-wrap:wrap; align-items:center; gap:16px;">
+                    <label>
+                        <input name="directionsDirection" type="radio" value="toCentre" checked/>
+                        <span th:text="#{directions.direction.toCentre}">To Dyfi Wildlife Centre</span>
+                    </label>
+                    <label>
+                        <input name="directionsDirection" type="radio" value="fromCentre"/>
+                        <span th:text="#{directions.direction.fromCentre}">From Dyfi Wildlife Centre</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 8px;">
+                <div class="input-field col s12 m8">
+                    <i class="material-icons prefix">place</i>
+                    <input id="directionsDestination" type="text"
+                           th:placeholder="#{directions.destination.placeholder}"
+                           placeholder="e.g. SY20 8TG or Aberystwyth" required>
+                    <label class="active" for="directionsDestination" th:text="#{directions.destination.label}">
+                        Location (UK postcode, town, or coordinates)
+                    </label>
+                </div>
+                <div class="col s12 m4" style="margin-top: 18px;">
+                    <button type="button" id="directionsUseMyLocationBtn"
+                            class="btn waves-effect waves-light teal darken-1"
+                            style="width:100%;"
+                            th:data-error-geo="#{directions.error.geolocation}">
+                        <i class="material-icons left">my_location</i>
+                        <span th:text="#{directions.useMyLocation}">Use My Location</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="col s12">
+                    <label style="margin-right: 20px;">
+                        <input name="directionsMode" type="radio" value="driving" checked/>
+                        <span th:text="#{directions.mode.driving}">Driving</span>
+                    </label>
+                    <label>
+                        <input name="directionsMode" type="radio" value="transit"/>
+                        <span th:text="#{directions.mode.transit}">Public Transport</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="col s12" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px;">
+                    <button type="submit" id="directionsSubmitBtn" class="btn waves-effect waves-light dyfi-btn-primary">
+                        <i class="material-icons left">directions</i>
+                        <span th:text="#{directions.submit}">Get Directions</span>
+                    </button>
+                    <button type="button" class="btn-flat waves-effect" onclick="clearDirectionsRoute()">
+                        <span th:text="#{directions.clear}">Clear Route</span>
+                    </button>
+                    <div id="directionsLoading" class="preloader-wrapper small active" style="display:none;">
+                        <div class="spinner-layer spinner-teal-only">
+                            <div class="circle-clipper left"><div class="circle"></div></div>
+                            <div class="gap-patch"><div class="circle"></div></div>
+                            <div class="circle-clipper right"><div class="circle"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div id="directionsError" class="dyfi-alert dyfi-alert--error" style="display:none;"></div>
+
+        <div id="directionsResults" style="display:none;"
+             th:data-label-distance="#{directions.distance}"
+             th:data-label-duration="#{directions.duration}"
+             th:data-label-miles="#{directions.miles}"
+             th:data-label-minutes="#{directions.minutes}"
+             th:data-label-estimated="#{directions.estimated}"
+             th:data-label-steps="#{directions.steps}"
+             th:data-label-transit="#{directions.nearbyTransit}"
+             th:data-error-empty="#{directions.error.empty}"
+             th:data-error-generic="#{directions.error.generic}">
+            <div class="card-panel grey lighten-4" style="padding: 12px 16px; border-radius: 8px;">
+                <div id="directionsSummary" style="font-weight: 600;"></div>
+                <div id="directionsLinks" style="margin-top: 8px;">
+                    <a id="directionsOsmLink" href="#" target="_blank" rel="noopener noreferrer"
+                       class="btn-small waves-effect waves-light teal" style="margin-right: 8px; margin-bottom: 4px;"
+                       th:text="#{directions.openOsm}">Open in OpenStreetMap</a>
+                    <a id="directionsTravelineLink" href="https://www.traveline.cymru/" target="_blank"
+                       rel="noopener noreferrer" class="btn-small waves-effect waves-light green darken-2"
+                       style="margin-bottom: 4px;"
+                       th:text="#{directions.openTraveline}">Plan Rail &amp; Bus on Traveline Cymru</a>
+                </div>
+            </div>
+
+            <div id="directionsTransitSection" style="display:none; margin-bottom: 10px;">
+                <h6 id="directionsTransitHeading" style="font-weight: 600;"></h6>
+                <ul id="directionsTransitList" class="collection"></ul>
+            </div>
+
+            <h6 id="directionsStepsHeading" style="font-weight: 600;"></h6>
+            <ol id="directionsStepsList" style="padding-left: 20px; max-height: 220px; overflow-y: auto;"></ol>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn-flat" th:text="#{directions.close}">Close</a>
+    </div>
+</div>
+
+</body>
+</html>

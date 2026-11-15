@@ -16,64 +16,59 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <style>
-        #listOfUsers {
-            overflow: auto;
-            height: 50%;
-        }
-        #promptUsername {
-            margin-left: 30px !important;
-        }
-
-        #promptSignOut {
-            margin-right: 30px !important;
-        }
-    </style>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('users')}"></fragment>
 
-
-
-<div class="container ui">
-
-    <div class="row">
-        <p>To register a user, click
-            <a th:href="@{/admin/registration_user}">here</a>.</p>
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+    <div class="dyfi-page-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h1 th:text="#{admin.users.heading}">List of Users</h1>
+            <p>
+                <span th:text="#{admin.users.register.beforeLink}">To register a user, click</span>
+                <a th:href="@{/admin/registration_user}" th:text="#{admin.users.register.link}">here</a>.
+            </p>
+        </div>
+        <a th:href="@{/admin/registration_user}" class="btn waves-effect waves-light dyfi-btn-primary">
+            <i class="material-icons left" aria-hidden="true">person_add</i>
+            <span th:text="#{admin.users.addButton}">Register New User</span>
+        </a>
     </div>
-    <div class="row">
-    <h5>List of Users</h5>
-    </div>
-    <div class="row" id="listOfUsers">
 
-        <ul class="collection">
-
+    <div class="dyfi-card-panel" id="listOfUsers">
+        <ul class="collection" style="margin:0; border-radius:6px;">
             <li class="collection-item" th:each="user : ${users}">
                 <div>
-                    <th:block th:text="${user.username}"></th:block>
+                    <strong th:text="${user.username}"></strong>
 
-                    <a th:href="@{/users/delete(id=${user.id})}"
-                       onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
-                        <i id="delete" class="material-icons">
-                            delete_forever
-                        </i>
-                    </a>
+                    <span class="badge grey lighten-3 grey-text text-darken-2"
+                          th:if="${#authentication != null and #authentication.name == user.username}"
+                          th:text="#{admin.users.currentAccount}"
+                          style="border-radius:12px; font-weight:600;">Current account</span>
 
+                    <form th:if="${#authentication == null or #authentication.name != user.username}"
+                          th:action="@{/users/delete(id=${user.id})}" method="post"
+                          class="secondary-content dyfi-inline-form">
+                        <button type="submit"
+                                class="dyfi-icon-action-btn red-text text-darken-2"
+                                th:data-confirm="#{confirm.delete}"
+                                onclick="return confirm(this.getAttribute('data-confirm'))"
+                                aria-label="Delete user">
+                            <i id="delete" class="material-icons">delete_forever</i>
+                        </button>
+                    </form>
                 </div>
             </li>
         </ul>
-
     </div>
-</div>
+</main>
 
-
-
-
-<fragment th:replace="fragments/footer :: footer"></fragment>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
 </html>

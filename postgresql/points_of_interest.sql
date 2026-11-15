@@ -21,7 +21,12 @@ create table points_of_interest
 		constraint postcode_chk
 			check ((postcode)::text ~* '^$|^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$'::text),
 	distance_from_centre double precision,
-	category varchar(9)
+	category varchar(9),
+	name_cy varchar(255),
+	description_cy text,
+	image_url varchar(2048),
+	station_code varchar(8),
+	bus_stop_code varchar(24)
 );
 
 alter table points_of_interest owner to postgres;

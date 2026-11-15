@@ -83,17 +83,19 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
         // Error checking code. Checks firstly if latitude and longitude are
         // zero, then checks if both were entered. Also checks if latitude
         // but not longitude was entered and vice versa.
+        boolean hasPostcode = poi.getPostcode() != null && !poi.getPostcode().isEmpty();
         if (poi.getLatitude() == 0 && poi.getLongitude() == 0) {
-            if (!poi.getPostcode().isEmpty()) {
+            if (hasPostcode) {
                 poi.setCoordinates(PostcodeService
                         .getCoordinatesFromPostcode(poi.getPostcode()));
             }
-        } else if (!poi.getPostcode().isEmpty()) {
+        } else if (hasPostcode) {
             throw new PostcodeException(poi.getPostcode(),
                     "Both postcode and coordinates were entered.");
         }
 
 
+        applyDefaultTransportImage(poi);
         poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
         pointOfInterestRepository.save(poi);
     }
@@ -128,8 +130,19 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
      */
     @Override
     public void update(PointOfInterest poi) {
+        applyDefaultTransportImage(poi);
         poi.setDistanceFromCentre(poi.calculateDistanceFromCentre());
         pointOfInterestRepository.save(poi);
+    }
+
+    private static void applyDefaultTransportImage(PointOfInterest poi) {
+        if (poi.getImageUrl() == null || poi.getImageUrl().isBlank()) {
+            if (poi.isRailwayStation()) {
+                poi.setImageUrl("/images/thomas-train.jpg");
+            } else if (poi.isBusStop()) {
+                poi.setImageUrl("/images/magic-school-bus.jpg");
+            }
+        }
     }
 
 

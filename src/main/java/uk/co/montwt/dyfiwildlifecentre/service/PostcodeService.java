@@ -20,17 +20,15 @@ package uk.co.montwt.dyfiwildlifecentre.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.constraints.NotNull;
 import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.validation.constraints.NotNull;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +39,7 @@ import java.nio.charset.StandardCharsets;
  * converting a postcode to coordinates.
  *
  * @author Michael Male
- * @version 1.0 2020-05-02
+ * @version 1.1 2026-11-14
  */
 public class PostcodeService {
 
@@ -54,6 +52,22 @@ public class PostcodeService {
      */
     private static final String POSTCODES_API_LINK = "https://api.postcodes" +
             ".io/postcodes/";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    @FunctionalInterface
+    interface ApiClient {
+        JsonNode get(String suffix) throws IOException;
+    }
+
+    private static ApiClient apiClient = PostcodeService::fetchFromApi;
+
+    static void setApiClient(ApiClient client) {
+        apiClient = client != null ? client : PostcodeService::fetchFromApi;
+    }
+
+    static void resetApiClient() {
+        apiClient = PostcodeService::fetchFromApi;
+    }
 
     /**
      * Helper method that encodes a postcode to the UTF-8 standard, and
@@ -77,21 +91,28 @@ public class PostcodeService {
      * @see com.fasterxml.jackson
      */
     private static JsonNode getAPIResult(String suffix) throws IOException {
-        URL obj = new URL(POSTCODES_API_LINK + suffix);
+        return apiClient.get(suffix);
+    }
+
+    private static JsonNode fetchFromApi(String suffix) throws IOException {
+        URL obj = URI.create(POSTCODES_API_LINK + suffix).toURL();
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
-        BufferedReader in =
-                new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+        con.setConnectTimeout(5000);
+        con.setReadTimeout(5000);
+        try (BufferedReader in =
+                     new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            final ObjectNode node =
+                    OBJECT_MAPPER.readValue(response.toString(), ObjectNode.class);
+            return node.get("result");
+        } finally {
+            con.disconnect();
         }
-        in.close();
-        final ObjectNode node =
-                new ObjectMapper().readValue(response.toString(),
-                        ObjectNode.class);
-        return node.get("result");
     }
 
     /**
@@ -101,9 +122,12 @@ public class PostcodeService {
      * @return  True if the postcode is valid, false if not.
      * @throws IOException  If there is an error when querying the API.
      */
-    static boolean validatePostcode(String postcode) throws IOException {
-        return getAPIResult(encodePostcode(postcode) + "/validate")
-                .asBoolean();
+    public static boolean validatePostcode(String postcode) throws IOException {
+        if (postcode == null || postcode.isBlank()) {
+            return false;
+        }
+        JsonNode result = getAPIResult(encodePostcode(postcode) + "/validate");
+        return result != null && result.asBoolean();
     }
 
     /**
@@ -115,11 +139,15 @@ public class PostcodeService {
      * @throws IOException  If there is an error when querying the API.
      * @throws PostcodeException    If the postcode is invalid.
      */
-    static Point2D.Double getCoordinatesFromPostcode(@NotNull String postcode)
+    public static Point2D.Double getCoordinatesFromPostcode(@NotNull String postcode)
             throws IOException, PostcodeException {
-        if (!validatePostcode(postcode)) throw new PostcodeException(postcode
-                , "Invalid postcode");
+        if (postcode == null || !validatePostcode(postcode)) {
+            throw new PostcodeException(postcode, "Invalid postcode");
+        }
         JsonNode result = getAPIResult(encodePostcode(postcode));
+        if (result == null || !result.hasNonNull("latitude") || !result.hasNonNull("longitude")) {
+            throw new PostcodeException(postcode, "Coordinates unavailable");
+        }
         return new Point2D.Double(result.get("latitude").asDouble(),
                 result.get("longitude").asDouble());
     }

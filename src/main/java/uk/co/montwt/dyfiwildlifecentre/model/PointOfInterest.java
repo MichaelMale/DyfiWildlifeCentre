@@ -17,32 +17,18 @@
 
 package uk.co.montwt.dyfiwildlifecentre.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import java.awt.geom.Point2D;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * PointOfInterest.java - This class represents a Point of Interest. It will be used whenever an end user would like
@@ -67,6 +53,12 @@ public class PointOfInterest implements PointOfInterestInterface {
 
     private String description;
 
+    @Column(name = "name_cy")
+    private String nameCy;
+
+    @Column(name = "description_cy")
+    private String descriptionCy;
+
     @Min(value = -90, message = "Error: Latitude cannot be lower than -90")
     @Max(value = 90, message = "Error: Latitude cannot be greater than 90")
     private double latitude;
@@ -81,6 +73,15 @@ public class PointOfInterest implements PointOfInterestInterface {
     private double distanceFromCentre;
 
     private String category;
+
+    @Column(name = "image_url", length = 2048)
+    private String imageUrl;
+
+    @Column(name = "station_code", length = 8)
+    private String stationCode;
+
+    @Column(name = "bus_stop_code", length = 24)
+    private String busStopCode;
 
 
     /**
@@ -114,6 +115,94 @@ public class PointOfInterest implements PointOfInterestInterface {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getNameCy() {
+        return nameCy;
+    }
+
+    public void setNameCy(String nameCy) {
+        this.nameCy = nameCy;
+    }
+
+    public String getDescriptionCy() {
+        return descriptionCy;
+    }
+
+    public void setDescriptionCy(String descriptionCy) {
+        this.descriptionCy = descriptionCy;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    /**
+     * Gets the CRS railway station code if this POI represents a UK railway station.
+     *
+     * @return String station code, or null for general POIs
+     */
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    /**
+     * Sets the CRS railway station code.
+     *
+     * @param stationCode String station code
+     */
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
+    }
+
+    /**
+     * Returns whether this POI represents a protected UK railway station entry.
+     *
+     * @return true when {@code stationCode} is populated
+     */
+    public boolean isRailwayStation() {
+        return stationCode != null && !stationCode.isBlank();
+    }
+
+    /**
+     * Gets the NaPTAN ATCO bus stop code if this POI represents a bus stop.
+     *
+     * @return String ATCO bus stop code, or null otherwise
+     */
+    public String getBusStopCode() {
+        return busStopCode;
+    }
+
+    /**
+     * Sets the NaPTAN ATCO bus stop code.
+     *
+     * @param busStopCode String ATCO bus stop code
+     */
+    public void setBusStopCode(String busStopCode) {
+        this.busStopCode = busStopCode;
+    }
+
+    /**
+     * Returns whether this POI represents a protected NaPTAN bus stop entry.
+     *
+     * @return true when {@code busStopCode} is populated
+     */
+    public boolean isBusStop() {
+        return busStopCode != null && !busStopCode.isBlank();
+    }
+
+    /**
+     * Returns whether this POI is a protected transport entry (railway station or bus stop)
+     * that requires explicit confirmation before editing or deleting.
+     *
+     * @return true when {@link #isRailwayStation()} or {@link #isBusStop()}
+     */
+    public boolean isProtectedTransport() {
+        return isRailwayStation() || isBusStop();
     }
 
     public double getDistanceFromCentre() {

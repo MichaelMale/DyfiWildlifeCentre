@@ -16,133 +16,253 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Add a POI</title>
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.add.title}">Dyfi Wildlife Centre - Add a POI</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
     <style>
         /* Removes spinners from latitude and longitude as unnecessary */
-
-        /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
-        /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
         }
 
-        #promptUsername {
-             margin-left: 30px !important;
-         }
+        #addPoiPickerMap {
+            width: 100%;
+            height: 380px;
+            border-radius: 10px;
+            border: 2px solid #cddad6;
+            cursor: crosshair;
+            z-index: 1;
+        }
 
-        #promptSignOut {
-            margin-right: 30px !important;
+        .dyfi-picker-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .dyfi-picker-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dyfi-picker-status {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #eef5f3;
+            color: #485e5a;
+            font-size: 0.92rem;
+            border-left: 4px solid #90a4ae;
+            flex: 1 1 280px;
+        }
+
+        .dyfi-picker-status--active {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border-left-color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .dyfi-picker-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            background: #005b4f;
+            border: 3px solid #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+            color: #ffffff;
+        }
+
+        .dyfi-picker-pin i.material-icons {
+            transform: rotate(45deg);
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col s12 m6">
-            <p>
-            <h1>Create a Point of Interest</h1>
-            <p><h5>Add information to the form below to create a Point of Interest for the map.</h5></p>
-        </div>
-    </div>
-    <div class="row">
-        <form id="poiSubmissionForm" action="#" class="col s12 m6" method="post" th:action="@{/poi/form_create}"
-              th:object="${pointOfInterest}">
-            <div class="row">
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('add')}"></fragment>
 
-                <!-- POI name -->
+<main class="container dyfi-page-main">
+    <div class="dyfi-page-header">
+        <h1 th:text="#{admin.add.heading}">Create a Point of Interest</h1>
+        <p th:text="#{admin.add.subheading}">Add information to the form below to create a Point of Interest for the map.</p>
+    </div>
+
+    <div class="dyfi-card-panel">
+        <form id="poiSubmissionForm" action="#" method="post"
+              enctype="multipart/form-data"
+              th:action="@{/poi/form_create}"
+              th:object="${pointOfInterest}">
+
+            <div class="row">
                 <div class="input-field col s12 m6">
-                    <input class="validate" id="name" placeholder="Name"
+                    <input class="validate" id="name" th:placeholder="#{poi.form.name.en.placeholder}" placeholder="Name in English"
                            required th:field="*{name}" type="text">
-                    <label for="name">Name<sup>*</sup></label>
+                    <label class="active" for="name"><span th:text="#{poi.form.name.en}">Name (English)</span><sup>*</sup></label>
                 </div>
 
+                <div class="input-field col s12 m6">
+                    <input class="validate" id="nameCy" th:placeholder="#{poi.form.name.cy.placeholder}" placeholder="Name in Welsh"
+                           th:field="*{nameCy}" type="text">
+                    <label class="active" for="nameCy" th:text="#{poi.form.name.cy}">Name (Welsh)</label>
+                </div>
             </div>
-            <div class="row">
 
-                <!-- POI Description -->
+            <div class="row">
                 <div class="input-field col s12 m6">
                     <textarea class="materialize-textarea" id="description"
                               th:field="*{description}"></textarea>
-                    <label for="description">Description</label>
+                    <label for="description" th:text="#{poi.form.description.en}">Description (English)</label>
                 </div>
 
+                <div class="input-field col s12 m6">
+                    <textarea class="materialize-textarea" id="descriptionCy"
+                              th:field="*{descriptionCy}"></textarea>
+                    <label for="descriptionCy" th:text="#{poi.form.description.cy}">Description (Welsh)</label>
+                </div>
             </div>
+
             <div class="row">
-                <!-- Filter selector -->
-                <div class="input-field col s6 m3">
+                <div class="input-field col s12 m4">
                     <select th:field="*{category}">
-                        <option value="" selected>None</option>
-                        <option value="wildlife">Wildlife</option>
-                        <option value="business">Business</option>
-                        <option value="transport">Transport</option>
+                        <option value="" selected th:text="#{poi.form.category.none}">None</option>
+                        <option value="wildlife" th:text="#{poi.form.category.wildlife}">Wildlife</option>
+                        <option value="business" th:text="#{poi.form.category.business}">Business</option>
+                        <option value="transport" th:text="#{poi.form.category.transport}">Transport</option>
                     </select>
-                    <label>Filter</label>
+                    <label th:text="#{poi.form.filter}">Filter</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="container col s12 m6">
-                    <h4>Location</h4>
-                    <p>Type in a UK postcode <span
-                            style="font-weight: bold">OR</span> a pair of
-                        coordinates.</p>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Postcode -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="postcode"
-                           placeholder="Postcode" th:field="*{postcode}"
-                           type="text">
-                    <label for="postcode">UK Postcode</label>
-                </div>
-            </div>
-            <div class="row">
 
-                <!-- Latitude -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="latitude" max="90" min="-90" placeholder="Latitude" step="0.00000001"
+            <div class="divider" style="margin: 12px 0 20px 0;"></div>
+
+            <h5 style="margin-top:0; font-weight:600; display:flex; align-items:center; gap:8px;">
+                <i class="material-icons teal-text text-darken-2" aria-hidden="true">pin_drop</i>
+                <span th:text="#{poi.form.location}">Location</span>
+            </h5>
+            <p class="grey-text text-darken-1" style="margin-top:4px; margin-bottom:12px;"
+               th:text="#{poi.form.location.mapHint}">
+                Click anywhere on the map (or drag the pin) to set the Point of Interest location.
+            </p>
+
+            <div id="locationPickerError" class="dyfi-alert dyfi-alert--error" style="display:none;"></div>
+
+            <div class="dyfi-picker-toolbar">
+                <div id="mapPickerStatus" class="dyfi-picker-status"
+                     th:text="#{poi.form.location.nonePicked}">
+                    No map point selected yet. Click on the map below to place a pin.
+                </div>
+                <div class="dyfi-picker-actions">
+                    <button type="button" id="centreMapReserveBtn" class="btn-small waves-effect waves-light teal darken-1">
+                        <i class="material-icons left" aria-hidden="true">my_location</i>
+                        <span th:text="#{poi.form.location.centreReserve}">Centre on Reserve</span>
+                    </button>
+                    <button type="button" id="clearMapPinBtn" class="btn-small btn-flat waves-effect" disabled>
+                        <i class="material-icons left" aria-hidden="true">clear</i>
+                        <span th:text="#{poi.form.location.clearPin}">Clear Pin</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="addPoiPickerMap"
+                 th:data-none-picked="#{poi.form.location.nonePicked}"
+                 th:data-picked-template="#{poi.form.location.picked}"
+                 th:data-lookup-error="#{poi.form.location.lookupNotFound}"
+                 th:data-required-msg="#{poi.form.location.required}"
+                 style="margin-bottom: 18px;"></div>
+
+            <p class="grey-text" style="font-size: 0.88rem; margin-bottom: 12px;"
+               th:text="#{poi.form.location.advancedHint}">
+                Optional: fine-tune coordinates manually or look up a UK postcode instead.
+            </p>
+
+            <div class="row" style="align-items:flex-end;">
+                <div class="input-field col s12 m4">
+                    <input class="validate" id="latitude" max="90" min="-90" th:placeholder="#{poi.form.latitude}" placeholder="Latitude" step="0.00000001"
                            th:field="*{latitude}"
                            type="number">
-                    <label for="latitude">Latitude</label>
+                    <label class="active" for="latitude" th:text="#{poi.form.latitude}">Latitude</label>
                 </div>
 
-                <!-- Longitude -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="longitude" max="180" min="-180" placeholder="Longitude"
+                <div class="input-field col s12 m4">
+                    <input class="validate" id="longitude" max="180" min="-180" th:placeholder="#{poi.form.longitude}" placeholder="Longitude"
                            step="0.00000001"
                            th:field="*{longitude}" type="number">
-                    <label for="longitude">Longitude</label>
+                    <label class="active" for="longitude" th:text="#{poi.form.longitude}">Longitude</label>
                 </div>
 
+                <div class="input-field col s8 m2">
+                    <input class="validate" id="postcode"
+                           th:placeholder="#{poi.form.postcode.placeholder}" placeholder="Postcode" th:field="*{postcode}"
+                           type="text">
+                    <label class="active" for="postcode" th:text="#{poi.form.postcode}">UK Postcode</label>
+                </div>
+
+                <div class="col s4 m2" style="margin-bottom: 20px;">
+                    <button type="button" id="lookupPostcodeBtn"
+                            class="btn-small waves-effect waves-light teal lighten-1" style="width:100%;"
+                            th:title="#{poi.form.location.lookupPostcode}">
+                        <i class="material-icons" aria-hidden="true">search</i>
+                    </button>
+                </div>
             </div>
 
             <div class="row">
-                <!-- Add to the database -->
-                <div class="input-field col s6 m3">
-                    <button id="addToDb" class="btn waves-effect waves-light">Add</button>
+                <div class="input-field col s12 m6">
+                    <input class="validate" id="imageUrl"
+                           th:placeholder="#{poi.form.imageUrl.placeholder}" placeholder="https://example.com/photo.jpg"
+                           th:field="*{imageUrl}" type="text">
+                    <label class="active" for="imageUrl" th:text="#{poi.form.imageUrl}">Image URL (hotlink)</label>
                 </div>
 
+                <div class="file-field input-field col s12 m6">
+                    <div class="btn dyfi-btn-primary">
+                        <span th:text="#{poi.form.imageUpload}">Upload Image</span>
+                        <input id="imageFile" name="imageFile" type="file" accept="image/*">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text"
+                               th:placeholder="#{poi.form.imageUpload.hint}"
+                               placeholder="PNG, JPG, GIF or WebP (uploading a file overrides Image URL)">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                <button id="addToDb" class="btn-large waves-effect waves-light dyfi-btn-primary" type="submit">
+                    <i class="material-icons left" aria-hidden="true">add_location_alt</i>
+                    <span th:text="#{poi.form.add}">Add</span>
+                </button>
+                <a href="/admin/list" class="btn-flat waves-effect" style="height:54px; line-height:54px;">
+                    <span th:text="#{admin.edit.back}">Back to List</span>
+                </a>
             </div>
         </form>
     </div>
-</div>
-<fragment th:replace="fragments/footer :: footer"></fragment>
-<script>
-    $(document).ready(function() {
-       $('select').formSelect();
-    });
-</script>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script th:src="@{/js/poi-map-picker.js}"></script>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
 </html>

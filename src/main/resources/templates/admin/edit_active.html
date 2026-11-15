@@ -16,120 +16,383 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
     <style>
-        #promptUsername {
-            margin-left: 30px !important;
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
         }
 
-        #promptSignOut {
-            margin-right: 30px !important;
+        .station-lock-card {
+            padding: 16px 18px;
+            border-left: 4px solid #f57c00;
+            background: #fff8e1;
+            color: #4e342e;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .station-lock-card.unlocked {
+            border-left-color: #2e7d32;
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+
+        .category-locked {
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        #addPoiPickerMap {
+            width: 100%;
+            height: 360px;
+            border-radius: 10px;
+            border: 2px solid #cddad6;
+            cursor: crosshair;
+            z-index: 1;
+        }
+
+        #addPoiPickerMap.dyfi-picker-map--locked {
+            opacity: 0.72;
+            cursor: not-allowed;
+        }
+
+        .dyfi-picker-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .dyfi-picker-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dyfi-picker-status {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #eef5f3;
+            color: #485e5a;
+            font-size: 0.92rem;
+            border-left: 4px solid #90a4ae;
+            flex: 1 1 280px;
+        }
+
+        .dyfi-picker-status--active {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border-left-color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .dyfi-picker-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            background: #005b4f;
+            border: 3px solid #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+            color: #ffffff;
+        }
+
+        .dyfi-picker-pin i.material-icons {
+            transform: rotate(45deg);
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('list')}"></fragment>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col s12 m6">
-            <h6>Editing <span th:text="${poi.getName()}" style="font-weight: bold"></span></h6>
-        </div>
+<main class="container dyfi-page-main">
+    <div class="dyfi-page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <h1><span th:text="#{admin.edit.editing}">Editing</span> <span th:text="${poi.getName()}"></span></h1>
+        <a href="/admin/list" class="btn-flat waves-effect">
+            <i class="material-icons left" aria-hidden="true">arrow_back</i>
+            <span th:text="#{admin.edit.back}">Back to List</span>
+        </a>
     </div>
-    <div class="row">
 
-        <form class="col s12 m6" id="poiUpdateForm" th:object="${poi}" method="post"
+    <div th:if="${poi.isProtectedTransport()}" class="station-lock-card" id="stationLockCard">
+        <h6 style="margin-top: 0; font-weight: 700; display:flex; align-items:center; gap:6px;">
+            <i class="material-icons tiny amber-text text-darken-3" aria-hidden="true">lock</i>
+            <span th:if="${poi.isRailwayStation()}"
+                  th:text="#{admin.edit.station.lockedTitle(${poi.stationCode})}">Protected Railway Station</span>
+            <span th:if="${poi.isBusStop()}"
+                  th:text="#{admin.edit.busStop.lockedTitle(${poi.busStopCode})}">Protected Bus Stop</span>
+        </h6>
+        <p id="stationLockText" style="margin-top: 6px;"
+           th:text="${poi.isRailwayStation()} ? #{admin.edit.station.lockedNotice} : #{admin.edit.busStop.lockedNotice}">
+            Editing is locked for this transport entry. Unlock only if it has closed or its details need correction.
+        </p>
+        <button type="button" id="unlockStationBtn"
+                class="btn-small orange darken-2 waves-effect waves-light"
+                th:attr="data-confirm=${poi.isRailwayStation()} ? #{admin.edit.station.confirmUnlock(${poi.stationCode})} : #{admin.edit.busStop.confirmUnlock(${poi.busStopCode})}"
+                th:text="#{admin.edit.station.unlockButton}">
+            Unlock for Editing
+        </button>
+    </div>
+
+    <div class="dyfi-card-panel">
+        <form id="poiUpdateForm" th:object="${poi}" method="post"
+              enctype="multipart/form-data"
+              th:attr="data-station-locked=${poi.isProtectedTransport()}"
               th:action="@{/poi/update(id=${id})}">
+            <input type="hidden" th:field="*{stationCode}">
+            <input type="hidden" th:field="*{busStopCode}">
 
-            <!-- POI name -->
             <div class="row">
-
                 <div class="input-field col s12 m6">
-
-                    <input class="validate" id="name" placeholder="Name"
-                           required type="text" th:value="${poi.getName()}" th:field="*{name}">
-                    <label for="name">Name</label>
-
+                    <input class="validate station-editable-input" id="name" th:placeholder="#{poi.form.name.en.placeholder}" placeholder="Name in English"
+                           required type="text" th:field="*{name}"
+                           th:readonly="${poi.isProtectedTransport()}">
+                    <label class="active" for="name" th:text="#{poi.form.name.en}">Name (English)</label>
                 </div>
 
+                <div class="input-field col s12 m6">
+                    <input class="validate station-editable-input" id="nameCy" th:placeholder="#{poi.form.name.cy.placeholder}" placeholder="Name in Welsh"
+                           type="text" th:field="*{nameCy}"
+                           th:readonly="${poi.isProtectedTransport()}">
+                    <label class="active" for="nameCy" th:text="#{poi.form.name.cy}">Name (Welsh)</label>
+                </div>
             </div>
 
-            <!-- POI Description -->
             <div class="row">
-
                 <div class="input-field col s12 m6">
-                    <textarea class="materialize-textarea"
-                              id="description" th:field="*{description}"><th:block th:text="${poi.getDescription()}"></th:block></textarea>
-                    <label for="description">Description</label>
+                    <textarea class="materialize-textarea station-editable-input"
+                              id="description" th:field="*{description}"
+                              th:readonly="${poi.isProtectedTransport()}"></textarea>
+                    <label class="active" for="description" th:text="#{poi.form.description.en}">Description (English)</label>
                 </div>
 
+                <div class="input-field col s12 m6">
+                    <textarea class="materialize-textarea station-editable-input"
+                              id="descriptionCy" th:field="*{descriptionCy}"
+                              th:readonly="${poi.isProtectedTransport()}"></textarea>
+                    <label class="active" for="descriptionCy" th:text="#{poi.form.description.cy}">Description (Welsh)</label>
+                </div>
             </div>
 
-            <!-- Filter selector -->
             <div class="row">
-                <!-- Filter selector -->
-                <div class="input-field col s6 m3">
+                <div id="categoryWrapper" class="input-field col s12 m4"
+                     th:classappend="${poi.isProtectedTransport()} ? ' category-locked' : ''">
                     <select th:field="*{category}" th:selected="*{category}">
-                        <option value="">None</option>
-                        <option value="wildlife">Wildlife</option>
-                        <option value="business">Business</option>
-                        <option value="transport">Transport</option>
+                        <option value="" th:text="#{poi.form.category.none}">None</option>
+                        <option value="wildlife" th:text="#{poi.form.category.wildlife}">Wildlife</option>
+                        <option value="business" th:text="#{poi.form.category.business}">Business</option>
+                        <option value="transport" th:text="#{poi.form.category.transport}">Transport</option>
                     </select>
-                    <label>Filter</label>
+                    <label th:text="#{poi.form.filter}">Filter</label>
+                </div>
+
+                <div class="input-field col s12 m4">
+                    <input class="validate station-editable-input" id="latitude" max="90" min="-90"
+                           th:placeholder="#{poi.form.latitude}" placeholder="Latitude" step="0.00000001"
+                           type="number" th:field="*{latitude}"
+                           th:readonly="${poi.isProtectedTransport()}">
+                    <label class="active" for="latitude" th:text="#{poi.form.latitude}">Latitude</label>
+                </div>
+
+                <div class="input-field col s12 m4">
+                    <input class="validate station-editable-input" id="longitude" max="180"
+                           min="-180" th:placeholder="#{poi.form.longitude}" placeholder="Longitude"
+                           step="0.00000001" type="number" th:field="*{longitude}"
+                           th:readonly="${poi.isProtectedTransport()}">
+                    <label class="active" for="longitude" th:text="#{poi.form.longitude}">Longitude</label>
                 </div>
             </div>
 
-            <!-- POI coordinates -->
-            <div class="row">
-
-                <!-- Latitude -->
-                <div class="input-field col s6 m3">
-
-                    <input class="validate" id="latitude" max="90" min="-90"
-                           placeholder="Latitude" step="0.00000001"
-                           type="number" th:value="${poi.getLatitude()}" th:field="*{latitude}">
-                    <label for="latitude">Latitude</label>
-
+            <div class="divider" style="margin: 8px 0 16px 0;"></div>
+            <h5 style="margin-top:0; font-weight:600; display:flex; align-items:center; gap:8px;">
+                <i class="material-icons teal-text text-darken-2" aria-hidden="true">pin_drop</i>
+                <span th:text="#{poi.form.location}">Location</span>
+            </h5>
+            <p class="grey-text text-darken-1" style="margin-top:4px; margin-bottom:10px;"
+               th:text="#{poi.form.location.mapHint}">
+                Click anywhere on the map (or drag the pin) to set the Point of Interest location.
+            </p>
+            <div id="locationPickerError" class="dyfi-alert dyfi-alert--error" style="display:none;"></div>
+            <div class="dyfi-picker-toolbar">
+                <div id="mapPickerStatus" class="dyfi-picker-status"
+                     th:text="#{poi.form.location.nonePicked}">
+                    No map point selected yet. Click on the map below to place a pin.
                 </div>
-
-                <!-- Longitude -->
-                <div class="input-field col s6 m3">
-                    <input class="validate" id="longitude" max="180"
-                           min="-180" placeholder="Longitude"
-                           step="0.00000001" type="number" th:value="${poi.getLongitude()}" th:field="*{longitude}">
-                    <label for="longitude">Longitude</label>
-                </div>
-
-
-            </div>
-
-            <!-- Add the updated POI -->
-            <div class="row">
-
-                <div class="input-field col s6 m3">
-
-                    <button class="btn waves-effect waves-light"
-                            id="updateDb">Update
+                <div class="dyfi-picker-actions">
+                    <button type="button" id="centreMapReserveBtn" class="btn-small waves-effect waves-light teal darken-1">
+                        <i class="material-icons left" aria-hidden="true">my_location</i>
+                        <span th:text="#{poi.form.location.centreReserve}">Centre on Reserve</span>
+                    </button>
+                    <button type="button" id="clearMapPinBtn" class="btn-small btn-flat waves-effect" disabled>
+                        <i class="material-icons left" aria-hidden="true">clear</i>
+                        <span th:text="#{poi.form.location.clearPin}">Clear Pin</span>
                     </button>
                 </div>
+            </div>
+            <div id="addPoiPickerMap"
+                 th:data-locked="${poi.isProtectedTransport()}"
+                 th:data-none-picked="#{poi.form.location.nonePicked}"
+                 th:data-picked-template="#{poi.form.location.picked}"
+                 th:data-lookup-error="#{poi.form.location.lookupNotFound}"
+                 th:data-required-msg="#{poi.form.location.required}"
+                 style="margin-bottom: 18px;"></div>
 
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input class="validate station-editable-input" id="imageUrl"
+                           th:placeholder="#{poi.form.imageUrl.placeholder}" placeholder="https://example.com/photo.jpg"
+                           type="text" th:field="*{imageUrl}"
+                           th:readonly="${poi.isProtectedTransport()}">
+                    <label class="active" for="imageUrl" th:text="#{poi.form.imageUrl}">Image URL (hotlink)</label>
+
+                    <div class="dyfi-image-preview" th:if="${poi.imageUrl != null and !#strings.isEmpty(poi.imageUrl)}">
+                        <span class="grey-text" style="font-size:0.84rem;" th:text="#{admin.edit.currentImage}">Current image preview</span>
+                        <img th:src="${poi.imageUrl}" th:alt="${poi.name}"
+                             onerror="this.style.display='none';">
+                    </div>
+                </div>
+
+                <div class="file-field input-field col s12 m6">
+                    <div class="btn dyfi-btn-primary">
+                        <span th:text="#{poi.form.imageUpload}">Upload Image</span>
+                        <input id="imageFile" name="imageFile" type="file" accept="image/*"
+                               th:disabled="${poi.isProtectedTransport()}">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate station-editable-input" type="text"
+                               th:placeholder="#{poi.form.imageUpload.hint}"
+                               placeholder="PNG, JPG, GIF or WebP (uploading a file overrides Image URL)"
+                               th:readonly="${poi.isProtectedTransport()}">
+                    </div>
+                </div>
             </div>
 
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                <button class="btn-large waves-effect waves-light dyfi-btn-primary"
+                        id="updateDb" type="submit"
+                        th:disabled="${poi.isProtectedTransport()}">
+                    <i class="material-icons left" aria-hidden="true">save</i>
+                    <span th:text="#{poi.form.update}">Update</span>
+                </button>
+                <a href="/admin/list" class="btn-flat waves-effect" style="height:54px; line-height:54px;">
+                    <span th:text="#{admin.edit.back}">Back to List</span>
+                </a>
+            </div>
         </form>
+    </div>
+</main>
 
+<!-- Confirmation Dialog to Unlock Protected Transport POI (Railway Station or Bus Stop) -->
+<div id="unlockStationModal" class="modal dyfi-modal" th:if="${poi.isProtectedTransport()}">
+    <div class="modal-content">
+        <h5 th:text="${poi.isRailwayStation()} ? #{admin.list.stations.confirm.title} : #{admin.list.busStops.confirm.title}">
+            Confirm Change
+        </h5>
+        <p th:text="${poi.isRailwayStation()} ? #{admin.edit.station.confirmUnlock(${poi.stationCode})} : #{admin.edit.busStop.confirmUnlock(${poi.busStopCode})}">
+            This transport entry is protected. Unlock fields for editing only if it has closed or changed?
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-grey btn-flat"
+           th:text="#{admin.list.stations.confirm.cancel}">Cancel</a>
+        <a href="#!" id="confirmUnlockStation" class="modal-close waves-effect waves-light btn orange darken-2"
+           th:text="#{admin.edit.station.unlockButton}">Unlock for Editing</a>
     </div>
 </div>
 
-<fragment th:replace="fragments/footer :: footer"></fragment>
-<script>
-    $(document).ready(function() {
-        $('select').formSelect();
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script th:src="@{/js/poi-map-picker.js}"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('poiUpdateForm');
+        var unlockBtn = document.getElementById('unlockStationBtn');
+        var modalEl = document.getElementById('unlockStationModal');
+        var confirmUnlockBtn = document.getElementById('confirmUnlockStation');
+        var modalInstance = (modalEl && window.M && M.Modal) ? M.Modal.init(modalEl) : null;
+        var unlockedMessage = /*[[${poi.isRailwayStation()} ? #{admin.edit.station.unlockedNotice} : #{admin.edit.busStop.unlockedNotice}]]*/ 'Unlocked.';
+
+        function unlockStationFields() {
+            if (!form) {
+                return;
+            }
+            form.setAttribute('data-station-locked', 'false');
+            form.querySelectorAll('.station-editable-input').forEach(function (el) {
+                el.removeAttribute('readonly');
+            });
+            var categoryWrapper = document.getElementById('categoryWrapper');
+            if (categoryWrapper) {
+                categoryWrapper.classList.remove('category-locked');
+            }
+            var imageFile = document.getElementById('imageFile');
+            if (imageFile) {
+                imageFile.disabled = false;
+            }
+            var updateBtn = document.getElementById('updateDb');
+            if (updateBtn) {
+                updateBtn.disabled = false;
+            }
+            var lockCard = document.getElementById('stationLockCard');
+            var lockText = document.getElementById('stationLockText');
+            if (lockCard) {
+                lockCard.classList.add('unlocked');
+            }
+            if (lockText) {
+                lockText.textContent = unlockedMessage;
+            }
+            if (unlockBtn) {
+                unlockBtn.style.display = 'none';
+            }
+            if (typeof window.dyfiSetMapPickerLocked === 'function') {
+                window.dyfiSetMapPickerLocked(false);
+            }
+        }
+
+        if (unlockBtn) {
+            unlockBtn.addEventListener('click', function () {
+                if (modalInstance) {
+                    modalInstance.open();
+                } else if (window.confirm(unlockBtn.getAttribute('data-confirm') || 'Unlock?')) {
+                    unlockStationFields();
+                }
+            });
+        }
+
+        if (confirmUnlockBtn) {
+            confirmUnlockBtn.addEventListener('click', function () {
+                unlockStationFields();
+            });
+        }
+
+        if (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.getAttribute('data-station-locked') === 'true') {
+                    event.preventDefault();
+                }
+            });
+        }
     });
 </script>
 </body>

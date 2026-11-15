@@ -17,7 +17,7 @@
 
 package uk.co.montwt.dyfiwildlifecentre.security.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 /**

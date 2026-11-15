@@ -423,4 +423,12 @@ Backup of *.doc*
 # Visio autosave temporary files
 *.~vsd*
 
+# Local environment secrets
+.env
+application-local.properties
+uploads/
+e2e/node_modules/
+e2e/test-results/
+e2e/playwright-report/
+
 # End of https://www.gitignore.io/api/git,java,latex,maven,jetbrains+iml,microsoftoffice

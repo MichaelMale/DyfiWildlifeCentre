@@ -17,20 +17,33 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="en_GB">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Error</title>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{error.title}">Dyfi Wildlife Centre - Error</title>
 </head>
 
 <body>
-<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+<fragment th:replace="~{fragments/primary_navbar :: primaryNavbar}"></fragment>
 
-<div class="container ui">
-    <h1>403 - Access is denied</h1>
-    <div th:inline="text">User '[[${#httpServletRequest.remoteUser}]]'
-        does not have permission to access this page.</div>
-</div>
+<main class="container">
+    <div class="dyfi-error-card">
+        <h1>
+            <i class="material-icons amber-text text-darken-3" aria-hidden="true">lock</i>
+            <span th:text="#{error.403.heading}">403 - Access is denied</span>
+        </h1>
+        <p>
+            <span th:text="#{error.403.beforeUser}">User '</span><strong sec:authentication="name"></strong><span th:text="#{error.403.afterUser}">' does not have permission to access this page.</span>
+        </p>
+        <div class="dyfi-error-actions">
+            <a class="waves-effect waves-light btn dyfi-btn-primary" th:href="@{/}">
+                <i class="material-icons left">map</i>
+                <span th:text="#{error.home}">Visitor Map</span>
+            </a>
+        </div>
+    </div>
+</main>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
-
 </html>

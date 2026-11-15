@@ -17,13 +17,33 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en_GB">
-
 <head><title></title></head>
-
 <body>
 <div th:fragment="footer" th:remove="tag">
     <!-- Import Materialize JavaScript -->
     <script th:src="@{/js/materialize.min.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!window.M) {
+                return;
+            }
+            var sidenavs = document.querySelectorAll('.sidenav');
+            if (sidenavs.length > 0 && M.Sidenav) {
+                M.Sidenav.init(sidenavs);
+            }
+            var selects = document.querySelectorAll('select');
+            if (selects.length > 0 && M.FormSelect) {
+                M.FormSelect.init(selects);
+            }
+            var tooltips = document.querySelectorAll('.tooltipped');
+            if (tooltips.length > 0 && M.Tooltip) {
+                M.Tooltip.init(tooltips);
+            }
+            if (M.updateTextFields) {
+                M.updateTextFields();
+            }
+        });
+    </script>
 </div>
 </body>
 </html>

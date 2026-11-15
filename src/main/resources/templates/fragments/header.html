@@ -17,18 +17,31 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en_GB">
-
 <head><title></title></head>
-
 <body>
 <div th:fragment="header" th:remove="tag">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <!-- Import Google Icon Font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Import Materialize CSS -->
     <link th:href="@{/css/materialize.min.css}" rel="stylesheet">
-    <!-- Responsiveness -->
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta charset="UTF-8">
+    <!-- Dyfi Wildlife Centre Shared Theme -->
+    <link th:href="@{/css/dyfi-theme.css}" rel="stylesheet" type="text/css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var currentLang = (document.documentElement.lang || 'en').toLowerCase().slice(0, 2);
+            document.querySelectorAll('a.lang-switch[data-lang]').forEach(function (link) {
+                var targetLang = link.getAttribute('data-lang');
+                var url = new URL(window.location.href);
+                url.searchParams.set('lang', targetLang);
+                link.setAttribute('href', url.pathname + url.search);
+                if (targetLang === currentLang) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

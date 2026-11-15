@@ -16,62 +16,59 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <style>
-        #promptUsername {
-            margin-left: 30px !important;
-        }
-
-        #promptSignOut {
-            margin-right: 30px !important;
-        }
-    </style>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('users')}"></fragment>
 
-<div class="container">
+<main class="container dyfi-page-main">
     <div class="row">
-        <div class="col s12 m6">
-            <p>
-            <h1>Register a user</h1>
-            <p><h5>Use the form below to register a user.</h5>
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <div class="dyfi-page-header">
+                <h1 th:text="#{admin.register.heading}">Register a user</h1>
+                <p th:text="#{admin.register.subheading}">Use the form below to register a user.</p>
+            </div>
+
+            <div class="dyfi-card-panel">
+                <form id="userRegistrationForm"
+                      action="#" method="post" th:action="@{/admin/register}"
+                      th:object="${userForm}">
+
+                    <div class="input-field">
+                        <i class="material-icons prefix" aria-hidden="true">person_add</i>
+                        <input class="validate" id="username" th:placeholder="#{admin.register.username}" placeholder="Username"
+                               required th:field="*{username}"
+                               type="text" minlength="6" maxlength="32" autocomplete="username">
+                        <label class="active" for="username" th:text="#{admin.register.username}">Username</label>
+                    </div>
+
+                    <div class="input-field">
+                        <i class="material-icons prefix" aria-hidden="true">lock</i>
+                        <input class="validate" id="password" required
+                               th:field="*{password}" type="password" minlength="6" autocomplete="new-password">
+                        <label for="password" th:text="#{admin.register.password}">Password</label>
+                    </div>
+
+                    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;">
+                        <button class="btn-large waves-effect waves-light dyfi-btn-primary"
+                                id="registerUser" type="submit">
+                            <i class="material-icons left" aria-hidden="true">person_add</i>
+                            <span th:text="#{admin.register.submit}">Register</span>
+                        </button>
+                        <a th:href="@{/admin/users}" class="btn-flat waves-effect" style="height:54px; line-height:54px;"
+                           th:text="#{admin.register.back}">Back to Users</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <form class="col s12 m6" id="userRegistrationForm"
-              action="#" method="post" th:action="@{/admin/register}"
-              th:object="${userForm}">
-            <!-- User name -->
-            <div class="row">
-                <input class="validate" id="username" placeholder="Name"
-                       required th:field="*{username}"
-                       type="text" minlength="6" maxlength="32">
-                <label for="username">Username</label>
-            </div>
+</main>
 
-            <!-- Password -->
-            <div class="row">
-                <input class="validate" id="password" required
-                       th:field="*{password}" type="password" minlength="6">
-                <label for="password">Password</label>
-            </div>
-
-            <!-- Submit registration -->
-            <div class="row">
-                <div class="input-field col s6 m3">
-                    <button class="btn waves-effect waves-light"
-                            id="registerUser">Register</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<fragment th:replace="fragments/footer :: footer"></fragment>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
 </html>

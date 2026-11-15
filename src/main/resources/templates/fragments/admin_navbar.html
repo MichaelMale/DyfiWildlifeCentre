@@ -16,57 +16,114 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<fragment th:fragment="adminNavbar" th:remove="tag">
-        <div class="col s12 m6">
-            <div class="row">
-                <nav class="nav-extended light-blue" id="adminNav">
-                    <div class="nav-wrapper">
-                        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-                        <ul class="right" id="nav-mobile">
-                            <li><a href="/admin">Admin Panel</a></li>
-                        </ul>
-                    </div>
-                    <div class="nav-content">
-                        <ul class="tabs tabs-transparent">
-                            <li class="tab"><a href="/admin">Home</a></li>
-                            <li class="tab"><a href="/admin/add">Add</a></li>
-                            <li class="tab"><a href="/admin/list">List</a></li>
-                            <li class="tab"><a href="/admin/users">Users</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-
-            <div class="row">
-                <div class="left" id="promptUsername">
-                    Signed in as <span
-                        th:text="${T(org.springframework.security.core.context.SecurityContextHolder)
-        .context.authentication.principal.username}"
-                        style="font-weight:bold"></span>
+<fragment th:fragment="adminNavbar(activeTab)" th:remove="tag">
+    <header>
+        <nav class="dyfi-navbar" id="adminNav">
+            <div class="nav-wrapper">
+                <div style="display:flex; align-items:center; min-width:0;">
+                    <a href="#" data-target="admin-mobile-nav" class="sidenav-trigger hide-on-large-only"
+                       aria-label="Open admin menu">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <a class="brand-logo" href="/">
+                        <i class="material-icons hide-on-small-only" aria-hidden="true">explore</i>
+                        <span th:text="#{brand.name}">Dyfi Wildlife Centre</span>
+                    </a>
                 </div>
-                <div class="right" id="promptSignOut">
-                    <form
-                        th:action="@{/logout}"
-                        method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}"
-                           th:value="${_csrf.token}"/>
-                    <input class="btn waves-effect waves-light" type="submit"
-                           value="Sign Out"></form>
+                <ul class="right hide-on-med-and-down dyfi-nav-links" id="nav-mobile">
+                    <li><a class="lang-switch" data-lang="en" href="?lang=en">English</a></li>
+                    <li><a class="lang-switch" data-lang="cy" href="?lang=cy">Cymraeg</a></li>
+                    <li><a href="/" th:text="#{nav.homeMap}">Visitor Map</a></li>
+                    <li><a class="dyfi-nav-admin-link" href="/admin" th:text="#{nav.adminPanel}">Admin Panel</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="dyfi-admin-subnav">
+            <ul class="dyfi-admin-tabs">
+                <li>
+                    <a href="/admin" th:classappend="${activeTab == 'home'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">dashboard</i>
+                        <span th:text="#{nav.home}">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/add" th:classappend="${activeTab == 'add'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">add_location_alt</i>
+                        <span th:text="#{nav.add}">Add</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/list" th:classappend="${activeTab == 'list'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">list_alt</i>
+                        <span th:text="#{nav.list}">List</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/users" th:classappend="${activeTab == 'users'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">group</i>
+                        <span th:text="#{nav.users}">Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/webcams" th:classappend="${activeTab == 'webcams'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">videocam</i>
+                        <span th:text="#{nav.webcams}">Webcams</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/sightings" th:classappend="${activeTab == 'sightings'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">visibility</i>
+                        <span th:text="#{nav.sightings}">Sightings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/import" th:classappend="${activeTab == 'import'} ? 'active' : ''">
+                        <i class="material-icons tiny" aria-hidden="true">upload_file</i>
+                        <span th:text="#{nav.import}">CSV Sync</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="dyfi-admin-status-bar">
+            <div class="container dyfi-admin-status-inner">
+                <div class="dyfi-admin-user-pill" id="promptUsername">
+                    <i class="material-icons tiny" aria-hidden="true">verified_user</i>
+                    <span>
+                        <span th:text="#{nav.signedInAs}">Signed in as</span>
+                        <strong sec:authentication="name"></strong>
+                    </span>
+                </div>
+                <div id="promptSignOut">
+                    <form th:action="@{/logout}" method="post" class="dyfi-inline-form">
+                        <input class="btn-small waves-effect waves-light red darken-2" type="submit"
+                               th:value="#{nav.signOut}" value="Sign Out"/>
+                    </form>
                 </div>
             </div>
         </div>
 
-
-
-
+        <ul class="sidenav" id="admin-mobile-nav">
+            <li><a href="/admin"><i class="material-icons">dashboard</i><span th:text="#{nav.home}">Home</span></a></li>
+            <li><a href="/admin/add"><i class="material-icons">add_location_alt</i><span th:text="#{nav.add}">Add</span></a></li>
+            <li><a href="/admin/list"><i class="material-icons">list_alt</i><span th:text="#{nav.list}">List</span></a></li>
+            <li><a href="/admin/users"><i class="material-icons">group</i><span th:text="#{nav.users}">Users</span></a></li>
+            <li><a href="/admin/webcams"><i class="material-icons">videocam</i><span th:text="#{nav.webcams}">Webcams</span></a></li>
+            <li><a href="/admin/sightings"><i class="material-icons">visibility</i><span th:text="#{nav.sightings}">Sightings</span></a></li>
+            <li><a href="/admin/import"><i class="material-icons">upload_file</i><span th:text="#{nav.import}">CSV Sync</span></a></li>
+            <li class="divider"></li>
+            <li><a href="/"><i class="material-icons">map</i><span th:text="#{nav.homeMap}">Visitor Map</span></a></li>
+            <li><a class="lang-switch" data-lang="en" href="?lang=en"><i class="material-icons">language</i>English</a></li>
+            <li><a class="lang-switch" data-lang="cy" href="?lang=cy"><i class="material-icons">language</i>Cymraeg</a></li>
+        </ul>
+    </header>
 </fragment>
-
-
 </body>
 </html>

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
+import java.util.List;
+
 /**
  * AdminController.java - This class contains the methods required to perform
  * the successful GET requests for the admin panel section of the web
@@ -68,7 +70,20 @@ public class AdminController {
      */
     @GetMapping("/admin/list")
     public String adminList(Model model) {
-        model.addAttribute("pointsOfInterest", pointOfInterestService.findAll());
+        List<PointOfInterest> allPois = pointOfInterestService.findAll();
+        List<PointOfInterest> generalPois = allPois.stream()
+                .filter(poi -> !poi.isProtectedTransport())
+                .toList();
+        List<PointOfInterest> railwayStations = allPois.stream()
+                .filter(PointOfInterest::isRailwayStation)
+                .toList();
+        List<PointOfInterest> busStops = allPois.stream()
+                .filter(PointOfInterest::isBusStop)
+                .toList();
+        model.addAttribute("pointsOfInterest", allPois);
+        model.addAttribute("generalPois", generalPois);
+        model.addAttribute("railwayStations", railwayStations);
+        model.addAttribute("busStops", busStops);
         return "admin/list";
     }
 

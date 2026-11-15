@@ -17,34 +17,45 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-</head>
-
+<head><title></title></head>
 <body>
 
-<div class="modal" id="poiCard" th:fragment="poiCard">
-    <div class="modal-content">
-        <div class="container-fluid">
-            <div class="card large z-depth-0">
-                <div class="card-image">
-                    <img alt="An example image" class="lazyload"
-                         data-src="images/osprey.jpeg">
-                    <span class="card-title black-text" id="poi_title"></span>
-                </div>
-                <div class="card-content grey lighten-4">
-                    <p>This place is
-                        <span id="poi_distance"
-                              style="font-weight:bold"></span>
-                        miles from the
-                        Dyfi
-                        Wildlife Centre</p>
-                </div>
-                <div class="card-content" id="scrollable">
-                    <p id="poi_description"></p>
-                </div>
+<div class="modal dyfi-modal" id="poiCard" th:fragment="poiCard">
+    <div class="dyfi-poi-hero">
+        <img id="poi_image" alt="Point of interest image"
+             src="images/osprey.jpeg"
+             onerror="this.onerror=null;this.src='images/osprey.jpeg';">
+        <div class="dyfi-poi-hero__scrim">
+            <div class="dyfi-poi-hero__badges">
+                <span class="dyfi-poi-badge" id="poi_category_badge" style="display:none;"></span>
+                <span class="dyfi-poi-badge" id="poi_code_badge" style="display:none;"></span>
             </div>
+            <h5 class="dyfi-poi-hero__title" id="poi_title"></h5>
         </div>
+    </div>
+
+    <div class="dyfi-poi-distance-bar">
+        <i class="material-icons" aria-hidden="true">near_me</i>
+        <span>
+            <span th:text="#{poi.distance.prefix}">This place is</span>
+            <strong id="poi_distance"></strong>
+            <span th:text="#{poi.distance.suffix}">miles from the Dyfi Wildlife Centre</span>
+        </span>
+    </div>
+
+    <div class="dyfi-poi-description-wrap" id="scrollable">
+        <p id="poi_description"></p>
+    </div>
+
+    <div class="modal-footer">
+        <a href="#!" id="poiDirectionsBtn"
+           class="waves-effect waves-light btn-small dyfi-btn-primary"
+           onclick="directionsToCurrentPoi()"
+           style="margin-right: 6px;">
+            <i class="material-icons left" aria-hidden="true">directions</i>
+            <span th:text="#{poi.card.directions}">Directions Here</span>
+        </a>
+        <a href="#!" class="modal-close waves-effect waves-light btn-flat" th:text="#{poi.card.close}">Close</a>
     </div>
 </div>
 

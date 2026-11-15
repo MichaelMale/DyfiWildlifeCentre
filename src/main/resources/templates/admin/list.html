@@ -16,69 +16,347 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Admin Panel</title>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
     <style>
-        #pointsOfInterest {
-            overflow: auto;
-            height: 50%;
+        #pointsOfInterest .collection,
+        #railwayStations .collection,
+        #busStops .collection {
+            max-height: 480px;
+            overflow-y: auto;
+            border-radius: 6px;
         }
 
-         #promptUsername {
-             margin-left: 30px !important;
-         }
+        .station-code-badge {
+            display: inline-block;
+            background: #e0f2f1;
+            color: #00695c;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-right: 6px;
+            letter-spacing: 0.04em;
+        }
 
-        #promptSignOut {
-            margin-right: 30px !important;
+        .bus-code-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            margin-right: 6px;
+            letter-spacing: 0.03em;
+        }
+
+        .station-notice {
+            padding: 10px 14px;
+            border-left: 4px solid #f57c00;
+            background: #fff8e1;
+            color: #5d4037;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+        }
+
+        .station-item .secondary-content,
+        .poi-row-actions .secondary-content {
+            margin-left: 8px;
+        }
+
+        .poi-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .poi-section-header h5 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('list')}"></fragment>
 
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+    <div class="dyfi-page-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h1 th:text="#{admin.list.heading}">List of POIs</h1>
+            <p th:text="#{admin.list.subheading}">Search, inspect, edit, or safely manage points of interest and transport stops.</p>
+        </div>
+        <a href="/admin/add" class="btn waves-effect waves-light dyfi-btn-primary">
+            <i class="material-icons left" aria-hidden="true">add_location_alt</i>
+            <span th:text="#{nav.add}">Add</span>
+        </a>
+    </div>
 
+    <div class="dyfi-card-panel" id="pointsOfInterest">
+        <div class="poi-section-header" style="margin-bottom: 12px;">
+            <h5>
+                <i class="material-icons teal-text text-darken-2" aria-hidden="true">place</i>
+                <span th:text="#{admin.list.general.heading}">Points of Interest</span>
+                <span class="new badge teal darken-2" data-badge-caption="" id="generalCountBadge"
+                      th:text="${#lists.size(generalPois)}">0</span>
+            </h5>
+        </div>
+        <div class="input-field" style="margin-top: 8px; margin-bottom: 10px;" th:if="${!#lists.isEmpty(generalPois)}">
+            <i class="material-icons prefix">search</i>
+            <input id="generalSearch" type="text"
+                   th:placeholder="#{admin.list.general.search}"
+                   placeholder="Filter points of interest by name or category">
+        </div>
+        <p class="grey-text" th:if="${#lists.isEmpty(generalPois)}" th:text="#{admin.list.general.empty}">
+            No general points of interest found.
+        </p>
+        <ul class="collection" id="generalPoisList" th:if="${!#lists.isEmpty(generalPois)}">
+            <li class="collection-item station-item poi-row-actions"
+                th:each="poi : ${generalPois}"
+                th:attr="data-search=${poi.name + ' ' + (poi.nameCy != null ? poi.nameCy : '') + ' ' + (poi.category != null ? poi.category : '')}">
+                <div>
+                    <strong th:text="${#locale.language == 'cy' and poi.nameCy != null and !#strings.isEmpty(poi.nameCy) ? poi.nameCy : poi.name}"></strong>
+                    <span class="grey-text" th:if="${poi.nameCy != null and !#strings.isEmpty(poi.nameCy)}"
+                          th:text="' (' + (${#locale.language == 'cy' ? poi.name : poi.nameCy}) + ')'"></span>
 
-<div class="container ui">
+                    <form th:action="@{/poi/delete(id=${poi.id})}" method="post"
+                          class="secondary-content dyfi-inline-form">
+                        <button type="submit"
+                                class="dyfi-icon-action-btn red-text text-darken-2"
+                                th:data-confirm="#{confirm.delete}"
+                                onclick="return confirm(this.getAttribute('data-confirm'))"
+                                aria-label="Delete point of interest">
+                            <i class="material-icons">delete_forever</i>
+                        </button>
+                    </form>
+
+                    <a th:href="@{/admin/edit_active(id=${poi.id})}" class="secondary-content" aria-label="Edit point of interest">
+                        <i class="material-icons teal-text text-darken-2">edit</i>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
     <div class="row">
-        <div class="col s12 m6">
-            <p>
-            <h1>List of POIs</h1></p>
-            <p><h5>Click on a POI to see, edit, or remove information
-            about it.</h5></p>
+        <div class="col s12 l6" id="railwayStations" style="margin-bottom: 16px;">
+            <div class="dyfi-card-panel" style="height: 100%; margin-bottom: 0;">
+                <div class="poi-section-header" style="margin-bottom: 12px;">
+                    <h5>
+                        <i class="material-icons amber-text text-darken-3" aria-hidden="true">lock</i>
+                        <span th:text="#{admin.list.stations.heading}">Railway Stations</span>
+                        <span class="new badge teal" data-badge-caption="" id="stationCountBadge" th:text="${#lists.size(railwayStations)}">0</span>
+                    </h5>
+                </div>
+                <div class="station-notice" th:text="#{admin.list.stations.notice}">
+                    Railway stations are locked by default. Confirmation is required before editing or removing a station (for example, if a station closes or changes).
+                </div>
+                <div class="input-field" style="margin-top: 8px; margin-bottom: 8px;">
+                    <i class="material-icons prefix">search</i>
+                    <input id="stationSearch" type="text"
+                           th:placeholder="#{admin.list.stations.search}"
+                           placeholder="Filter railway stations by name or code (e.g. DVY, Machynlleth)">
+                </div>
+                <p class="grey-text" th:if="${#lists.isEmpty(railwayStations)}" th:text="#{admin.list.stations.empty}">
+                    No railway stations loaded.
+                </p>
+                <ul class="collection" id="railwayStationsList" th:if="${!#lists.isEmpty(railwayStations)}">
+                    <li class="collection-item station-item"
+                        th:each="station : ${railwayStations}"
+                        th:attr="data-search=${(station.stationCode != null ? station.stationCode : '') + ' ' + station.name + ' ' + (station.nameCy != null ? station.nameCy : '')}">
+                        <div>
+                            <span class="station-code-badge" th:text="${station.stationCode}">DVY</span>
+                            <th:block th:text="${#locale.language == 'cy' and station.nameCy != null and !#strings.isEmpty(station.nameCy) ? station.nameCy : station.name}"></th:block>
+                            <span class="grey-text" th:if="${station.nameCy != null and !#strings.isEmpty(station.nameCy)}"
+                                  th:text="' (' + (${#locale.language == 'cy' ? station.name : station.nameCy}) + ')'"></span>
+
+                            <a th:href="@{/admin/edit_active(id=${station.id})}"
+                               class="secondary-content protected-station-action"
+                               data-action-type="edit"
+                               th:attr="data-poi-id=${station.id},data-confirm-title=#{admin.list.stations.confirm.title},data-confirm-proceed=#{admin.list.stations.confirm.proceedEdit},data-confirm=#{admin.list.stations.confirm.editBody(${station.name}, ${station.stationCode})}"
+                               onclick="return handleProtectedStationAction(event, this)">
+                                <i class="material-icons amber-text text-darken-3" title="Confirm to unlock and edit">lock_outline</i>
+                            </a>
+
+                            <a th:href="@{/poi/delete(id=${station.id})}"
+                               class="secondary-content protected-station-action"
+                               data-action-type="delete"
+                               th:attr="data-poi-id=${station.id},data-confirm-title=#{admin.list.stations.confirm.title},data-confirm-proceed=#{admin.list.stations.confirm.proceedDelete},data-confirm=#{admin.list.stations.confirm.deleteBody(${station.name}, ${station.stationCode})}"
+                               onclick="return handleProtectedStationAction(event, this)">
+                                <i class="material-icons red-text text-darken-2" title="Confirm to delete station">delete_forever</i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col s12 l6" id="busStops" style="margin-bottom: 16px;">
+            <div class="dyfi-card-panel" style="height: 100%; margin-bottom: 0;">
+                <div class="poi-section-header" style="margin-bottom: 12px;">
+                    <h5>
+                        <i class="material-icons amber-text text-darken-3" aria-hidden="true">lock</i>
+                        <span th:text="#{admin.list.busStops.heading}">Bus Stops</span>
+                        <span class="new badge blue darken-2" data-badge-caption="" id="busStopCountBadge" th:text="${#lists.size(busStops)}">0</span>
+                    </h5>
+                </div>
+                <div class="station-notice" th:text="#{admin.list.busStops.notice}">
+                    Bus stops are locked by default. Confirmation is required before editing or removing a stop (for example, if a stop is suspended or removed).
+                </div>
+                <div class="input-field" style="margin-top: 8px; margin-bottom: 8px;">
+                    <i class="material-icons prefix">search</i>
+                    <input id="busStopSearch" type="text"
+                           th:placeholder="#{admin.list.busStops.search}"
+                           placeholder="Filter bus stops by name, village, or ATCO code (e.g. Machynlleth, Borth, 5230)">
+                </div>
+                <p class="grey-text" th:if="${#lists.isEmpty(busStops)}" th:text="#{admin.list.busStops.empty}">
+                    No bus stops loaded.
+                </p>
+                <ul class="collection" id="busStopsList" th:if="${!#lists.isEmpty(busStops)}">
+                    <li class="collection-item station-item bus-stop-item"
+                        th:each="stop : ${busStops}"
+                        th:attr="data-search=${(stop.busStopCode != null ? stop.busStopCode : '') + ' ' + stop.name + ' ' + (stop.nameCy != null ? stop.nameCy : '') + ' ' + (stop.description != null ? stop.description : '')}">
+                        <div>
+                            <span class="bus-code-badge" th:text="${stop.busStopCode}">5230AWD71582</span>
+                            <th:block th:text="${#locale.language == 'cy' and stop.nameCy != null and !#strings.isEmpty(stop.nameCy) ? stop.nameCy : stop.name}"></th:block>
+                            <span class="grey-text" th:if="${stop.nameCy != null and !#strings.isEmpty(stop.nameCy)}"
+                                  th:text="' (' + (${#locale.language == 'cy' ? stop.name : stop.nameCy}) + ')'"></span>
+
+                            <a th:href="@{/admin/edit_active(id=${stop.id})}"
+                               class="secondary-content protected-station-action"
+                               data-action-type="edit"
+                               th:attr="data-poi-id=${stop.id},data-confirm-title=#{admin.list.busStops.confirm.title},data-confirm-proceed=#{admin.list.stations.confirm.proceedEdit},data-confirm=#{admin.list.busStops.confirm.editBody(${stop.name}, ${stop.busStopCode})}"
+                               onclick="return handleProtectedStationAction(event, this)">
+                                <i class="material-icons amber-text text-darken-3" title="Confirm to unlock and edit">lock_outline</i>
+                            </a>
+
+                            <a th:href="@{/poi/delete(id=${stop.id})}"
+                               class="secondary-content protected-station-action"
+                               data-action-type="delete"
+                               th:attr="data-poi-id=${stop.id},data-confirm-title=#{admin.list.busStops.confirm.title},data-confirm-proceed=#{admin.list.busStops.confirm.proceedDelete},data-confirm=#{admin.list.busStops.confirm.deleteBody(${stop.name}, ${stop.busStopCode})}"
+                               onclick="return handleProtectedStationAction(event, this)">
+                                <i class="material-icons red-text text-darken-2" title="Confirm to delete bus stop">delete_forever</i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12 m6" id="pointsOfInterest">
-            <ul class="collection">
-                <li class="collection-item" th:each="poi : ${pointsOfInterest}">
-                    <div>
-                        <th:block th:text="${poi.name}"></th:block>
-                        <a th:href="@{/admin/edit_active(id=${poi.id})}" class="secondary-content">
-                            <i class="material-icons">
-                                send
-                            </i>
-                        </a>
+</main>
 
-                        <a th:href="@{/poi/delete(id=${poi.id})}"
-                           onclick="return confirm('Are you sure you want to delete this?')" class="secondary-content">
-                            <i id="delete" class="material-icons">
-                                delete_forever
-                            </i>
-                        </a>
-                        
-                    </div>
-                </li>
-            </ul>
-        </div>
+<!-- Confirmation Dialog for Protected Transport POIs (Railway Stations & Bus Stops) -->
+<div id="stationConfirmModal" class="modal dyfi-modal">
+    <div class="modal-content">
+        <h5 id="stationConfirmTitle" th:text="#{admin.list.stations.confirm.title}">Confirm Railway Station Change</h5>
+        <p id="stationConfirmMessage"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-grey btn-flat"
+           th:text="#{admin.list.stations.confirm.cancel}">Cancel</a>
+        <a id="stationConfirmProceed" href="#!" class="waves-effect waves-light btn orange darken-2"></a>
+        <form id="protectedDeleteForm" th:action="@{/poi/delete}" method="post" class="dyfi-inline-form" style="display:none;">
+            <input type="hidden" id="protectedDeleteId" name="id" value="">
+            <button id="stationConfirmDeleteSubmit" type="submit" class="waves-effect waves-light btn red darken-2"></button>
+        </form>
     </div>
 </div>
 
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+<script th:inline="javascript">
+    var stationConfirmEditLabel = /*[[#{admin.list.stations.confirm.proceedEdit}]]*/ 'Proceed to Edit';
+    var stationConfirmDeleteLabel = /*[[#{admin.list.stations.confirm.proceedDelete}]]*/ 'Delete Station';
+    var stationConfirmDefaultTitle = /*[[#{admin.list.stations.confirm.title}]]*/ 'Confirm Change';
+    var stationModalInstance = null;
 
+    function bindTransportFilter(inputId, listId, badgeId) {
+        var searchInput = document.getElementById(inputId);
+        var list = document.getElementById(listId);
+        var badge = document.getElementById(badgeId);
+        if (!searchInput || !list) {
+            return;
+        }
+        var items = Array.prototype.slice.call(list.querySelectorAll('.station-item'));
+        searchInput.addEventListener('input', function () {
+            var query = searchInput.value.trim().toLowerCase();
+            var visible = 0;
+            for (var i = 0; i < items.length; i++) {
+                var haystack = (items[i].getAttribute('data-search') || '').toLowerCase();
+                var match = !query || haystack.indexOf(query) !== -1;
+                items[i].style.display = match ? '' : 'none';
+                if (match) {
+                    visible++;
+                }
+            }
+            if (badge) {
+                badge.textContent = query ? (visible + ' / ' + items.length) : String(items.length);
+            }
+        });
+    }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        var modalEl = document.getElementById('stationConfirmModal');
+        if (modalEl && window.M && M.Modal) {
+            stationModalInstance = M.Modal.init(modalEl);
+        }
 
-<fragment th:replace="fragments/footer :: footer"></fragment>
+        bindTransportFilter('generalSearch', 'generalPoisList', 'generalCountBadge');
+        bindTransportFilter('stationSearch', 'railwayStationsList', 'stationCountBadge');
+        bindTransportFilter('busStopSearch', 'busStopsList', 'busStopCountBadge');
+    });
+
+    function handleProtectedStationAction(event, link) {
+        var message = link.getAttribute('data-confirm') || 'Are you sure?';
+        var title = link.getAttribute('data-confirm-title') || stationConfirmDefaultTitle;
+        var proceedLabel = link.getAttribute('data-confirm-proceed');
+        var actionType = link.getAttribute('data-action-type');
+        var targetUrl = link.getAttribute('href');
+        var poiId = link.getAttribute('data-poi-id');
+
+        if (stationModalInstance) {
+            event.preventDefault();
+            var titleEl = document.getElementById('stationConfirmTitle');
+            var messageEl = document.getElementById('stationConfirmMessage');
+            var proceedBtn = document.getElementById('stationConfirmProceed');
+            var deleteForm = document.getElementById('protectedDeleteForm');
+            var deleteIdInput = document.getElementById('protectedDeleteId');
+            var deleteSubmitBtn = document.getElementById('stationConfirmDeleteSubmit');
+
+            if (titleEl) {
+                titleEl.textContent = title;
+            }
+            if (messageEl) {
+                messageEl.textContent = message;
+            }
+            if (actionType === 'delete' && deleteForm && deleteIdInput && deleteSubmitBtn) {
+                if (proceedBtn) proceedBtn.style.display = 'none';
+                deleteIdInput.value = poiId || '';
+                deleteSubmitBtn.textContent = proceedLabel || stationConfirmDeleteLabel;
+                deleteForm.style.display = 'inline-block';
+            } else {
+                if (deleteForm) deleteForm.style.display = 'none';
+                if (proceedBtn) {
+                    proceedBtn.setAttribute('href', targetUrl);
+                    proceedBtn.textContent = proceedLabel || stationConfirmEditLabel;
+                    proceedBtn.className = 'waves-effect waves-light btn orange darken-2';
+                    proceedBtn.style.display = 'inline-block';
+                }
+            }
+            stationModalInstance.open();
+            return false;
+        }
+        return false;
+    }
+</script>
 </body>
 </html>

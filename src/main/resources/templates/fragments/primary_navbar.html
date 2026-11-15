@@ -17,18 +17,41 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-</head>
-
+<head><title></title></head>
 <body>
-<nav class="light-blue" id="primary-navbar" th:fragment="primaryNavbar">
-    <div class="nav-wrapper">
-        <a class="brand-logo" href="/">Dyfi Wildlife Centre</a>
-        <ul class="right" id="nav-mobile">
-            <li><a href="/admin">Admin Panel</a></li>
-        </ul>
-    </div>
-</nav>
+<div th:fragment="primaryNavbar" th:remove="tag">
+    <nav class="dyfi-navbar" id="primary-navbar">
+        <div class="nav-wrapper">
+            <div style="display:flex; align-items:center; min-width:0;">
+                <a href="#" data-target="primary-mobile-nav" class="sidenav-trigger hide-on-large-only"
+                   aria-label="Open menu">
+                    <i class="material-icons">menu</i>
+                </a>
+                <a class="brand-logo" href="/">
+                    <i class="material-icons hide-on-small-only" aria-hidden="true">explore</i>
+                    <span th:text="#{brand.name}">Dyfi Wildlife Centre</span>
+                </a>
+            </div>
+            <ul class="right hide-on-med-and-down dyfi-nav-links" id="nav-mobile">
+                <li th:if="${kioskMode}">
+                    <span id="kioskModeBadge" class="chip amber darken-3 white-text" style="margin: 0 6px; font-weight: 700;" th:text="#{kiosk.badge}">Kiosk Mode</span>
+                </li>
+                <li><a class="lang-switch" data-lang="en" th:href="${kioskMode} ? '?lang=en&amp;kiosk=true' : '?lang=en'">English</a></li>
+                <li><a class="lang-switch" data-lang="cy" th:href="${kioskMode} ? '?lang=cy&amp;kiosk=true' : '?lang=cy'">Cymraeg</a></li>
+                <li th:unless="${kioskMode}">
+                    <a id="adminNavLink" class="dyfi-nav-admin-link" href="/admin" th:text="#{nav.adminPanel}">Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="primary-mobile-nav">
+        <li><a th:href="${kioskMode} ? '/?kiosk=true' : '/'"><i class="material-icons">map</i><span th:text="#{nav.homeMap}">Visitor Map</span></a></li>
+        <li th:unless="${kioskMode}"><a href="/admin"><i class="material-icons">admin_panel_settings</i><span th:text="#{nav.adminPanel}">Admin Panel</span></a></li>
+        <li class="divider"></li>
+        <li><a class="lang-switch" data-lang="en" th:href="${kioskMode} ? '?lang=en&amp;kiosk=true' : '?lang=en'"><i class="material-icons">language</i>English</a></li>
+        <li><a class="lang-switch" data-lang="cy" th:href="${kioskMode} ? '?lang=cy&amp;kiosk=true' : '?lang=cy'"><i class="material-icons">language</i>Cymraeg</a></li>
+    </ul>
+</div>
 </body>
 </html>

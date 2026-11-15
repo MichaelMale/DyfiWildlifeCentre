@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
+</head>
+<body>
+
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('sightings')}"></fragment>
+
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+
+    <div class="dyfi-page-header">
+        <h1 th:text="#{admin.sightings.heading}">Wildlife Sightings Log</h1>
+        <p th:text="#{admin.sightings.subheading}">Record seasonal bird and reserve wildlife sightings visible in the visitor feed.</p>
+    </div>
+
+    <div class="dyfi-card-panel">
+        <h5 style="margin-top:0; font-weight:600;" th:text="#{admin.sightings.addHeading}">Log New Sighting</h5>
+        <form th:action="@{/admin/sightings/create}" method="post" th:object="${newSighting}">
+            <div class="row">
+                <div class="input-field col s12 m4">
+                    <input id="species" type="text" th:field="*{species}" required placeholder="e.g. Osprey, Red Kite, Otter">
+                    <label class="active" for="species" th:text="#{admin.sightings.speciesEn}">Species (English)</label>
+                </div>
+                <div class="input-field col s12 m4">
+                    <input id="speciesCy" type="text" th:field="*{speciesCy}" placeholder="e.g. Gwalch y Pysgod, Barcud Coch">
+                    <label class="active" for="speciesCy" th:text="#{admin.sightings.speciesCy}">Species (Welsh)</label>
+                </div>
+                <div class="input-field col s12 m4">
+                    <input id="locationName" type="text" th:field="*{locationName}" placeholder="e.g. 360 Observatory / Boardwalk">
+                    <label class="active" for="locationName" th:text="#{admin.sightings.location}">Location on Reserve</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <textarea id="notes" class="materialize-textarea" th:field="*{notes}"></textarea>
+                    <label for="notes" th:text="#{admin.sightings.notesEn}">Observation Notes (English)</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <textarea id="notesCy" class="materialize-textarea" th:field="*{notesCy}"></textarea>
+                    <label for="notesCy" th:text="#{admin.sightings.notesCy}">Observation Notes (Welsh)</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn waves-effect waves-light dyfi-btn-primary">
+                <i class="material-icons left">add_circle</i>
+                <span th:text="#{admin.sightings.submit}">Log Sighting</span>
+            </button>
+        </form>
+    </div>
+
+    <div class="dyfi-card-panel" style="overflow-x:auto;">
+        <h5 style="margin-top:0; font-weight:600;" th:text="#{admin.sightings.recent}">Recorded Sightings</h5>
+        <table class="striped highlight">
+            <thead>
+            <tr>
+                <th th:text="#{admin.sightings.speciesEn}">Species</th>
+                <th th:text="#{admin.sightings.location}">Location</th>
+                <th th:text="#{admin.sightings.notesEn}">Notes</th>
+                <th th:text="#{admin.sightings.when}">Recorded</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${sightings}">
+                <td>
+                    <strong th:text="${item.species}">Osprey</strong>
+                    <div class="grey-text" th:if="${item.speciesCy != null}" th:text="${item.speciesCy}"></div>
+                </td>
+                <td th:text="${item.locationName}">360 Hide</td>
+                <td th:text="${item.notes}"></td>
+                <td th:text="${#temporals.format(item.sightedAt, 'dd MMM yyyy HH:mm')}"></td>
+                <td>
+                    <form th:action="@{/admin/sightings/delete}" method="post" class="dyfi-inline-form">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <button type="submit" class="dyfi-icon-action-btn" aria-label="Delete sighting">
+                            <i class="material-icons red-text text-darken-2">delete</i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+</body>
+</html>

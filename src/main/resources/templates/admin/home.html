@@ -16,40 +16,134 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Admin Panel</title>
-    <style>
-        #promptUsername {
-            margin-left: 30px !important;
-        }
-
-        #promptSignOut {
-            margin-right: 30px !important;
-        }
-    </style>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
 </head>
 <body>
 
-<fragment th:replace="fragments/admin_navbar :: adminNavbar"></fragment>
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('home')}"></fragment>
 
-<div class="container ui">
-    <div class="row">
-        <div class="col s12 m6">
-            <h5>Hello, <span th:text="${
-    T(org.springframework.security.core.context.SecurityContextHolder)
-      .context.authentication.principal.username}"></span>!</h5>
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+    <div class="dyfi-page-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h1><span th:text="#{admin.home.hello}">Hello,</span> <span sec:authentication="name"></span>!</h1>
+            <p th:text="#{admin.home.intro}">Use the quick actions below to add new reserve locations, manage transport stops and POIs, or maintain staff accounts.</p>
+        </div>
+        <a href="/" class="btn waves-effect waves-light dyfi-btn-primary">
+            <i class="material-icons left" aria-hidden="true">map</i>
+            <span th:text="#{admin.home.viewMap}">View Visitor Map</span>
+        </a>
+    </div>
+
+    <div class="row" style="display:flex; flex-wrap:wrap;">
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons teal-text text-darken-2" aria-hidden="true">add_location_alt</i>
+                        <span th:text="#{admin.home.card.add.title}">Add Point of Interest</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.add.desc}">
+                        Create a new wildlife sight, local business, or transport stop using a UK postcode or coordinates.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/add" class="teal-text text-darken-2" th:text="#{nav.add}">Add</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons blue-text text-darken-2" aria-hidden="true">list_alt</i>
+                        <span th:text="#{admin.home.card.list.title}">Manage POIs &amp; Transport</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.list.desc}">
+                        Browse, edit, or safely manage protected Welsh railway stations, bus stops, and reserve entries.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/list" class="teal-text text-darken-2" th:text="#{nav.list}">List</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons amber-text text-darken-3" aria-hidden="true">group</i>
+                        <span th:text="#{admin.home.card.users.title}">Manage Staff Users</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.users.desc}">
+                        Register new administrator accounts or remove access for former team members.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/users" class="teal-text text-darken-2" th:text="#{nav.users}">Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons red-text text-darken-2" aria-hidden="true">videocam</i>
+                        <span th:text="#{admin.home.card.webcams.title}">Live Webcams</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.webcams.desc}">
+                        Manage YouTube live embeds and seasonal nest camera streams shown to visitors.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/webcams" class="teal-text text-darken-2" th:text="#{nav.webcams}">Webcams</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons amber-text text-darken-3" aria-hidden="true">visibility</i>
+                        <span th:text="#{admin.home.card.sightings.title}">Wildlife Sightings</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.sightings.desc}">
+                        Log osprey arrivals, estuary birds, and seasonal reserve sightings for the map feed.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/sightings" class="teal-text text-darken-2" th:text="#{nav.sightings}">Sightings</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m4" style="margin-bottom:16px;">
+            <div class="card dyfi-dash-card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons green-text text-darken-2" aria-hidden="true">upload_file</i>
+                        <span th:text="#{admin.home.card.import.title}">Transport CSV Sync</span>
+                    </span>
+                    <p class="grey-text text-darken-1" th:text="#{admin.home.card.import.desc}">
+                        Upload updated Welsh rail station or NaPTAN bus stop CSV datasets directly.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/import" class="teal-text text-darken-2" th:text="#{nav.import}">CSV Sync</a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12 m6">
-            <p>To add a POI, click on the Add tab. To see a List, click on
-                List. To add or edit a user, click on Users.</p>
-        </div>
-    </div>
-</div>
-<fragment th:replace="fragments/footer :: footer"></fragment>
+</main>
+
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
 </html>

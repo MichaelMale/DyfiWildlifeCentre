@@ -25,11 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.co.montwt.dyfiwildlifecentre.exception.PostcodeException;
 import uk.co.montwt.dyfiwildlifecentre.model.PointOfInterest;
+import uk.co.montwt.dyfiwildlifecentre.service.ImageStorageService;
 import uk.co.montwt.dyfiwildlifecentre.service.PointOfInterestServiceImpl;
 
 import java.io.IOException;
@@ -47,11 +50,14 @@ import java.util.List;
 public class PointOfInterestController{
 
     private final PointOfInterestServiceImpl pointOfInterestService;
+    private final ImageStorageService imageStorageService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public PointOfInterestController(PointOfInterestServiceImpl pointOfInterestService) {
+    public PointOfInterestController(PointOfInterestServiceImpl pointOfInterestService,
+                                     ImageStorageService imageStorageService) {
         this.pointOfInterestService = pointOfInterestService;
+        this.imageStorageService = imageStorageService;
     }
 
     /**
@@ -84,9 +90,21 @@ public class PointOfInterestController{
      * of interest.
      */
     @PostMapping("/poi/form_create")
-    public View submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest) throws IOException {
+    public View submitPointOfInterest(@ModelAttribute PointOfInterest pointOfInterest,
+                                      @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                      RedirectAttributes redirectAttributes)
+            throws IOException {
+        if (pointOfInterest.getStationCode() != null && pointOfInterest.getStationCode().isBlank()) {
+            pointOfInterest.setStationCode(null);
+        }
+        if (pointOfInterest.getBusStopCode() != null && pointOfInterest.getBusStopCode().isBlank()) {
+            pointOfInterest.setBusStopCode(null);
+        }
+        applyUploadedImage(pointOfInterest, imageFile);
         pointOfInterestService.save(pointOfInterest);
         logger.info("POI saved: \n" + pointOfInterest.toString());
+        redirectAttributes.addFlashAttribute("flashSuccessKey", "admin.flash.poiCreated");
+        redirectAttributes.addFlashAttribute("flashSuccessArg", pointOfInterest.getName());
         return new RedirectView("/index");
     }
 
@@ -108,9 +126,11 @@ public class PointOfInterestController{
      * @param id ID pertaining to the Point of Interest.
      * @return POI that was deleted.
      */
-    @GetMapping("/poi/delete")
-    public RedirectView deletePointOfInterestById(@RequestParam("id") long id) {
+    @PostMapping("/poi/delete")
+    public RedirectView deletePointOfInterestById(@RequestParam("id") long id,
+                                                  RedirectAttributes redirectAttributes) {
         pointOfInterestService.delete(id);
+        redirectAttributes.addFlashAttribute("flashSuccessKey", "admin.flash.poiDeleted");
         return new RedirectView("/admin/list");
     }
 
@@ -123,20 +143,34 @@ public class PointOfInterestController{
      */
     @PostMapping("/poi/update")
     public RedirectView updatePointOfInterest(@ModelAttribute PointOfInterest poi,
-                                              @RequestParam("id") long id) throws IOException {
+                                              @RequestParam("id") long id,
+                                              @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                              RedirectAttributes redirectAttributes)
+            throws IOException {
         poi.setId(id);
+        if (poi.getStationCode() != null && poi.getStationCode().isBlank()) {
+            poi.setStationCode(null);
+        }
+        if (poi.getBusStopCode() != null && poi.getBusStopCode().isBlank()) {
+            poi.setBusStopCode(null);
+        }
+        applyUploadedImage(poi, imageFile);
         pointOfInterestService.update(poi);
+        redirectAttributes.addFlashAttribute("flashSuccessKey", "admin.flash.poiUpdated");
+        redirectAttributes.addFlashAttribute("flashSuccessArg", poi.getName());
         return new RedirectView("/");
     }
 
-    /**
-     * Handles a postcode exception.
-     * @param ex    Exception that is thrown when there is a postcode error.
-     * @return  Model containing an error message and view containing an
-     * Error 400 template.
-     */
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(PostcodeException.class)
+    private void applyUploadedImage(PointOfInterest poi, MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            poi.setImageUrl(imageStorageService.storeImage(imageFile));
+        } else if (poi.getImageUrl() != null && poi.getImageUrl().isBlank()) {
+            poi.setImageUrl(null);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({PostcodeException.class, IllegalArgumentException.class})
     public ModelAndView invalidPostcode(Exception ex) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", ex.getMessage());
@@ -155,22 +189,22 @@ public class PointOfInterestController{
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ModelAndView dataIntegrityViolation(DataIntegrityViolationException ex) {
         ModelAndView mav = new ModelAndView();
-        String nameOfViolatedConstraint =
-                ((ConstraintViolationException)ex.getCause()).getConstraintName();
+        String nameOfViolatedConstraint = null;
+        if (ex.getCause() instanceof ConstraintViolationException) {
+            nameOfViolatedConstraint =
+                    ((ConstraintViolationException) ex.getCause()).getConstraintName();
+        }
         String errorMessage;
         // Checks if a localised error message can be provided, based upon
         // the violated constraint.
-        switch (nameOfViolatedConstraint) {
-            case "points_of_interest_latitude_longitude_key":
-                errorMessage = "There is already a POI with this location.";
-                break;
-            case "latitude_not_null_island_chk":
-            case "longitude_not_null_island_chk":
-                errorMessage = "No location or an invalid location has been " +
-                        "entered, please try again";
-                break;
-            default:
-                errorMessage = ex.getMostSpecificCause().getMessage();
+        if ("points_of_interest_latitude_longitude_key".equals(nameOfViolatedConstraint)) {
+            errorMessage = "There is already a POI with this location.";
+        } else if ("latitude_not_null_island_chk".equals(nameOfViolatedConstraint)
+                || "longitude_not_null_island_chk".equals(nameOfViolatedConstraint)) {
+            errorMessage = "No location or an invalid location has been " +
+                    "entered, please try again";
+        } else {
+            errorMessage = ex.getMostSpecificCause().getMessage();
         }
         mav.addObject("exception", errorMessage);
         mav.setViewName("error/400");

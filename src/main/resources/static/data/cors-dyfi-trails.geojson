@@ -1,0 +1,82 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "boardwalk-accessible-loop",
+        "kind": "accessible_trail",
+        "nameEn": "Cors Dyfi Accessible Boardwalk Loop",
+        "nameCy": "Llwybr Bwrdd Hygyrch Cors Dyfi",
+        "descriptionEn": "Wheelchair and buggy-friendly boardwalk route from the Visitor Centre across raised bog to the Observatory.",
+        "descriptionCy": "Llwybr bwrdd hygyrch i gadeiriau olwyn a bygis o'r Ganolfan Ymwelwyr ar draws y gors i'r Arsyllfa.",
+        "color": "#00897b",
+        "dash": null
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-3.918031, 52.568774],
+          [-3.919100, 52.569180],
+          [-3.920450, 52.569520],
+          [-3.921280, 52.569020],
+          [-3.920050, 52.568350],
+          [-3.918650, 52.568450],
+          [-3.918031, 52.568774]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "estuary-hide-trail",
+        "kind": "footpath",
+        "nameEn": "Dyfi Estuary & Willow Hide Trail",
+        "nameCy": "Llwybr Aber Dyfi a Chuddfan yr Helyg",
+        "descriptionEn": "Nature footpath winding south-west from the boardwalk loop toward the reedbeds and estuary viewpoints.",
+        "descriptionCy": "Llwybr troed natur yn troelli tua'r de-orllewin o'r llwybr bwrdd tua'r cyrs a gwylfannau'r aber.",
+        "color": "#ef6c00",
+        "dash": "7, 7"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-3.920450, 52.569520],
+          [-3.922150, 52.569820],
+          [-3.923450, 52.569280],
+          [-3.922900, 52.568250]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "360-observatory-hide",
+        "kind": "hide",
+        "nameEn": "360° Observatory Hide",
+        "nameCy": "Arsyllfa 360°",
+        "descriptionEn": "Panoramic wooden observatory overlooking the osprey nesting platform and wet grassland.",
+        "descriptionCy": "Arsyllfa bren banoramig yn edrych dros lwyfan nythu gwalch y pysgod a'r glaswelltir gwlyb."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.920450, 52.569520]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "osprey-nest-platform",
+        "kind": "nest",
+        "nameEn": "Dyfi Osprey Nesting Platform",
+        "nameCy": "Llwyfan Nythu Gwalch y Pysgod Dyfi",
+        "descriptionEn": "Seasonal osprey nest monitored daily via the live Observatory camera.",
+        "descriptionCy": "Nyth tymhorol gwalch y pysgod dan wyliadwriaeth ddyddiol drwy gamera byw'r Arsyllfa."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.921950, 52.569100]
+      }
+    }
+  ]
+}

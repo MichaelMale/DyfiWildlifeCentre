@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
+</head>
+<body>
+
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('import')}"></fragment>
+
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+
+    <div class="dyfi-page-header">
+        <h1 th:text="#{admin.import.heading}">Transport CSV Sync &amp; Import</h1>
+        <p th:text="#{admin.import.subheading}">Upsert Welsh railway stations and local NaPTAN bus stops from CSV files without duplicating existing POIs.</p>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m6" style="margin-bottom:16px;">
+            <div class="dyfi-card-panel">
+                <h5 style="margin-top:0; font-weight:600; display:flex; align-items:center; gap:8px;">
+                    <i class="material-icons teal-text text-darken-2">train</i>
+                    <span th:text="#{admin.import.stations.title}">Railway Stations CSV</span>
+                </h5>
+                <p class="grey-text text-darken-1">
+                    <span th:text="#{admin.import.stations.count}">Currently loaded stations:</span>
+                    <strong th:text="${stationCount}">0</strong>
+                </p>
+                <p class="grey-text" style="font-size:0.88rem;" th:text="#{admin.import.stations.format}">
+                    Expected headers: station_code, station_name, latitude, longitude
+                </p>
+
+                <form th:action="@{/admin/import/stations}" method="post" enctype="multipart/form-data">
+                    <div class="file-field input-field">
+                        <div class="btn dyfi-btn-primary">
+                            <span th:text="#{admin.import.chooseFile}">Choose CSV</span>
+                            <input type="file" name="file" accept=".csv,text/csv">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" th:placeholder="#{admin.import.optionalBundled}"
+                                   placeholder="Optional (leave blank to sync bundled dataset)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn waves-effect waves-light teal darken-2">
+                        <i class="material-icons left">sync</i>
+                        <span th:text="#{admin.import.syncStations}">Import / Sync Stations</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col s12 m6" style="margin-bottom:16px;">
+            <div class="dyfi-card-panel">
+                <h5 style="margin-top:0; font-weight:600; display:flex; align-items:center; gap:8px;">
+                    <i class="material-icons green-text text-darken-2">directions_bus</i>
+                    <span th:text="#{admin.import.busStops.title}">Bus Stops CSV (NaPTAN)</span>
+                </h5>
+                <p class="grey-text text-darken-1">
+                    <span th:text="#{admin.import.busStops.count}">Currently loaded bus stops:</span>
+                    <strong th:text="${busStopCount}">0</strong>
+                </p>
+                <p class="grey-text" style="font-size:0.88rem;" th:text="#{admin.import.busStops.format}">
+                    Expected headers: ATCOCode, CommonName, Street, LocalityName, Bearing, Latitude, Longitude, Status
+                </p>
+
+                <form th:action="@{/admin/import/bus-stops}" method="post" enctype="multipart/form-data">
+                    <div class="file-field input-field">
+                        <div class="btn dyfi-btn-primary">
+                            <span th:text="#{admin.import.chooseFile}">Choose CSV</span>
+                            <input type="file" name="file" accept=".csv,text/csv">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" th:placeholder="#{admin.import.optionalBundled}"
+                                   placeholder="Optional (leave blank to sync bundled dataset)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn waves-effect waves-light green darken-2">
+                        <i class="material-icons left">sync</i>
+                        <span th:text="#{admin.import.syncBusStops}">Import / Sync Bus Stops</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+</body>
+</html>

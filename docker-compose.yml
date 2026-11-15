@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dyfi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dyfi_wildlife_centre
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dyfi_postgres_dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dyfi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d dyfi_wildlife_centre"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dyfi-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/dyfi_wildlife_centre
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-dyfi_postgres_dev}
+      APP_UPLOAD_DIR: /app/uploads
+      APP_BOOTSTRAP_TRANSPORT: "true"
+      APP_BOOTSTRAP_ADMIN_PASSWORD: ${APP_BOOTSTRAP_ADMIN_PASSWORD:-dyfi2026!}
+    ports:
+      - "8080:8080"
+    volumes:
+      - dyfi_uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  dyfi_pgdata:
+  dyfi_uploads:

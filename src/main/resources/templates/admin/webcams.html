@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{admin.title}">Dyfi Wildlife Centre - Admin Panel</title>
+</head>
+<body>
+
+<fragment th:replace="~{fragments/admin_navbar :: adminNavbar('webcams')}"></fragment>
+
+<main class="container dyfi-page-main">
+    <fragment th:replace="~{fragments/flash_banner :: flashBanner}"></fragment>
+
+    <div class="dyfi-page-header">
+        <h1 th:text="#{admin.webcams.heading}">Reserve Webcams</h1>
+        <p th:text="#{admin.webcams.subheading}">Add, update, or toggle active YouTube and video streams shown on the visitor map.</p>
+    </div>
+
+    <div class="dyfi-card-panel">
+        <h5 style="margin-top:0; font-weight:600;" th:text="#{admin.webcams.addHeading}">Add or Update Webcam Feed</h5>
+        <form th:action="@{/admin/webcams/save}" method="post" th:object="${newWebcam}">
+            <div class="row">
+                <div class="input-field col s12 m4">
+                    <input id="slug" type="text" th:field="*{slug}" placeholder="e.g. nest-cam">
+                    <label class="active" for="slug" th:text="#{admin.webcams.slug}">Slug ID (optional)</label>
+                </div>
+                <div class="input-field col s12 m4">
+                    <input id="nameEn" type="text" th:field="*{nameEn}" required placeholder="Osprey Nest Camera">
+                    <label class="active" for="nameEn" th:text="#{poi.form.name.en}">Name (English)</label>
+                </div>
+                <div class="input-field col s12 m4">
+                    <input id="nameCy" type="text" th:field="*{nameCy}" placeholder="Camera Nyth Gwalch y Pysgod">
+                    <label class="active" for="nameCy" th:text="#{poi.form.name.cy}">Name (Welsh)</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input id="descriptionEn" type="text" th:field="*{descriptionEn}" placeholder="Live view of the nesting platform">
+                    <label class="active" for="descriptionEn" th:text="#{poi.form.description.en}">Description (English)</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <input id="descriptionCy" type="text" th:field="*{descriptionCy}" placeholder="Golygfa fyw o'r llwyfan nythu">
+                    <label class="active" for="descriptionCy" th:text="#{poi.form.description.cy}">Description (Welsh)</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input id="streamUrl" type="text" th:field="*{streamUrl}" required
+                           placeholder="https://www.youtube.com/watch?v=YnKZJ3SF5WM">
+                    <label class="active" for="streamUrl" th:text="#{admin.webcams.streamUrl}">Stream URL (YouTube or MP4)</label>
+                </div>
+                <div class="input-field col s12 m3">
+                    <input id="sortOrder" type="number" th:field="*{sortOrder}" value="1">
+                    <label class="active" for="sortOrder" th:text="#{admin.webcams.sortOrder}">Sort Order</label>
+                </div>
+                <div class="col s12 m3" style="padding-top: 22px;">
+                    <label>
+                        <input type="checkbox" th:field="*{active}" checked="checked"/>
+                        <span th:text="#{admin.webcams.active}">Active on Map</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn waves-effect waves-light dyfi-btn-primary">
+                <i class="material-icons left">save</i>
+                <span th:text="#{admin.webcams.save}">Save Webcam</span>
+            </button>
+        </form>
+    </div>
+
+    <div class="dyfi-card-panel" style="overflow-x:auto;">
+        <h5 style="margin-top:0; font-weight:600;" th:text="#{admin.webcams.configured}">Configured Streams</h5>
+        <table class="striped highlight">
+            <thead>
+            <tr>
+                <th th:text="#{admin.webcams.slug}">Slug</th>
+                <th th:text="#{poi.form.name.en}">Name</th>
+                <th th:text="#{admin.webcams.streamUrl}">Stream URL</th>
+                <th th:text="#{admin.webcams.status}">Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cam : ${webcams}">
+                <td th:text="${cam.slug}">nest-cam</td>
+                <td>
+                    <strong th:text="${cam.nameEn}">Osprey Nest</strong>
+                    <div class="grey-text" th:if="${cam.nameCy != null}" th:text="${cam.nameCy}"></div>
+                </td>
+                <td style="max-width:340px; word-break:break-all;" th:text="${cam.streamUrl}"></td>
+                <td>
+                    <span class="chip white-text"
+                          th:classappend="${cam.active} ? 'teal darken-2' : 'grey'"
+                          th:text="${cam.active} ? #{admin.webcams.status.active} : #{admin.webcams.status.inactive}">Active</span>
+                </td>
+                <td>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <form th:action="@{/admin/webcams/toggle}" method="post" class="dyfi-inline-form">
+                            <input type="hidden" name="id" th:value="${cam.id}">
+                            <button type="submit" class="btn-small waves-effect waves-light teal darken-1"
+                                    th:text="${cam.active} ? #{admin.webcams.disable} : #{admin.webcams.enable}">Toggle</button>
+                        </form>
+                        <form th:action="@{/admin/webcams/delete}" method="post" class="dyfi-inline-form"
+                              onsubmit="return confirm('Delete this webcam feed?');">
+                            <input type="hidden" name="id" th:value="${cam.id}">
+                            <button type="submit" class="dyfi-icon-action-btn" aria-label="Delete webcam">
+                                <i class="material-icons red-text text-darken-2">delete</i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+</body>
+</html>

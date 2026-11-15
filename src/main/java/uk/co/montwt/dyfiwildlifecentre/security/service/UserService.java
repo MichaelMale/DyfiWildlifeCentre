@@ -80,6 +80,15 @@ public class UserService {
     }
 
     /**
+     * Finds a user by ID, or returns {@code null} if not found.
+     * @param id    Long containing the user ID
+     * @return      Matching User or null
+     */
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    /**
      * Deletes a user from the database
      * @param id    Long containing the ID of the user to be deleted
      */

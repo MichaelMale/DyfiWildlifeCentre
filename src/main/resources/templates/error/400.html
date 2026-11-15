@@ -17,25 +17,36 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="en_GB">
+      xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre - Error</title>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{error.title}">Dyfi Wildlife Centre - Error</title>
 </head>
 
 <body>
-<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+<fragment th:replace="~{fragments/primary_navbar :: primaryNavbar}"></fragment>
 
-<div class="container ui">
-    <h1>400 - Bad Request</h1>
-    <div>There was an error.
-        Details below.
-    <p th:text="${exception}"></p></div>
-    <p><a class="waves-effect waves-light btn-large"
-          th:href="@{/admin/add}">
-        <i class="material-icons left">arrow_back</i>
-        Return</a>
-</div>
+<main class="container">
+    <div class="dyfi-error-card">
+        <h1>
+            <i class="material-icons red-text text-darken-2" aria-hidden="true">error_outline</i>
+            <span th:text="#{error.400.heading}">400 - Bad Request</span>
+        </h1>
+        <p th:text="#{error.400.body}">There was an error. Details below.</p>
+        <div class="dyfi-alert dyfi-alert--error" th:if="${exception != null}">
+            <span th:text="${exception}"></span>
+        </div>
+        <div class="dyfi-error-actions">
+            <a class="waves-effect waves-light btn dyfi-btn-primary" th:href="@{/admin/add}">
+                <i class="material-icons left">arrow_back</i>
+                <span th:text="#{error.return}">Return</span>
+            </a>
+            <a class="waves-effect btn-flat" th:href="@{/}">
+                <span th:text="#{error.home}">Visitor Map</span>
+            </a>
+        </div>
+    </div>
+</main>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
 </body>
-
 </html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><title></title></head>
+<body>
+
+<div class="modal dyfi-modal" id="sightingsModal" th:fragment="sightingsModal"
+     th:data-empty-label="#{sightings.empty}"
+     th:data-recorded-prefix="#{sightings.recordedBy}">
+    <div class="modal-content">
+        <h5 style="display:flex; align-items:center; gap:8px; margin-top:0;">
+            <i class="material-icons amber-text text-darken-3" aria-hidden="true">visibility</i>
+            <span th:text="#{sightings.title}">Latest Wildlife Sightings</span>
+        </h5>
+        <p class="grey-text text-darken-1" th:text="#{sightings.subtitle}">
+            Recent species spotted by wardens and visitors around Cors Dyfi Nature Reserve.
+        </p>
+
+        <ul id="sightingsFeedList" class="collection" style="max-height: 360px; overflow-y: auto; border-radius: 8px;"></ul>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn-flat" th:text="#{poi.card.close}">Close</a>
+    </div>
+</div>
+
+</body>
+</html>

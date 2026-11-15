@@ -16,47 +16,115 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <fragment th:replace="fragments/header :: header"></fragment>
-    <title>Dyfi Wildlife Centre</title>
-    <link rel="stylesheet" th:href="@{/css/customIndexStyle.min.css}"
-          type="text/css"/>
-    <script async="" th:src="@{/js/lazysizes.min.js}"></script>
-    <script
-            src="https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function(){
-            $('.fixed-action-btn').floatingActionButton();
-            $('.tooltipped').tooltip();
-        });
-    </script>
+    <fragment th:replace="~{fragments/header :: header}"></fragment>
+    <title th:text="#{app.title}">Dyfi Wildlife Centre</title>
+    <link rel="stylesheet" th:href="@{/css/customIndexStyle.css}" type="text/css"/>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+          integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc="
+          crossorigin=""/>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+          integrity="sha256-YSWCMtmNZNwqex4CEw1nQhvFub2lmU7vcCKP+XVwwXA="
+          crossorigin=""/>
 </head>
-<body>
+<body class="dyfi-map-page">
 
-<fragment th:replace="fragments/primary_navbar :: primaryNavbar"></fragment>
+<fragment th:replace="~{fragments/primary_navbar :: primaryNavbar}"></fragment>
 
-<div class="col s12 m6" id="map">
-</div>
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large red tooltipped" data-position="left" data-tooltip="Filters"><i class="large material-icons">filter_list</i></a>
-    <ul>
-        <li><a class="btn-floating red tooltipped" onclick="panicButton()" data-position="left" data-tooltip="Reset"><i class="material-icons">error</i></a></li>
-        <li><a class="btn-floating orange tooltipped" onclick="filterMarkers()" data-position="left" data-tooltip="Everything"><i class="material-icons">all_inclusive</i></a></li>
-        <li><a class="btn-floating purple tooltipped" onclick="filterMarkers('business')" data-position="left" data-tooltip="Businesses"><i class="material-icons">business</i></a></li>
-        <li><a class="btn-floating green tooltipped" onclick="filterMarkers('transport')" data-position="left" data-tooltip="Transportation"><i class="material-icons" >train</i></a></li>
-        <li><a class="btn-floating blue tooltipped" onclick="filterMarkers('wildlife')" data-position="left" data-tooltip="Wildlife"><i class="material-icons">emoji_nature</i></a></li>
-    </ul>
-</div>
+<main class="dyfi-map-stage">
+    <div id="map"></div>
 
-<fragment th:replace="fragments/poi_card :: poiCard"></fragment>
+    <div class="dyfi-map-controls" role="region" aria-label="Map search and filters">
+        <div class="dyfi-map-search-wrap">
+            <div class="dyfi-map-search-box">
+                <i class="material-icons" aria-hidden="true">search</i>
+                <input id="mapSearchInput" type="search" autocomplete="off"
+                       th:placeholder="#{map.search.placeholder}"
+                       th:attr="aria-label=#{map.search.placeholder}"
+                       placeholder="Search reserve POIs, stations, or bus stops...">
+                <button type="button" id="mapSearchClear" class="dyfi-search-clear-btn"
+                        style="display:none;" aria-label="Clear search">
+                    <i class="material-icons" style="font-size:18px;">close</i>
+                </button>
+            </div>
+            <ul id="mapSearchResults" class="dyfi-search-results"
+                th:data-empty-label="#{map.search.noResults}"></ul>
+        </div>
 
-<script th:src="@{/js/googlemaps.js}">
+        <div class="dyfi-filter-bar" role="group" aria-label="Point of interest filters">
+            <button type="button" class="dyfi-filter-pill active" data-filter="all"
+                    onclick="filterMarkers()" aria-pressed="true">
+                <i class="material-icons" aria-hidden="true">layers</i>
+                <span th:text="#{map.filter.all}">All</span>
+            </button>
+            <button type="button" class="dyfi-filter-pill dyfi-filter-pill--wildlife" data-filter="wildlife"
+                    onclick="filterMarkers('wildlife')" aria-pressed="false">
+                <i class="material-icons" aria-hidden="true">emoji_nature</i>
+                <span th:text="#{map.filter.wildlife}">Wildlife</span>
+            </button>
+            <button type="button" class="dyfi-filter-pill dyfi-filter-pill--transport" data-filter="transport"
+                    onclick="filterMarkers('transport')" aria-pressed="false">
+                <i class="material-icons" aria-hidden="true">train</i>
+                <span th:text="#{map.filter.transport}">Transport</span>
+            </button>
+            <button type="button" class="dyfi-filter-pill dyfi-filter-pill--business" data-filter="business"
+                    onclick="filterMarkers('business')" aria-pressed="false">
+                <i class="material-icons" aria-hidden="true">business</i>
+                <span th:text="#{map.filter.business}">Business</span>
+            </button>
+            <button type="button" class="dyfi-filter-pill dyfi-filter-pill--reset tooltipped"
+                    data-position="bottom" th:data-tooltip="#{filter.tooltip.reset}"
+                    onclick="panicButton()">
+                <i class="material-icons" aria-hidden="true">my_location</i>
+                <span th:text="#{map.filter.reset}">Centre Map</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="map-quick-actions" class="dyfi-quick-actions">
+        <button type="button" class="btn waves-effect waves-light light-blue darken-2" onclick="openDirectionsModal()">
+            <i class="material-icons left" aria-hidden="true">directions</i>
+            <span th:text="#{directions.button}">Directions</span>
+        </button>
+        <button type="button" class="btn waves-effect waves-light teal darken-2" onclick="openWebcamModal()">
+            <i class="material-icons left" aria-hidden="true">videocam</i>
+            <span th:text="#{webcams.button}">Osprey Webcam</span>
+        </button>
+        <button type="button" id="openSightingsBtn" class="btn waves-effect waves-light amber darken-3" onclick="openSightingsModal()">
+            <i class="material-icons left" aria-hidden="true">visibility</i>
+            <span th:text="#{sightings.button}">Latest Sightings</span>
+        </button>
+        <span id="quickWebcamButtons"></span>
+    </div>
+</main>
+
+<fragment th:replace="~{fragments/poi_card :: poiCard}"></fragment>
+<fragment th:replace="~{fragments/directions_modal :: directionsModal}"></fragment>
+<fragment th:replace="~{fragments/webcam_modal :: webcamModal}"></fragment>
+<fragment th:replace="~{fragments/sightings_modal :: sightingsModal}"></fragment>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+        integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg="
+        crossorigin=""></script>
+<script th:src="@{/js/osm-map.js}"></script>
+<fragment th:replace="~{fragments/footer :: footer}"></fragment>
+<script th:inline="javascript" th:if="${flashSuccessKey != null}">
+    document.addEventListener('DOMContentLoaded', function () {
+        var msg = /*[[${flashSuccessArg != null} ? ${#messages.msg(flashSuccessKey, flashSuccessArg)} : ${#messages.msg(flashSuccessKey)}]]*/ '';
+        if (msg && window.M && M.toast) {
+            M.toast({ html: msg, classes: 'teal darken-2' });
+        }
+    });
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBORcn8smmSs49a79sVJoW5Zpk-p4HxfQg&callback=initMap"></script>
-<fragment th:replace="fragments/footer :: footer"></fragment>
 </body>
-
 </html>

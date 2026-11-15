@@ -30,7 +30,9 @@ import uk.co.montwt.dyfiwildlifecentre.security.model.User;
 import uk.co.montwt.dyfiwildlifecentre.security.service.SecurityService;
 import uk.co.montwt.dyfiwildlifecentre.security.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -81,10 +83,12 @@ public class UserController {
      * @return  String containing the admin panel homepage.
      */
     @PostMapping("/admin/register")
-    public String register(@ModelAttribute("userForm") User userForm) {
+    public String register(@ModelAttribute("userForm") User userForm, Model model) {
+        String rawPassword = userForm.getPassword();
         userService.save(userForm);
-        securityService.autoLogin(userForm.getUsername(),
-                userForm.getPassword());
+        securityService.autoLogin(userForm.getUsername(), rawPassword);
+        model.addAttribute("flashSuccessKey", "admin.flash.userCreated");
+        model.addAttribute("flashSuccessArg", userForm.getUsername());
         return "admin/home";
     }
 
@@ -102,13 +106,24 @@ public class UserController {
 
     /**
      * Manages a request to delete a user from the database.
+     * Prevents deleting the currently authenticated account.
      *
      * @param id    Long containing the ID of the User to be deleted
+     * @param principal Current authenticated principal
+     * @param redirectAttributes Flash attributes for confirmation feedback
      * @return  A redirect to the user list
      */
-    @GetMapping("/users/delete")
-    public RedirectView deleteUserByUsername(@RequestParam("id") Long id) {
+    @PostMapping("/users/delete")
+    public RedirectView deleteUserByUsername(@RequestParam("id") Long id,
+                                             Principal principal,
+                                             RedirectAttributes redirectAttributes) {
+        User target = userService.findById(id);
+        if (target != null && principal != null && target.getUsername().equals(principal.getName())) {
+            redirectAttributes.addFlashAttribute("flashErrorKey", "admin.flash.cannotDeleteSelf");
+            return new RedirectView("/admin/users");
+        }
         userService.delete(id);
+        redirectAttributes.addFlashAttribute("flashSuccessKey", "admin.flash.userDeleted");
         return new RedirectView("/admin/users");
     }
 
@@ -120,7 +135,7 @@ public class UserController {
      * @param ex    Contains the exception
      * @return  The error view, along with the members of the method.
      */
-    @ResponseStatus(value=HttpStatus.CONFLICT,reason="Data Integrity Violation")
+    @ResponseStatus(value=HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ModelAndView conflict(HttpServletRequest req, Exception ex) {
         ModelAndView mav = new ModelAndView();
